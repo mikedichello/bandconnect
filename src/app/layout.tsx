@@ -47,9 +47,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <body className="min-h-screen flex flex-col">
+        <a href="#main" className="skip-link">Skip to content</a>
         <Providers>
           <Navbar />
-          <main className="flex-1">{children}</main>
+          <main id="main" className="flex-1">{children}</main>
           <Footer />
         </Providers>
       </body>

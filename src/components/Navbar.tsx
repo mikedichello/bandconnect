@@ -80,13 +80,15 @@ export function Navbar() {
           className="md:hidden text-zinc-300"
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"
+          aria-expanded={open}
+          aria-controls="mobile-menu"
         >
           <MenuIcon />
         </button>
       </nav>
 
       {open && (
-        <div className="border-t border-white/10 bg-ink md:hidden">
+        <div id="mobile-menu" className="border-t border-white/10 bg-ink md:hidden">
           <div className="container-page flex flex-col gap-1 py-3">
             {publicLinks.map((link) => (
               <Link

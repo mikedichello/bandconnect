@@ -48,7 +48,7 @@ export default async function BillingPage({
             </div>
             <p className="mt-1 text-sm text-zinc-400">{plan.tagline}</p>
             {pro && user.planRenewsAt && (
-              <p className="mt-2 text-xs text-zinc-500">
+              <p className="mt-2 text-xs text-zinc-400">
                 {user.planStatus === "canceled"
                   ? `Access ends ${formatDate(user.planRenewsAt)}`
                   : `Renews ${formatDate(user.planRenewsAt)}`}
@@ -83,7 +83,7 @@ export default async function BillingPage({
               </div>
               <div className="mt-2 font-display text-3xl font-bold text-white">
                 ${p.priceMonthly}
-                <span className="text-sm font-normal text-zinc-500">/mo</span>
+                <span className="text-sm font-normal text-zinc-400">/mo</span>
               </div>
               <ul className="mt-4 space-y-2 text-sm text-zinc-300">
                 {p.features.map((f) => (
@@ -103,7 +103,7 @@ export default async function BillingPage({
         })}
       </section>
 
-      <p className="text-center text-xs text-zinc-500">
+      <p className="text-center text-xs text-zinc-400">
         Questions about billing? See <Link href="/pricing" className="text-brand-300 hover:text-brand-200">pricing</Link>.
       </p>
     </div>

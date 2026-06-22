@@ -200,7 +200,7 @@ export function ProfileEditor({ isPro, initial }: { isPro: boolean; initial: Pro
           {status === "saved" && <span className="text-emerald-300">✓ Saved</span>}
           {status === "error" && <span className="text-red-300">{error}</span>}
           {status === "saving" && <span className="text-zinc-400">Saving…</span>}
-          {status === "idle" && <span className="text-zinc-500">Make it yours.</span>}
+          {status === "idle" && <span className="text-zinc-400">Make it yours.</span>}
         </div>
         <button type="submit" disabled={status === "saving"} className="btn-primary">{status === "saving" ? "Saving…" : "Save changes"}</button>
       </div>

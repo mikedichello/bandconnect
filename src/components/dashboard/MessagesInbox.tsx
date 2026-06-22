@@ -115,7 +115,7 @@ export function MessagesInbox({
                   </span>
                 )}
               </div>
-              <p className="truncate text-xs text-zinc-500">
+              <p className="truncate text-xs text-zinc-400">
                 {c.messages.length > 0 ? c.messages[c.messages.length - 1].body : "Start the conversation"}
               </p>
             </div>
@@ -134,7 +134,7 @@ export function MessagesInbox({
                 </button>
                 <div>
                   <p className="font-semibold text-white">{active.name}</p>
-                  <p className="text-xs capitalize text-zinc-500">{active.role.toLowerCase()}</p>
+                  <p className="text-xs capitalize text-zinc-400">{active.role.toLowerCase()}</p>
                 </div>
               </div>
               {active.slug && (
@@ -150,7 +150,7 @@ export function MessagesInbox({
 
             <div ref={threadRef} className="flex-1 space-y-3 overflow-y-auto thin-scroll p-4">
               {active.messages.length === 0 ? (
-                <p className="mt-8 text-center text-sm text-zinc-500">
+                <p className="mt-8 text-center text-sm text-zinc-400">
                   Say hello to {active.name}.
                 </p>
               ) : (
@@ -165,7 +165,7 @@ export function MessagesInbox({
                       )}
                     >
                       <p className="whitespace-pre-wrap break-words">{m.body}</p>
-                      <p className={cn("mt-1 text-[10px]", m.mine ? "text-white/70" : "text-zinc-500")}>
+                      <p className={cn("mt-1 text-[10px]", m.mine ? "text-white/70" : "text-zinc-400")}>
                         {timeAgo(m.createdAt)}
                       </p>
                     </div>
@@ -187,7 +187,7 @@ export function MessagesInbox({
             </form>
           </>
         ) : (
-          <div className="grid flex-1 place-items-center text-sm text-zinc-500">
+          <div className="grid flex-1 place-items-center text-sm text-zinc-400">
             Select a conversation
           </div>
         )}

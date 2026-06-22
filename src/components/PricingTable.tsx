@@ -37,7 +37,7 @@ export function PricingTable({
           <h3 className="text-xl font-bold">{PLANS.FREE.name}</h3>
           <p className="mt-1 text-sm text-zinc-400">{PLANS.FREE.tagline}</p>
           <div className="mt-5 font-display text-4xl font-bold text-white">
-            $0<span className="text-base font-normal text-zinc-500">/mo</span>
+            $0<span className="text-base font-normal text-zinc-400">/mo</span>
           </div>
           <ul className="mt-6 flex-1 space-y-3 text-sm text-zinc-300">
             {PLANS.FREE.features.map((f) => (
@@ -63,7 +63,7 @@ export function PricingTable({
           <p className="mt-1 text-sm text-zinc-400">{pro.tagline}</p>
           <div className="mt-5 font-display text-4xl font-bold text-white">
             ${proPrice}
-            <span className="text-base font-normal text-zinc-500">/mo</span>
+            <span className="text-base font-normal text-zinc-400">/mo</span>
           </div>
           {interval === "yearly" && (
             <p className="mt-1 text-xs text-emerald-300">Billed ${pro.priceYearly}/year</p>
@@ -96,7 +96,7 @@ export function PricingTable({
         </div>
       </div>
 
-      <p className="mt-8 text-center text-sm text-zinc-500">
+      <p className="mt-8 text-center text-sm text-zinc-400">
         Prices in USD. Cancel anytime. {billingEnabled ? "Secure payments by Stripe." : ""}
       </p>
     </div>

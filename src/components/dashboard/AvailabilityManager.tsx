@@ -61,7 +61,7 @@ export function AvailabilityManager({ initial }: { initial: OpenDate[] }) {
           <input type="date" className="input" value={date} onChange={(e) => setDate(e.target.value)} required />
         </div>
         <div>
-          <label className="label">Note <span className="text-zinc-500">(optional)</span></label>
+          <label className="label">Note <span className="text-zinc-400">(optional)</span></label>
           <input className="input" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Prefer evenings, will travel…" maxLength={160} />
         </div>
         <button className="btn-primary" disabled={busy}>{busy ? "Adding…" : "Add date"}</button>
@@ -80,7 +80,7 @@ export function AvailabilityManager({ initial }: { initial: OpenDate[] }) {
                   <p className="font-medium text-white">{formatDate(d.date)}</p>
                   {d.note && <p className="text-sm text-zinc-400">{d.note}</p>}
                 </div>
-                <button onClick={() => remove(d.id)} className="text-sm text-zinc-500 hover:text-red-300">Remove</button>
+                <button onClick={() => remove(d.id)} className="text-sm text-zinc-400 hover:text-red-300">Remove</button>
               </li>
             ))}
           </ul>

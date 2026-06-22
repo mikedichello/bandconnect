@@ -125,7 +125,7 @@ export default async function EventPage({ params }: { params: { id: string } }) 
 
           {/* Host */}
           <div className="card p-5">
-            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Hosted by</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">Hosted by</p>
             <div className="mt-3 flex items-center gap-3">
               <span className="grid h-11 w-11 place-items-center rounded-full bg-brand-500/20 text-sm font-bold text-brand-200">
                 {initials(event.host.displayName)}
@@ -134,7 +134,7 @@ export default async function EventPage({ params }: { params: { id: string } }) 
                 <Link href={`/p/${event.host.slug}`} className="block truncate font-semibold text-white hover:text-brand-200">
                   {event.host.displayName}
                 </Link>
-                <p className="text-xs capitalize text-zinc-500">{event.host.type.toLowerCase()}</p>
+                <p className="text-xs capitalize text-zinc-400">{event.host.type.toLowerCase()}</p>
               </div>
             </div>
             <div className="mt-4 flex gap-2">
@@ -153,7 +153,7 @@ export default async function EventPage({ params }: { params: { id: string } }) 
           {/* Attendees */}
           {going.length > 0 && (
             <div className="card p-5">
-              <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Who&apos;s going</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">Who&apos;s going</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {going.slice(0, 12).map((r) => (
                   <Link

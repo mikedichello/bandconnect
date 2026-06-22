@@ -41,7 +41,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-white/10">
-        <div className="container-page flex flex-col items-center justify-between gap-2 py-5 text-xs text-zinc-500 sm:flex-row">
+        <div className="container-page flex flex-col items-center justify-between gap-2 py-5 text-xs text-zinc-400 sm:flex-row">
           <p>© {new Date().getFullYear()} BandConnect. Built for the local scene.</p>
           <p>Made with Next.js, Prisma & Stripe.</p>
         </div>

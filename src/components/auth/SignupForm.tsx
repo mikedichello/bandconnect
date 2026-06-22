@@ -67,12 +67,13 @@ export function SignupForm() {
             type="button"
             key={t.id}
             onClick={() => setRole(t.id)}
+            aria-pressed={role === t.id}
             className={cn(
               "rounded-2xl border p-3 text-center transition",
               role === t.id ? "border-brand-400/60 bg-brand-500/15 shadow-glow" : "border-white/10 bg-black/20 hover:border-white/20",
             )}
           >
-            <div className="text-2xl">{t.emoji}</div>
+            <div className="text-2xl" aria-hidden="true">{t.emoji}</div>
             <div className="mt-1 text-sm font-semibold text-white">{t.label}</div>
           </button>
         ))}
@@ -83,26 +84,26 @@ export function SignupForm() {
 
       <form onSubmit={onSubmit} className="card space-y-4 p-6">
         <div>
-          <label className="label">{role === "FAN" ? "Your name" : role === "VENUE" ? "Venue name" : "Name"}</label>
-          <input className="input" value={displayName} onChange={(e) => setDisplayName(e.target.value)} required placeholder={role === "VENUE" ? "The Space Ballroom" : role === "BAND" ? "The Night Owls" : "Your name"} />
+          <label htmlFor="su-name" className="label">{role === "FAN" ? "Your name" : role === "VENUE" ? "Venue name" : "Name"}</label>
+          <input id="su-name" className="input" value={displayName} onChange={(e) => setDisplayName(e.target.value)} required placeholder={role === "VENUE" ? "The Space Ballroom" : role === "BAND" ? "The Night Owls" : "Your name"} />
         </div>
         <div>
-          <label className="label">Email</label>
-          <input type="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@email.com" />
+          <label htmlFor="su-email" className="label">Email</label>
+          <input id="su-email" type="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@email.com" />
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="label">CT town <span className="text-zinc-500">(optional)</span></label>
-            <input className="input" value={city} onChange={(e) => setCity(e.target.value)} placeholder="New Haven" />
+            <label htmlFor="su-city" className="label">CT town <span className="text-zinc-400">(optional)</span></label>
+            <input id="su-city" className="input" value={city} onChange={(e) => setCity(e.target.value)} placeholder="New Haven" />
           </div>
           <div>
-            <label className="label">ZIP <span className="text-zinc-500">(optional)</span></label>
-            <input className="input" value={zip} onChange={(e) => setZip(e.target.value)} placeholder="06511" />
+            <label htmlFor="su-zip" className="label">ZIP <span className="text-zinc-400">(optional)</span></label>
+            <input id="su-zip" className="input" value={zip} onChange={(e) => setZip(e.target.value)} placeholder="06511" />
           </div>
         </div>
         <div>
-          <label className="label">Password</label>
-          <input type="password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} placeholder="At least 8 characters" />
+          <label htmlFor="su-password" className="label">Password</label>
+          <input id="su-password" type="password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} placeholder="At least 8 characters" />
         </div>
 
         {error && (

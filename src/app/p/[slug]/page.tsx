@@ -108,7 +108,7 @@ export default async function ProfilePage({ params }: { params: { slug: string }
                 <span className="badge text-[11px]">{meta.emoji} {meta.label}</span>
                 <h1 className="mt-1 font-display text-3xl font-bold text-white">{profile.displayName}</h1>
                 {profile.tagline && <p className="text-zinc-300">{profile.tagline}</p>}
-                {profile.city && <p className="text-sm text-zinc-500">📍 {profile.city}</p>}
+                {profile.city && <p className="text-sm text-zinc-400">📍 {profile.city}</p>}
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-2 pb-1">
@@ -186,13 +186,13 @@ export default async function ProfilePage({ params }: { params: { slug: string }
             <div className="card p-5">
               {genres.length > 0 && (
                 <>
-                  <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-500">{profile.type === "VENUE" ? "Genres booked" : "Genres"}</h3>
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">{profile.type === "VENUE" ? "Genres booked" : "Genres"}</h3>
                   <div className="mt-2 flex flex-wrap gap-2">{genres.map((g) => <span key={g} className="badge">{g}</span>)}</div>
                 </>
               )}
               {instruments.length > 0 && (
                 <>
-                  <h3 className="mt-4 text-sm font-semibold uppercase tracking-wide text-zinc-500">Instruments</h3>
+                  <h3 className="mt-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">Instruments</h3>
                   <div className="mt-2 flex flex-wrap gap-2">{instruments.map((g) => <span key={g} className="badge">{g}</span>)}</div>
                 </>
               )}
@@ -202,7 +202,7 @@ export default async function ProfilePage({ params }: { params: { slug: string }
           {/* Artist availability */}
           {isArtist(profile.type) && (
             <div className="card p-5">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-500">Availability</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">Availability</h3>
               <p className="mt-2 text-sm">
                 {profile.availableForGigs ? <span className="text-emerald-300">✓ Available for gigs</span> : <span className="text-zinc-400">Not currently booking</span>}
               </p>
@@ -219,7 +219,7 @@ export default async function ProfilePage({ params }: { params: { slug: string }
               )}
               {profile.availability.length > 0 && (
                 <>
-                  <h4 className="mt-4 text-xs font-semibold uppercase tracking-wide text-zinc-500">Open dates</h4>
+                  <h4 className="mt-4 text-xs font-semibold uppercase tracking-wide text-zinc-400">Open dates</h4>
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {profile.availability.slice(0, 10).map((a) => (
                       <span key={a.id} className="badge text-[11px]">{formatDate(a.date).replace(/,.*/, "")}</span>
@@ -232,7 +232,7 @@ export default async function ProfilePage({ params }: { params: { slug: string }
 
           {/* Details */}
           <div className="card p-5">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-500">Details</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">Details</h3>
             <dl className="mt-3 space-y-2 text-sm">
               {profile.city && <Row label="Location" value={profile.city} />}
               {profile.address && <Row label="Address" value={profile.address} />}
@@ -256,7 +256,7 @@ export default async function ProfilePage({ params }: { params: { slug: string }
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-4">
-      <dt className="text-zinc-500">{label}</dt>
+      <dt className="text-zinc-400">{label}</dt>
       <dd className="text-right text-zinc-200">{value}</dd>
     </div>
   );

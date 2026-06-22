@@ -62,9 +62,14 @@ export function NotificationsList({ initial }: { initial: NotifRow[] }) {
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium text-white">{n.title}</p>
                   {n.body && <p className="truncate text-sm text-zinc-400">{n.body}</p>}
-                  <p className="mt-0.5 text-xs text-zinc-500">{timeAgo(n.createdAt)}</p>
+                  <p className="mt-0.5 text-xs text-zinc-400">{timeAgo(n.createdAt)}</p>
                 </div>
-                {!n.read && <span className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-accent" />}
+                {!n.read && (
+                  <>
+                    <span className="sr-only">Unread.</span>
+                    <span className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                  </>
+                )}
               </div>
             );
             return (

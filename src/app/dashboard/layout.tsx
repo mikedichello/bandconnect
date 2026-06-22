@@ -21,15 +21,15 @@ export default async function DashboardLayout({ children }: { children: React.Re
   ]);
 
   const items: NavItem[] = [
-    { href: "/dashboard", label: "Overview", icon: "🏠" },
-    { href: "/dashboard/profile", label: "Edit profile", icon: "🎛️" },
-    ...(type !== "FAN" ? [{ href: "/dashboard/events", label: "My events", icon: "📅" } as NavItem] : []),
-    { href: "/dashboard/calendar", label: type === "FAN" ? "My calendar" : "Calendar", icon: "🗓️" },
-    ...(isArtist(type) ? [{ href: "/dashboard/availability", label: "Availability", icon: "✅" } as NavItem] : []),
-    { href: "/dashboard/network", label: "Network", icon: "👥", badge: pendingFriends || undefined },
-    { href: "/dashboard/messages", label: "Messages", icon: "✉️", badge: unreadMessages || undefined },
-    { href: "/dashboard/notifications", label: "Notifications", icon: "🔔", badge: unreadNotifications || undefined },
-    { href: "/dashboard/billing", label: "Billing", icon: "💳" },
+    { href: "/dashboard", label: "Overview", icon: "overview" },
+    { href: "/dashboard/profile", label: "Edit profile", icon: "profile" },
+    ...(type !== "FAN" ? [{ href: "/dashboard/events", label: "My events", icon: "events" } as NavItem] : []),
+    { href: "/dashboard/calendar", label: type === "FAN" ? "My calendar" : "Calendar", icon: "calendar" },
+    ...(isArtist(type) ? [{ href: "/dashboard/availability", label: "Availability", icon: "availability" } as NavItem] : []),
+    { href: "/dashboard/network", label: "Network", icon: "network", badge: pendingFriends || undefined },
+    { href: "/dashboard/messages", label: "Messages", icon: "messages", badge: unreadMessages || undefined },
+    { href: "/dashboard/notifications", label: "Notifications", icon: "notifications", badge: unreadNotifications || undefined },
+    { href: "/dashboard/billing", label: "Billing", icon: "billing" },
   ];
 
   return (

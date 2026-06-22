@@ -84,6 +84,14 @@ section is the TL;DR.
 
 ## 9. Accessibility (cross-cutting, mostly P1)
 
+> **Status:** an accessibility pass has landed — contrast bump (9.2), Lucide
+> icon set with labels (8.1), ARIA date grid (9.3), color-only status text
+> alternatives (9.4), plus a skip-link, global focus-visible rings,
+> reduced-motion support, associated form labels, and aria-pressed/current/
+> expanded states. Remaining: full keyboard arrow-nav in the calendar and an
+> end-to-end screen-reader sweep. (9.1 modals: N/A — the app has no modals.)
+
+
 | # | Sev | Finding | Fix |
 | --- | --- | --- | --- |
 | 9.1 | **P1** | **Modals** (`ProfileActions` submit dialog, event/show forms) have no **focus trap, Escape-to-close, or scroll lock**, and don't return focus on close. | Use a proper dialog primitive (Radix) or add focus management + `Esc`. |

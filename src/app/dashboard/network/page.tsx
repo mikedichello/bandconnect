@@ -68,7 +68,7 @@ export default async function NetworkPage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-zinc-500">{title}</h2>
+      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-zinc-400">{title}</h2>
       {children}
     </section>
   );
@@ -82,7 +82,7 @@ function Grid({ people }: { people: { id: string; slug: string; displayName: str
           <span className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-brand-500/20 text-sm font-bold text-brand-200">{initials(p.displayName)}</span>
           <div className="min-w-0">
             <p className="truncate font-medium text-white">{p.displayName}</p>
-            <p className="text-xs text-zinc-500">{profileTypeMeta(p.type).label}</p>
+            <p className="text-xs text-zinc-400">{profileTypeMeta(p.type).label}</p>
           </div>
         </Link>
       ))}
@@ -96,7 +96,7 @@ function PersonLink({ slug, name, sub }: { slug: string; name: string; sub: stri
       <span className="grid h-10 w-10 place-items-center rounded-full bg-brand-500/20 text-sm font-bold text-brand-200">{initials(name)}</span>
       <div>
         <p className="font-medium text-white">{name}</p>
-        <p className="text-xs text-zinc-500">{sub}</p>
+        <p className="text-xs text-zinc-400">{sub}</p>
       </div>
     </Link>
   );

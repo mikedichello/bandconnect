@@ -126,7 +126,7 @@ export function EventsManager({ initial, atLimit, limitLabel }: { initial: Event
             </div>
             {form.coverType === "VIDEO" && (
               <div className="sm:col-span-2">
-                <label className="label">Video thumbnail URL <span className="text-zinc-500">(shown in search/list)</span></label>
+                <label className="label">Video thumbnail URL <span className="text-zinc-400">(shown in search/list)</span></label>
                 <input className="input" value={form.coverThumbUrl} onChange={(e) => field("coverThumbUrl", e.target.value)} placeholder="https://…/thumb.jpg" />
               </div>
             )}
@@ -141,7 +141,7 @@ export function EventsManager({ initial, atLimit, limitLabel }: { initial: Event
               <input type="datetime-local" className="input" value={form.startAt} onChange={(e) => field("startAt", e.target.value)} required />
             </div>
             <div>
-              <label className="label">End <span className="text-zinc-500">(optional)</span></label>
+              <label className="label">End <span className="text-zinc-400">(optional)</span></label>
               <input type="datetime-local" className="input" value={form.endAt} onChange={(e) => field("endAt", e.target.value)} />
             </div>
             <div>
@@ -195,7 +195,7 @@ export function EventsManager({ initial, atLimit, limitLabel }: { initial: Event
 function Group({ title, rows, onDelete, empty, dim }: { title: string; rows: EventRow[]; onDelete: (id: string) => void; empty?: string; dim?: boolean }) {
   return (
     <div>
-      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-zinc-500">{title}</h2>
+      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-zinc-400">{title}</h2>
       {rows.length === 0 ? (
         <p className="card p-6 text-sm text-zinc-400">{empty}</p>
       ) : (
@@ -219,7 +219,7 @@ function Group({ title, rows, onDelete, empty, dim }: { title: string; rows: Eve
                   </div>
                 </div>
               </div>
-              <button onClick={() => onDelete(e.id)} className="text-sm text-zinc-500 hover:text-red-300">Delete</button>
+              <button onClick={() => onDelete(e.id)} className="text-sm text-zinc-400 hover:text-red-300">Delete</button>
             </li>
           ))}
         </ul>
