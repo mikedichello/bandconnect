@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.shots
+npm-debug.log*
+*.db
+*.db-journal
+.env
+.env*.local
+.vercel
+README.md
+docs

@@ -55,8 +55,8 @@ export function CalendarGrid({
 
   return (
     <div className="card overflow-hidden">
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-        <h2 className="font-display text-lg font-bold text-white">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 px-3 py-3 sm:px-4">
+        <h2 className="font-display text-base font-bold text-white sm:text-lg">
           {first.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
         </h2>
         <div className="flex gap-2">
@@ -79,13 +79,13 @@ export function CalendarGrid({
             <div
               key={i}
               className={cn(
-                "min-h-[96px] border-b border-r border-white/5 p-1.5 sm:min-h-[120px]",
+                "min-h-[64px] border-b border-r border-white/5 p-1 sm:min-h-[120px] sm:p-1.5",
                 d == null && "bg-black/10",
               )}
             >
               {d != null && (
                 <>
-                  <div className={cn("mb-1 text-xs font-semibold", isToday(d) ? "grid h-5 w-5 place-items-center rounded-full bg-brand-500 text-white" : "text-zinc-500")}>
+                  <div className={cn("mb-1 text-[11px] font-semibold sm:text-xs", isToday(d) ? "grid h-5 w-5 place-items-center rounded-full bg-brand-500 text-white" : "text-zinc-500")}>
                     {d}
                   </div>
                   <div className="space-y-1">
@@ -93,14 +93,16 @@ export function CalendarGrid({
                       <Link
                         key={e.id}
                         href={`/event/${e.id}`}
-                        className="block truncate rounded-md bg-brand-500/15 px-1.5 py-1 text-[11px] text-brand-100 hover:bg-brand-500/30"
+                        className="block truncate rounded bg-brand-500/15 px-1 py-0.5 text-[10px] leading-tight text-brand-100 hover:bg-brand-500/30 sm:rounded-md sm:px-1.5 sm:py-1 sm:text-[11px]"
                         title={e.title}
                       >
-                        <span className="text-brand-300">{formatTime(e.startAt)}</span> {e.title}
+                        {/* Time is hidden on phones so the title gets the space. */}
+                        <span className="hidden text-brand-300 sm:inline">{formatTime(e.startAt)} </span>
+                        {e.title}
                       </Link>
                     ))}
                     {dayEvents.length > 3 && (
-                      <span className="block px-1.5 text-[10px] text-zinc-500">+{dayEvents.length - 3} more</span>
+                      <span className="block px-1 text-[10px] text-zinc-500">+{dayEvents.length - 3} more</span>
                     )}
                   </div>
                 </>

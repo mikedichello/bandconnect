@@ -92,16 +92,27 @@ npm run db:studio   # browse data in Prisma Studio
 
 ## ☁️ Deployment
 
-Fastest path: **Vercel + hosted Postgres**.
+> **Not GitHub Pages.** This is a full-stack app (server-rendered calendar,
+> auth, database, API routes), and GitHub Pages serves static files only — it
+> can't run the server. Use a Node host. Full guide: **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)**.
+
+**Fastest path — Vercel + hosted Postgres:**
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
 
 1. In `prisma/schema.prisma`, set `provider = "postgresql"`.
 2. Set env vars (see `.env.example`): `DATABASE_URL`, `NEXTAUTH_SECRET`
    (`openssl rand -base64 32`), `NEXTAUTH_URL`, `NEXT_PUBLIC_APP_URL`, and—for
    live billing—the `STRIPE_*` keys + price IDs.
 3. `npx prisma db push` against your Postgres, then deploy.
-4. For Stripe: add a webhook to `/api/stripe/webhook` for
-   `checkout.session.completed`, `customer.subscription.updated`, and
-   `customer.subscription.deleted`.
+
+**Self-hosted — Docker (Railway / Render / Fly / VPS):** a production
+`Dockerfile` is included.
+
+```bash
+docker build -t bandconnect .
+docker run -p 3000:3000 --env-file .env bandconnect
+```
 
 ## 🗂️ Project structure
 

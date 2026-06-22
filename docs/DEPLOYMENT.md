@@ -1,0 +1,100 @@
+# Deploying BandConnect
+
+## Why not GitHub Pages?
+
+GitHub Pages **only serves static files**. BandConnect is a full-stack app —
+it needs a running Node server for:
+
+- server-rendered pages (the calendar is queried from the database per request),
+- API routes (`/api/*`) for auth, RSVPs, follows, messages, Stripe webhooks,
+- **NextAuth** sessions and **Prisma** database access.
+
+A static export (`next export`) would strip all of that out, leaving a shell
+with no login, no data, and an empty calendar. So GitHub Pages is not an
+option for the real app.
+
+**Use a host that runs Node.** Recommended below.
+
+---
+
+## Option A — Vercel (recommended, easiest)
+
+Vercel is built by the Next.js team and runs this app with zero config.
+
+1. Push this repo to GitHub (already done on your branch).
+2. Go to <https://vercel.com/new>, import the repo.
+3. Add a Postgres database (Vercel Postgres, or **Neon**/**Supabase** free tier)
+   and switch Prisma to Postgres:
+   - In `prisma/schema.prisma`, set `provider = "postgresql"`.
+4. Set environment variables (Project → Settings → Environment Variables):
+
+   | Variable | Value |
+   | --- | --- |
+   | `DATABASE_URL` | your Postgres connection string |
+   | `NEXTAUTH_SECRET` | `openssl rand -base64 32` |
+   | `NEXTAUTH_URL` | `https://your-app.vercel.app` |
+   | `NEXT_PUBLIC_APP_URL` | `https://your-app.vercel.app` |
+   | `STRIPE_*` | (optional) live billing keys + price IDs |
+
+5. Deploy. Then create the tables once:
+   ```bash
+   # locally, with DATABASE_URL pointed at the prod Postgres
+   npx prisma db push
+   npm run db:seed     # optional demo data
+   ```
+
+That's it — every push to the branch redeploys automatically.
+
+---
+
+## Option B — Docker (Railway, Render, Fly.io, or your own VPS)
+
+A production `Dockerfile` is included (Next.js standalone + Prisma).
+
+```bash
+# 1. Switch Prisma to Postgres in prisma/schema.prisma:
+#      provider = "postgresql"
+# 2. Build & run
+docker build -t bandconnect .
+docker run -p 3000:3000 --env-file .env bandconnect
+```
+
+Provide the same env vars as above via `--env-file` or the platform's config.
+On first deploy, run `npx prisma db push` against your database to create the
+schema (e.g. as a release command on Railway/Render).
+
+- **Railway / Render:** point the service at this repo; both auto-detect the
+  Dockerfile. Add a managed Postgres plugin and set `DATABASE_URL`.
+- **Fly.io:** `fly launch` (detects the Dockerfile), `fly postgres create`,
+  `fly secrets set NEXTAUTH_SECRET=… DATABASE_URL=…`.
+
+---
+
+## Database: SQLite (dev) → Postgres (prod)
+
+The repo ships with SQLite for zero-config local dev. For any real deployment:
+
+1. `prisma/schema.prisma` → `datasource db { provider = "postgresql" … }`
+2. `DATABASE_URL` → your Postgres string
+3. `npx prisma db push` to create the tables
+
+No other code changes are needed — enum-like fields are modeled as `String`
+specifically so the schema is portable.
+
+## Stripe (optional, for live billing)
+
+1. Create a Product with monthly + yearly Prices; put the IDs in
+   `STRIPE_PRICE_ID_PRO_MONTHLY` / `_YEARLY`.
+2. Add `STRIPE_SECRET_KEY` and `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`.
+3. Add a webhook to `https://YOUR_DOMAIN/api/stripe/webhook` for
+   `checkout.session.completed`, `customer.subscription.updated`,
+   `customer.subscription.deleted`; put the signing secret in
+   `STRIPE_WEBHOOK_SECRET`.
+
+Without these the app runs fine in **demo billing mode**.
+
+## What about a static page on GitHub Pages?
+
+If you specifically want *something* on GitHub Pages, the only sensible use is a
+static marketing/"coming soon" page that links to the real app hosted on Vercel
+(or Docker). The application itself must run on a Node host.
