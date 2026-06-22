@@ -53,7 +53,7 @@ export function MediaManager({ initial }: { initial: MediaRow[] }) {
   return (
     <section className="card p-6">
       <h2 className="text-lg font-semibold">Media gallery</h2>
-      <p className="mt-1 text-sm text-zinc-400">Add image URLs or video links (YouTube, Vimeo, or direct).</p>
+      <p className="mt-1 text-sm text-subtle">Add image URLs or video links (YouTube, Vimeo, or direct).</p>
 
       <form onSubmit={add} className="mt-4 grid gap-3 sm:grid-cols-[120px_1fr_auto] sm:items-end">
         <div>
@@ -77,8 +77,8 @@ export function MediaManager({ initial }: { initial: MediaRow[] }) {
       {items.length > 0 && (
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
           {items.map((m) => (
-            <div key={m.id} className="relative overflow-hidden rounded-xl border border-white/10">
-              <div className="aspect-video w-full bg-black/30">
+            <div key={m.id} className="relative overflow-hidden rounded-xl border border-line">
+              <div className="aspect-video w-full bg-input">
                 {m.kind === "VIDEO" ? (
                   <div className="grid h-full w-full place-items-center text-2xl">▶️</div>
                 ) : (
@@ -86,7 +86,7 @@ export function MediaManager({ initial }: { initial: MediaRow[] }) {
                 )}
               </div>
               <button onClick={() => remove(m.id)} className="absolute right-2 top-2 rounded-full bg-black/70 px-2 py-1 text-xs text-white hover:bg-red-500/80">Remove</button>
-              {m.caption && <p className="truncate px-2 py-1 text-xs text-zinc-400">{m.caption}</p>}
+              {m.caption && <p className="truncate px-2 py-1 text-xs text-subtle">{m.caption}</p>}
             </div>
           ))}
         </div>

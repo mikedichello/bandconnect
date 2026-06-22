@@ -81,12 +81,12 @@ export default async function EventPage({ params }: { params: { id: string } }) 
   return (
     <article className="container-page py-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Link href="/" className="text-sm text-zinc-400 hover:text-white">← Back to calendar</Link>
+      <Link href="/" className="text-sm text-subtle hover:text-fg">← Back to calendar</Link>
 
       <div className="mt-4 grid gap-8 lg:grid-cols-[1fr_320px]">
         <div>
           {/* Cover */}
-          <div className="overflow-hidden rounded-2xl border border-white/10 bg-brand-500/10">
+          <div className="overflow-hidden rounded-2xl border border-line bg-brand-500/10">
             {event.coverType === "VIDEO" && event.coverUrl ? (
               <VideoEmbed url={event.coverUrl} />
             ) : (
@@ -118,14 +118,14 @@ export default async function EventPage({ params }: { params: { id: string } }) 
             ))}
           </div>
 
-          <h1 className="mt-4 font-display text-3xl font-bold text-white sm:text-4xl">{event.title}</h1>
+          <h1 className="mt-4 font-display text-3xl font-bold text-fg sm:text-4xl">{event.title}</h1>
 
-          <p className="mt-3 text-lg text-zinc-200">
+          <p className="mt-3 text-lg text-fg">
             🗓️ {formatDate(event.startAt)} · {formatTime(event.startAt)}
             {event.endAt ? ` – ${formatTime(event.endAt)}` : ""}
           </p>
           {(event.locationName || event.city) && (
-            <p className="mt-1 text-zinc-400">
+            <p className="mt-1 text-subtle">
               📍 {event.locationName ?? ""}{event.locationName && event.city ? " · " : ""}
               {event.city ? `${event.city}, CT` : ""}
               {event.address ? ` · ${event.address}` : ""}
@@ -135,7 +135,7 @@ export default async function EventPage({ params }: { params: { id: string } }) 
           {event.description && (
             <div className="mt-6">
               <h2 className="mb-2 text-lg font-bold">About this event</h2>
-              <p className="whitespace-pre-wrap text-zinc-300">{event.description}</p>
+              <p className="whitespace-pre-wrap text-muted">{event.description}</p>
             </div>
           )}
         </div>
@@ -143,7 +143,7 @@ export default async function EventPage({ params }: { params: { id: string } }) 
         {/* Sidebar */}
         <aside className="space-y-5">
           <div className="card p-5">
-            <p className="text-sm text-zinc-400">Are you going?</p>
+            <p className="text-sm text-subtle">Are you going?</p>
             <div className="mt-3">
               <RsvpButton
                 eventId={event.id}
@@ -165,16 +165,16 @@ export default async function EventPage({ params }: { params: { id: string } }) 
 
           {/* Host */}
           <div className="card p-5">
-            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">Hosted by</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-subtle">Hosted by</p>
             <div className="mt-3 flex items-center gap-3">
               <span className="grid h-11 w-11 place-items-center rounded-full bg-brand-500/20 text-sm font-bold text-brand-200">
                 {initials(event.host.displayName)}
               </span>
               <div className="min-w-0">
-                <Link href={`/p/${event.host.slug}`} className="block truncate font-semibold text-white hover:text-brand-200">
+                <Link href={`/p/${event.host.slug}`} className="block truncate font-semibold text-fg hover:text-brand-200">
                   {event.host.displayName}
                 </Link>
-                <p className="text-xs capitalize text-zinc-400">{event.host.type.toLowerCase()}</p>
+                <p className="text-xs capitalize text-subtle">{event.host.type.toLowerCase()}</p>
               </div>
             </div>
             <div className="mt-4 flex gap-2">
@@ -193,14 +193,14 @@ export default async function EventPage({ params }: { params: { id: string } }) 
           {/* Attendees */}
           {going.length > 0 && (
             <div className="card p-5">
-              <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">Who&apos;s going</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-subtle">Who&apos;s going</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {going.slice(0, 12).map((r) => (
                   <Link
                     key={r.id}
                     href={`/p/${r.profile.slug}`}
                     title={r.profile.displayName}
-                    className="grid h-9 w-9 place-items-center rounded-full bg-white/10 text-xs font-bold text-zinc-200 hover:bg-white/20"
+                    className="grid h-9 w-9 place-items-center rounded-full bg-elevated text-xs font-bold text-fg hover:bg-elevated"
                   >
                     {initials(r.profile.displayName)}
                   </Link>

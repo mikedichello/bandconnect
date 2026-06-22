@@ -34,7 +34,7 @@ export function EventCard({
   const tags = parseTags(event.genres).slice(0, 3);
 
   return (
-    <div className="card overflow-hidden transition hover:border-white/20">
+    <div className="card overflow-hidden transition hover:border-line">
       <Link href={`/event/${event.id}`} className="block">
         <div className="relative aspect-[16/9] w-full overflow-hidden bg-brand-500/10">
           <ImageWithFallback
@@ -66,9 +66,9 @@ export function EventCard({
               {event.startAt.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })} · {formatTime(event.startAt)}
             </p>
             <Link href={`/event/${event.id}`}>
-              <h3 className="mt-0.5 truncate text-lg font-bold text-white hover:text-brand-200">{event.title}</h3>
+              <h3 className="mt-0.5 truncate text-lg font-bold text-fg hover:text-brand-200">{event.title}</h3>
             </Link>
-            <p className="truncate text-sm text-zinc-400">
+            <p className="truncate text-sm text-subtle">
               {event.locationName ?? "Venue TBA"}
               {event.city ? ` · ${event.city}, CT` : ""}
               {event.distanceMi != null ? ` · ${event.distanceMi.toFixed(0)} mi` : ""}
@@ -80,7 +80,7 @@ export function EventCard({
           <span className="grid h-6 w-6 flex-shrink-0 place-items-center rounded-full bg-brand-500/20 text-[10px] font-bold text-brand-200">
             {initials(event.host.displayName)}
           </span>
-          <Link href={`/p/${event.host.slug}`} className="truncate text-xs text-zinc-400 hover:text-white">
+          <Link href={`/p/${event.host.slug}`} className="truncate text-xs text-subtle hover:text-fg">
             {event.host.displayName}
           </Link>
         </div>

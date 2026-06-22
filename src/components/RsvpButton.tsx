@@ -49,18 +49,18 @@ export function RsvpButton({
 
   const base = compact ? "px-2.5 py-1 text-xs" : "px-3.5 py-1.5 text-sm";
   return (
-    <div className="inline-flex overflow-hidden rounded-full border border-white/15">
+    <div className="inline-flex overflow-hidden rounded-full border border-line">
       <button
         onClick={() => set("GOING")}
         disabled={loading}
-        className={cn(base, "font-semibold transition", status === "GOING" ? "bg-emerald-500 text-white" : "bg-white/5 text-zinc-300 hover:bg-white/10")}
+        className={cn(base, "font-semibold transition", status === "GOING" ? "bg-emerald-500 text-white" : "bg-elevated text-muted hover:bg-elevated")}
       >
         Going
       </button>
       <button
         onClick={() => set("MAYBE")}
         disabled={loading}
-        className={cn(base, "font-semibold transition border-l border-white/15", status === "MAYBE" ? "bg-amber-500 text-white" : "bg-white/5 text-zinc-300 hover:bg-white/10")}
+        className={cn(base, "font-semibold transition border-l border-line", status === "MAYBE" ? "bg-amber-500 text-white" : "bg-elevated text-muted hover:bg-elevated")}
       >
         Maybe
       </button>

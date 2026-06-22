@@ -43,7 +43,7 @@ export function NotificationsList({ initial }: { initial: NotifRow[] }) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold">Notifications</h1>
-          <p className="text-sm text-zinc-400">{unread > 0 ? `${unread} unread` : "You're all caught up."}</p>
+          <p className="text-sm text-subtle">{unread > 0 ? `${unread} unread` : "You're all caught up."}</p>
         </div>
         {unread > 0 && <button onClick={markAll} className="btn-ghost text-sm">Mark all read</button>}
       </div>
@@ -51,7 +51,7 @@ export function NotificationsList({ initial }: { initial: NotifRow[] }) {
       {items.length === 0 ? (
         <div className="card p-10 text-center">
           <div className="text-3xl">🔔</div>
-          <p className="mt-3 text-zinc-400">No notifications yet.</p>
+          <p className="mt-3 text-subtle">No notifications yet.</p>
         </div>
       ) : (
         <ul className="space-y-2">
@@ -60,9 +60,9 @@ export function NotificationsList({ initial }: { initial: NotifRow[] }) {
               <div className="flex items-start gap-3">
                 <span className="text-lg">{ICONS[n.type] ?? "🔔"}</span>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-white">{n.title}</p>
-                  {n.body && <p className="truncate text-sm text-zinc-400">{n.body}</p>}
-                  <p className="mt-0.5 text-xs text-zinc-400">{timeAgo(n.createdAt)}</p>
+                  <p className="text-sm font-medium text-fg">{n.title}</p>
+                  {n.body && <p className="truncate text-sm text-subtle">{n.body}</p>}
+                  <p className="mt-0.5 text-xs text-subtle">{timeAgo(n.createdAt)}</p>
                 </div>
                 {!n.read && (
                   <>
@@ -75,11 +75,11 @@ export function NotificationsList({ initial }: { initial: NotifRow[] }) {
             return (
               <li key={n.id}>
                 {n.linkUrl ? (
-                  <Link href={n.linkUrl} onClick={() => markOne(n.id)} className={cn("block card p-4 transition hover:border-white/20", !n.read && "border-brand-400/30 bg-brand-500/5")}>
+                  <Link href={n.linkUrl} onClick={() => markOne(n.id)} className={cn("block card p-4 transition hover:border-line", !n.read && "border-brand-400/30 bg-brand-500/5")}>
                     {inner}
                   </Link>
                 ) : (
-                  <button onClick={() => markOne(n.id)} className={cn("block w-full text-left card p-4 transition hover:border-white/20", !n.read && "border-brand-400/30 bg-brand-500/5")}>
+                  <button onClick={() => markOne(n.id)} className={cn("block w-full text-left card p-4 transition hover:border-line", !n.read && "border-brand-400/30 bg-brand-500/5")}>
                     {inner}
                   </button>
                 )}

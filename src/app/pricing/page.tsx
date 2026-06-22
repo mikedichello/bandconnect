@@ -35,7 +35,7 @@ export default async function PricingPage() {
         <div className="mx-auto max-w-2xl text-center">
           <span className="badge-brand mb-4">Simple, honest pricing</span>
           <h1 className="text-4xl font-bold sm:text-5xl">Pricing that fits the gig</h1>
-          <p className="mt-4 text-lg text-zinc-400">
+          <p className="mt-4 text-lg text-subtle">
             Start free. Upgrade to Pro when you&apos;re ready to stand out and book more.
           </p>
         </div>
@@ -50,8 +50,8 @@ export default async function PricingPage() {
           <div className="mt-8 space-y-4">
             {faqs.map((f) => (
               <div key={f.q} className="card p-6">
-                <h3 className="font-semibold text-white">{f.q}</h3>
-                <p className="mt-2 text-sm text-zinc-400">{f.a}</p>
+                <h3 className="font-semibold text-fg">{f.q}</h3>
+                <p className="mt-2 text-sm text-subtle">{f.a}</p>
               </div>
             ))}
           </div>

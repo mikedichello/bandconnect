@@ -24,16 +24,16 @@ export function ForgotPasswordForm() {
     <div className="w-full max-w-md">
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold">Reset your password</h1>
-        <p className="mt-2 text-sm text-zinc-400">We&apos;ll email you a link to set a new one.</p>
+        <p className="mt-2 text-sm text-subtle">We&apos;ll email you a link to set a new one.</p>
       </div>
 
       {sent ? (
         <div className="card p-6 text-center">
           <div className="text-3xl">📧</div>
-          <p className="mt-3 text-zinc-200">
+          <p className="mt-3 text-fg">
             If an account exists for <strong>{email}</strong>, a reset link is on its way.
           </p>
-          <p className="mt-2 text-sm text-zinc-400">Check your inbox (and spam). The link expires in 1 hour.</p>
+          <p className="mt-2 text-sm text-subtle">Check your inbox (and spam). The link expires in 1 hour.</p>
           <Link href="/login" className="btn-primary mt-5">Back to log in</Link>
         </div>
       ) : (
@@ -48,7 +48,7 @@ export function ForgotPasswordForm() {
         </form>
       )}
 
-      <p className="mt-6 text-center text-sm text-zinc-400">
+      <p className="mt-6 text-center text-sm text-subtle">
         Remembered it?{" "}
         <Link href="/login" className="font-medium text-brand-300 hover:text-brand-200">Log in</Link>
       </p>

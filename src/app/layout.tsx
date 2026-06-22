@@ -45,7 +45,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html lang="en" className={`dark ${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Apply the saved theme before paint to avoid a flash. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme')||'dark';var e=document.documentElement;e.classList.remove('light','dark');e.classList.add(t);}catch(_){}})();`,
+          }}
+        />
+      </head>
       <body className="min-h-screen flex flex-col">
         <a href="#main" className="skip-link">Skip to content</a>
         <Providers>

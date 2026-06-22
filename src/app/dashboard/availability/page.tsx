@@ -10,7 +10,7 @@ export default async function AvailabilityPage() {
   const profile = user.profile!;
   if (!isArtist(profile.type)) {
     return (
-      <div className="card p-8 text-center text-zinc-300">
+      <div className="card p-8 text-center text-muted">
         Availability calendars are for musicians and bands.
       </div>
     );

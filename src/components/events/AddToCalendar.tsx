@@ -36,7 +36,7 @@ export function AddToCalendar({
 
   return (
     <div className="card p-5">
-      <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-zinc-400">
+      <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-subtle">
         <CalendarPlus className="h-4 w-4" aria-hidden="true" /> Add to calendar
       </p>
       <div className="mt-3 flex flex-col gap-2">

@@ -22,7 +22,7 @@ export function PricingTable({
   return (
     <div>
       {/* Interval toggle */}
-      <div className="mx-auto mb-10 flex w-fit items-center gap-1 rounded-full border border-white/10 bg-black/30 p-1">
+      <div className="mx-auto mb-10 flex w-fit items-center gap-1 rounded-full border border-line bg-input p-1">
         <ToggleBtn active={interval === "monthly"} onClick={() => setInterval("monthly")}>
           Monthly
         </ToggleBtn>
@@ -35,11 +35,11 @@ export function PricingTable({
         {/* Free */}
         <div className="card flex flex-col p-8">
           <h3 className="text-xl font-bold">{PLANS.FREE.name}</h3>
-          <p className="mt-1 text-sm text-zinc-400">{PLANS.FREE.tagline}</p>
-          <div className="mt-5 font-display text-4xl font-bold text-white">
-            $0<span className="text-base font-normal text-zinc-400">/mo</span>
+          <p className="mt-1 text-sm text-subtle">{PLANS.FREE.tagline}</p>
+          <div className="mt-5 font-display text-4xl font-bold text-fg">
+            $0<span className="text-base font-normal text-subtle">/mo</span>
           </div>
-          <ul className="mt-6 flex-1 space-y-3 text-sm text-zinc-300">
+          <ul className="mt-6 flex-1 space-y-3 text-sm text-muted">
             {PLANS.FREE.features.map((f) => (
               <li key={f} className="flex items-start gap-2">
                 <span className="mt-0.5 text-brand-400">✓</span> {f}
@@ -60,15 +60,15 @@ export function PricingTable({
           <div className="aurora absolute inset-0 -z-10 opacity-60" />
           <span className="badge-brand w-fit">Most popular</span>
           <h3 className="mt-3 text-xl font-bold">{pro.name}</h3>
-          <p className="mt-1 text-sm text-zinc-400">{pro.tagline}</p>
-          <div className="mt-5 font-display text-4xl font-bold text-white">
+          <p className="mt-1 text-sm text-subtle">{pro.tagline}</p>
+          <div className="mt-5 font-display text-4xl font-bold text-fg">
             ${proPrice}
-            <span className="text-base font-normal text-zinc-400">/mo</span>
+            <span className="text-base font-normal text-subtle">/mo</span>
           </div>
           {interval === "yearly" && (
             <p className="mt-1 text-xs text-emerald-300">Billed ${pro.priceYearly}/year</p>
           )}
-          <ul className="mt-6 flex-1 space-y-3 text-sm text-zinc-200">
+          <ul className="mt-6 flex-1 space-y-3 text-sm text-fg">
             {pro.features.map((f) => (
               <li key={f} className="flex items-start gap-2">
                 <span className="mt-0.5 text-brand-400">✓</span> {f}
@@ -96,7 +96,7 @@ export function PricingTable({
         </div>
       </div>
 
-      <p className="mt-8 text-center text-sm text-zinc-400">
+      <p className="mt-8 text-center text-sm text-subtle">
         Prices in USD. Cancel anytime. {billingEnabled ? "Secure payments by Stripe." : ""}
       </p>
     </div>
@@ -117,7 +117,7 @@ function ToggleBtn({
       onClick={onClick}
       className={
         "rounded-full px-5 py-2 text-sm font-medium transition " +
-        (active ? "bg-brand-500 text-white" : "text-zinc-300 hover:text-white")
+        (active ? "bg-brand-500 text-white" : "text-muted hover:text-fg")
       }
     >
       {children}

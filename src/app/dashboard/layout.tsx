@@ -9,7 +9,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const user = await requireUser();
   const profile = user.profile;
   if (!profile) {
-    return <div className="container-page py-10 text-zinc-400">No profile found.</div>;
+    return <div className="container-page py-10 text-subtle">No profile found.</div>;
   }
   const type = profile.type;
   const meta = profileTypeMeta(type);
@@ -36,7 +36,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     <div className="container-page py-8">
       <div className="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         <div>
-          <p className="text-sm text-zinc-400">{meta.emoji} {meta.label} dashboard</p>
+          <p className="text-sm text-subtle">{meta.emoji} {meta.label} dashboard</p>
           <h1 className="text-2xl font-bold">{profile.displayName}</h1>
         </div>
         <div className="flex items-center gap-2">

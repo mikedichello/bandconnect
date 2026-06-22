@@ -7,12 +7,36 @@
   --font-display: "Space Grotesk", system-ui, sans-serif;
 }
 
+/* Theme tokens (R G B triplets, consumed via rgb(var(--x) / alpha)). */
+:root,
+.dark {
+  --c-app: 12 10 20; /* #0c0a14 */
+  --c-surface: 23 19 39; /* #171327 */
+  --c-elevated: 36 31 56; /* subtle raised surface */
+  --c-line: 46 42 68; /* borders */
+  --c-fg: 255 255 255; /* primary text */
+  --c-muted: 212 212 216; /* secondary text (zinc-300) */
+  --c-subtle: 161 161 170; /* tertiary text (zinc-400) */
+  --aurora-opacity: 1;
+}
+
+.light {
+  --c-app: 248 248 251; /* near-white page */
+  --c-surface: 255 255 255; /* white cards */
+  --c-elevated: 243 243 247; /* subtle gray surface */
+  --c-line: 226 228 234; /* gray-200 borders */
+  --c-fg: 17 15 33; /* near-ink primary text */
+  --c-muted: 71 71 92; /* slate secondary */
+  --c-subtle: 113 113 130; /* slate tertiary */
+  --aurora-opacity: 0.5;
+}
+
 @layer base {
   body {
-    @apply bg-ink text-zinc-200 antialiased;
+    @apply bg-app text-muted antialiased;
   }
   h1, h2, h3, h4 {
-    @apply font-display text-white;
+    @apply font-display text-fg;
   }
   a {
     @apply transition-colors;
@@ -34,39 +58,40 @@
     @apply btn bg-accent text-white hover:bg-accent-soft;
   }
   .btn-ghost {
-    @apply btn bg-white/5 text-zinc-100 hover:bg-white/10 border border-white/10;
+    @apply btn bg-elevated text-fg hover:brightness-110 border border-line;
   }
   .btn-outline {
-    @apply btn border border-brand-400/40 text-brand-200 hover:bg-brand-500/10;
+    @apply btn border border-brand-400/40 text-brand-600 hover:bg-brand-500/10 dark:text-brand-200;
   }
 
   .card {
-    @apply rounded-2xl border border-white/10 bg-ink-soft/70 backdrop-blur;
+    @apply rounded-2xl border border-line bg-surface;
   }
 
   .input {
-    @apply w-full rounded-xl border border-white/10 bg-black/30 px-4 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-400 focus:border-brand-400/60 focus:outline-none focus:ring-2 focus:ring-brand-500/30;
+    @apply w-full rounded-xl border border-line bg-app px-4 py-2.5 text-sm text-fg placeholder:text-subtle focus:border-brand-400/60 focus:outline-none focus:ring-2 focus:ring-brand-500/30;
   }
   .label {
-    @apply mb-1.5 block text-sm font-medium text-zinc-300;
+    @apply mb-1.5 block text-sm font-medium text-muted;
   }
 
   .badge {
-    @apply inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-zinc-300;
+    @apply inline-flex items-center gap-1 rounded-full border border-line bg-elevated px-2.5 py-1 text-xs font-medium text-muted;
   }
   .badge-brand {
-    @apply badge border-brand-400/30 bg-brand-500/15 text-brand-200;
+    @apply badge border-brand-400/30 bg-brand-500/15 text-brand-700 dark:text-brand-200;
   }
   .badge-accent {
-    @apply badge border-accent/30 bg-accent/15 text-accent-soft;
+    @apply badge border-accent/30 bg-accent/15 text-accent dark:text-accent-soft;
   }
   .badge-green {
-    @apply badge border-emerald-400/30 bg-emerald-500/15 text-emerald-300;
+    @apply badge border-emerald-400/30 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300;
   }
 }
 
 /* Decorative gradient used on hero / section backgrounds */
 .aurora {
+  opacity: var(--aurora-opacity, 1);
   background:
     radial-gradient(40% 60% at 20% 10%, rgba(124, 77, 255, 0.25), transparent 60%),
     radial-gradient(40% 50% at 85% 15%, rgba(255, 93, 162, 0.22), transparent 60%),
@@ -78,7 +103,7 @@
   width: 8px;
 }
 .thin-scroll::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgb(var(--c-line));
   border-radius: 999px;
 }
 

@@ -55,7 +55,7 @@ export default async function DashboardHome() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-lg font-semibold">Your public profile</h2>
-            <code className="mt-2 inline-block rounded-lg bg-black/40 px-3 py-1.5 text-xs text-brand-200">/p/{profile.slug}</code>
+            <code className="mt-2 inline-block rounded-lg bg-input px-3 py-1.5 text-xs text-brand-200">/p/{profile.slug}</code>
           </div>
           <div className="flex gap-2">
             <Link href="/dashboard/profile" className="btn-ghost">Edit</Link>
@@ -84,19 +84,19 @@ export default async function DashboardHome() {
           <Link href="/dashboard/calendar" className="text-sm text-brand-300 hover:text-brand-200">View calendar →</Link>
         </div>
         {(type === "FAN" ? rsvped.length : upcomingHosted.length) === 0 ? (
-          <p className="mt-4 text-sm text-zinc-400">
+          <p className="mt-4 text-sm text-subtle">
             Nothing upcoming yet.{" "}
             <Link href={type === "FAN" ? "/" : "/dashboard/events"} className="text-brand-300 hover:text-brand-200">
               {type === "FAN" ? "Find a show →" : "Post an event →"}
             </Link>
           </p>
         ) : (
-          <ul className="mt-4 divide-y divide-white/5">
+          <ul className="mt-4 divide-y divide-line">
             {(type === "FAN" ? rsvped.map((r) => r.event) : upcomingHosted).map((e) => (
               <li key={e.id} className="flex items-center justify-between py-3">
                 <div>
-                  <Link href={`/event/${e.id}`} className="font-medium text-white hover:text-brand-200">{e.title}</Link>
-                  <p className="text-sm text-zinc-400">{formatDate(e.startAt)} · {formatTime(e.startAt)}{e.city ? ` · ${e.city}` : ""}</p>
+                  <Link href={`/event/${e.id}`} className="font-medium text-fg hover:text-brand-200">{e.title}</Link>
+                  <p className="text-sm text-subtle">{formatDate(e.startAt)} · {formatTime(e.startAt)}{e.city ? ` · ${e.city}` : ""}</p>
                 </div>
               </li>
             ))}
@@ -110,7 +110,7 @@ export default async function DashboardHome() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-lg font-semibold">Go Pro</h2>
-              <p className="mt-1 max-w-md text-sm text-zinc-300">Unlimited events, featured placement, custom branding & more for ${planFor("PRO").priceMonthly}/mo.</p>
+              <p className="mt-1 max-w-md text-sm text-muted">Unlimited events, featured placement, custom branding & more for ${planFor("PRO").priceMonthly}/mo.</p>
             </div>
             <Link href="/pricing" className="btn-primary whitespace-nowrap">See Pro</Link>
           </div>
@@ -122,20 +122,20 @@ export default async function DashboardHome() {
 
 function Stat({ label, value, href, icon }: { label: string; value: number; href: string; icon: string }) {
   return (
-    <Link href={href} className="card p-5 transition hover:border-white/20">
+    <Link href={href} className="card p-5 transition hover:border-line">
       <div className="text-xl">{icon}</div>
-      <div className="mt-3 font-display text-3xl font-bold text-white">{value}</div>
-      <div className="mt-1 text-sm text-zinc-400">{label}</div>
+      <div className="mt-3 font-display text-3xl font-bold text-fg">{value}</div>
+      <div className="mt-1 text-sm text-subtle">{label}</div>
     </Link>
   );
 }
 
 function Action({ href, icon, title, body }: { href: string; icon: string; title: string; body: string }) {
   return (
-    <Link href={href} className="card p-5 transition hover:border-white/20">
+    <Link href={href} className="card p-5 transition hover:border-line">
       <div className="text-xl">{icon}</div>
-      <h3 className="mt-2 font-semibold text-white">{title}</h3>
-      <p className="mt-1 text-sm text-zinc-400">{body}</p>
+      <h3 className="mt-2 font-semibold text-fg">{title}</h3>
+      <p className="mt-1 text-sm text-subtle">{body}</p>
     </Link>
   );
 }

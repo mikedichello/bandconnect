@@ -65,7 +65,7 @@ export default async function ArtistsPage({
     <div className="container-page py-10">
       <header className="mb-6">
         <h1 className="text-3xl font-bold">Musicians & bands</h1>
-        <p className="mt-2 text-zinc-400">Find acts for your room, bandmates to play with, or a band to join.</p>
+        <p className="mt-2 text-subtle">Find acts for your room, bandmates to play with, or a band to join.</p>
       </header>
 
       <form method="get" className="card mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-6 lg:items-end">
@@ -96,7 +96,7 @@ export default async function ArtistsPage({
           <button className="btn-primary w-full">Search</button>
         </div>
         <div className="lg:col-span-6 flex flex-wrap items-center gap-4 pt-1">
-          <label className="flex items-center gap-2 text-sm text-zinc-300">
+          <label className="flex items-center gap-2 text-sm text-muted">
             <input type="checkbox" name="available" value="1" defaultChecked={available} className="h-4 w-4 accent-brand-500" />
             Available for gigs
           </label>
@@ -114,7 +114,7 @@ export default async function ArtistsPage({
         <div className="card p-12 text-center">
           <div className="text-3xl">🎸</div>
           <h2 className="mt-3 text-lg font-semibold">No artists match</h2>
-          <p className="mt-1 text-sm text-zinc-400">Try clearing a filter or widening your search.</p>
+          <p className="mt-1 text-sm text-subtle">Try clearing a filter or widening your search.</p>
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

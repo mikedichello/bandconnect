@@ -25,7 +25,7 @@ export function ProfileCard({ data }: { data: ProfileCardData }) {
     data.type === "VENUE" ? "Venue" : data.type === "MUSICIAN" ? "Musician" : data.type === "BAND" ? "Band" : "Fan";
 
   return (
-    <Link href={`/p/${data.slug}`} className="card group relative overflow-hidden p-5 transition hover:border-white/25">
+    <Link href={`/p/${data.slug}`} className="card group relative overflow-hidden p-5 transition hover:border-line">
       {data.featured && <span className="absolute right-3 top-3 badge-brand text-[10px]">★ Featured</span>}
       <div className="flex items-center gap-4">
         <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-2xl bg-brand-500/15">
@@ -37,14 +37,14 @@ export function ProfileCard({ data }: { data: ProfileCardData }) {
           />
         </div>
         <div className="min-w-0">
-          <h3 className="truncate text-lg font-semibold text-white group-hover:text-brand-200">{data.displayName}</h3>
-          <p className="truncate text-sm text-zinc-400">
+          <h3 className="truncate text-lg font-semibold text-fg group-hover:text-brand-200">{data.displayName}</h3>
+          <p className="truncate text-sm text-subtle">
             {typeLabel}{data.city ? ` · ${data.city}` : ""}
           </p>
         </div>
       </div>
 
-      {data.tagline && <p className="mt-3 line-clamp-2 text-sm text-zinc-300">{data.tagline}</p>}
+      {data.tagline && <p className="mt-3 line-clamp-2 text-sm text-muted">{data.tagline}</p>}
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
         {data.availableForGigs && <span className="badge-green text-[11px]">Available for gigs</span>}

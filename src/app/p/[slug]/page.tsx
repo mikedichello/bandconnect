@@ -96,7 +96,7 @@ export default async function ProfilePage({ params }: { params: { slug: string }
         <div className="container-page">
           <div className="relative -mt-14 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex items-end gap-4">
-              <div className="grid h-24 w-24 flex-shrink-0 place-items-center overflow-hidden rounded-3xl border-4 border-ink bg-ink-soft" style={{ boxShadow: `0 0 40px -10px ${accent}` }}>
+              <div className="grid h-24 w-24 flex-shrink-0 place-items-center overflow-hidden rounded-3xl border-4 border-app bg-surface" style={{ boxShadow: `0 0 40px -10px ${accent}` }}>
                 <ImageWithFallback
                   src={profile.avatarUrl}
                   alt={profile.displayName}
@@ -106,9 +106,9 @@ export default async function ProfilePage({ params }: { params: { slug: string }
               </div>
               <div className="pb-1">
                 <span className="badge text-[11px]">{meta.emoji} {meta.label}</span>
-                <h1 className="mt-1 font-display text-3xl font-bold text-white">{profile.displayName}</h1>
-                {profile.tagline && <p className="text-zinc-300">{profile.tagline}</p>}
-                {profile.city && <p className="text-sm text-zinc-400">📍 {profile.city}</p>}
+                <h1 className="mt-1 font-display text-3xl font-bold text-fg">{profile.displayName}</h1>
+                {profile.tagline && <p className="text-muted">{profile.tagline}</p>}
+                {profile.city && <p className="text-sm text-subtle">📍 {profile.city}</p>}
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-2 pb-1">
@@ -143,7 +143,7 @@ export default async function ProfilePage({ params }: { params: { slug: string }
           {profile.bio && (
             <section>
               <h2 className="mb-2 text-xl font-bold">{profile.type === "VENUE" ? "About the venue" : "About"}</h2>
-              <p className="whitespace-pre-wrap text-zinc-300">{profile.bio}</p>
+              <p className="whitespace-pre-wrap text-muted">{profile.bio}</p>
             </section>
           )}
 
@@ -171,7 +171,7 @@ export default async function ProfilePage({ params }: { params: { slug: string }
               <h2 className="mb-3 text-xl font-bold">Following</h2>
               <div className="flex flex-wrap gap-2">
                 {fanFollows.map((f) => (
-                  <Link key={f.id} href={`/p/${f.following.slug}`} className="badge hover:border-white/30 hover:text-white">
+                  <Link key={f.id} href={`/p/${f.following.slug}`} className="badge hover:border-line hover:text-fg">
                     {f.following.displayName}
                   </Link>
                 ))}
@@ -186,13 +186,13 @@ export default async function ProfilePage({ params }: { params: { slug: string }
             <div className="card p-5">
               {genres.length > 0 && (
                 <>
-                  <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">{profile.type === "VENUE" ? "Genres booked" : "Genres"}</h3>
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-subtle">{profile.type === "VENUE" ? "Genres booked" : "Genres"}</h3>
                   <div className="mt-2 flex flex-wrap gap-2">{genres.map((g) => <span key={g} className="badge">{g}</span>)}</div>
                 </>
               )}
               {instruments.length > 0 && (
                 <>
-                  <h3 className="mt-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">Instruments</h3>
+                  <h3 className="mt-4 text-sm font-semibold uppercase tracking-wide text-subtle">Instruments</h3>
                   <div className="mt-2 flex flex-wrap gap-2">{instruments.map((g) => <span key={g} className="badge">{g}</span>)}</div>
                 </>
               )}
@@ -202,13 +202,13 @@ export default async function ProfilePage({ params }: { params: { slug: string }
           {/* Artist availability */}
           {isArtist(profile.type) && (
             <div className="card p-5">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">Availability</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-subtle">Availability</h3>
               <p className="mt-2 text-sm">
-                {profile.availableForGigs ? <span className="text-emerald-300">✓ Available for gigs</span> : <span className="text-zinc-400">Not currently booking</span>}
+                {profile.availableForGigs ? <span className="text-emerald-300">✓ Available for gigs</span> : <span className="text-subtle">Not currently booking</span>}
               </p>
-              {rate && <p className="mt-1 text-sm text-zinc-300">Rate: {rate}</p>}
+              {rate && <p className="mt-1 text-sm text-muted">Rate: {rate}</p>}
               {profile.type === "MUSICIAN" && (
-                <ul className="mt-3 space-y-1 text-sm text-zinc-300">
+                <ul className="mt-3 space-y-1 text-sm text-muted">
                   {MUSICIAN_STATUS.filter((s) => (profile as Record<string, unknown>)[s.key]).map((s) => (
                     <li key={s.key}>• {s.label}</li>
                   ))}
@@ -219,7 +219,7 @@ export default async function ProfilePage({ params }: { params: { slug: string }
               )}
               {profile.availability.length > 0 && (
                 <>
-                  <h4 className="mt-4 text-xs font-semibold uppercase tracking-wide text-zinc-400">Open dates</h4>
+                  <h4 className="mt-4 text-xs font-semibold uppercase tracking-wide text-subtle">Open dates</h4>
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {profile.availability.slice(0, 10).map((a) => (
                       <span key={a.id} className="badge text-[11px]">{formatDate(a.date).replace(/,.*/, "")}</span>
@@ -232,7 +232,7 @@ export default async function ProfilePage({ params }: { params: { slug: string }
 
           {/* Details */}
           <div className="card p-5">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">Details</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-subtle">Details</h3>
             <dl className="mt-3 space-y-2 text-sm">
               {profile.city && <Row label="Location" value={profile.city} />}
               {profile.address && <Row label="Address" value={profile.address} />}
@@ -256,14 +256,14 @@ export default async function ProfilePage({ params }: { params: { slug: string }
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-4">
-      <dt className="text-zinc-400">{label}</dt>
-      <dd className="text-right text-zinc-200">{value}</dd>
+      <dt className="text-subtle">{label}</dt>
+      <dd className="text-right text-fg">{value}</dd>
     </div>
   );
 }
 
 function SocialLink({ href, label }: { href: string; label: string }) {
   return (
-    <a href={href} target="_blank" rel="noreferrer" className="badge hover:border-white/30 hover:text-white">{label}</a>
+    <a href={href} target="_blank" rel="noreferrer" className="badge hover:border-line hover:text-fg">{label}</a>
   );
 }

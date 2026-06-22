@@ -11,8 +11,8 @@ export default async function EventsPage() {
   if (profile.type === "FAN") {
     return (
       <div className="card p-8 text-center">
-        <p className="text-zinc-300">Fan accounts don&apos;t host events.</p>
-        <p className="mt-1 text-sm text-zinc-400">Switch to a venue, musician, or band profile to post shows.</p>
+        <p className="text-muted">Fan accounts don&apos;t host events.</p>
+        <p className="mt-1 text-sm text-subtle">Switch to a venue, musician, or band profile to post shows.</p>
       </div>
     );
   }

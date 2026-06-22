@@ -20,7 +20,7 @@ export default async function BillingPage({
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-bold">Billing</h1>
-        <p className="text-sm text-zinc-400">Manage your BandConnect subscription.</p>
+        <p className="text-sm text-subtle">Manage your BandConnect subscription.</p>
       </div>
 
       {searchParams.status === "success" && (
@@ -41,14 +41,14 @@ export default async function BillingPage({
       <section className="card p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm text-zinc-400">Current plan</p>
+            <p className="text-sm text-subtle">Current plan</p>
             <div className="mt-1 flex items-center gap-3">
               <h2 className="text-2xl font-bold">{plan.name}</h2>
               {pro ? <span className="badge-brand">★ Pro</span> : <span className="badge">Free</span>}
             </div>
-            <p className="mt-1 text-sm text-zinc-400">{plan.tagline}</p>
+            <p className="mt-1 text-sm text-subtle">{plan.tagline}</p>
             {pro && user.planRenewsAt && (
-              <p className="mt-2 text-xs text-zinc-400">
+              <p className="mt-2 text-xs text-subtle">
                 {user.planStatus === "canceled"
                   ? `Access ends ${formatDate(user.planRenewsAt)}`
                   : `Renews ${formatDate(user.planRenewsAt)}`}
@@ -81,11 +81,11 @@ export default async function BillingPage({
                 <h3 className="text-lg font-semibold">{p.name}</h3>
                 {isCurrent && <span className="badge-green">Current</span>}
               </div>
-              <div className="mt-2 font-display text-3xl font-bold text-white">
+              <div className="mt-2 font-display text-3xl font-bold text-fg">
                 ${p.priceMonthly}
-                <span className="text-sm font-normal text-zinc-400">/mo</span>
+                <span className="text-sm font-normal text-subtle">/mo</span>
               </div>
-              <ul className="mt-4 space-y-2 text-sm text-zinc-300">
+              <ul className="mt-4 space-y-2 text-sm text-muted">
                 {p.features.map((f) => (
                   <li key={f} className="flex items-start gap-2">
                     <span className="mt-0.5 text-brand-400">✓</span>
@@ -103,7 +103,7 @@ export default async function BillingPage({
         })}
       </section>
 
-      <p className="text-center text-xs text-zinc-400">
+      <p className="text-center text-xs text-subtle">
         Questions about billing? See <Link href="/pricing" className="text-brand-300 hover:text-brand-200">pricing</Link>.
       </p>
     </div>

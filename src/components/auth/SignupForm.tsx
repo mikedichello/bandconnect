@@ -57,7 +57,7 @@ export function SignupForm() {
     <div className="w-full max-w-xl">
       <div className="mb-6 text-center">
         <h1 className="text-3xl font-bold">Join BandConnect</h1>
-        <p className="mt-2 text-sm text-zinc-400">Choose how you want to show up in the Connecticut scene.</p>
+        <p className="mt-2 text-sm text-subtle">Choose how you want to show up in the Connecticut scene.</p>
       </div>
 
       {/* Role picker */}
@@ -70,15 +70,15 @@ export function SignupForm() {
             aria-pressed={role === t.id}
             className={cn(
               "rounded-2xl border p-3 text-center transition",
-              role === t.id ? "border-brand-400/60 bg-brand-500/15 shadow-glow" : "border-white/10 bg-black/20 hover:border-white/20",
+              role === t.id ? "border-brand-400/60 bg-brand-500/15 shadow-glow" : "border-line bg-input hover:border-line",
             )}
           >
             <div className="text-2xl" aria-hidden="true">{t.emoji}</div>
-            <div className="mt-1 text-sm font-semibold text-white">{t.label}</div>
+            <div className="mt-1 text-sm font-semibold text-fg">{t.label}</div>
           </button>
         ))}
       </div>
-      <p className="mb-5 rounded-xl border border-white/10 bg-black/20 px-4 py-2.5 text-center text-sm text-zinc-300">
+      <p className="mb-5 rounded-xl border border-line bg-input px-4 py-2.5 text-center text-sm text-muted">
         {meta.blurb}
       </p>
 
@@ -93,11 +93,11 @@ export function SignupForm() {
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="su-city" className="label">CT town <span className="text-zinc-400">(optional)</span></label>
+            <label htmlFor="su-city" className="label">CT town <span className="text-subtle">(optional)</span></label>
             <input id="su-city" className="input" value={city} onChange={(e) => setCity(e.target.value)} placeholder="New Haven" />
           </div>
           <div>
-            <label htmlFor="su-zip" className="label">ZIP <span className="text-zinc-400">(optional)</span></label>
+            <label htmlFor="su-zip" className="label">ZIP <span className="text-subtle">(optional)</span></label>
             <input id="su-zip" className="input" value={zip} onChange={(e) => setZip(e.target.value)} placeholder="06511" />
           </div>
         </div>
@@ -115,7 +115,7 @@ export function SignupForm() {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-zinc-400">
+      <p className="mt-6 text-center text-sm text-subtle">
         Already have an account?{" "}
         <Link href="/login" className="font-medium text-brand-300 hover:text-brand-200">Log in</Link>
       </p>

@@ -138,13 +138,13 @@ export function ProfileEditor({ isPro, initial }: { isPro: boolean; initial: Pro
         <Section title="Gigs & availability" subtitle="Let venues and bands know what you're up for.">
           <label className="flex items-center gap-3">
             <input type="checkbox" className="h-5 w-5 accent-brand-500" checked={v.availableForGigs ?? false} onChange={(e) => set("availableForGigs", e.target.checked)} />
-            <span className="text-sm text-zinc-200">Available for gigs</span>
+            <span className="text-sm text-fg">Available for gigs</span>
           </label>
           <div className="grid gap-4 sm:grid-cols-3">
             <Field label="Rate min ($)"><input type="number" min={0} className="input" value={v.rateMin ?? ""} onChange={(e) => set("rateMin", e.target.value ? Number(e.target.value) : null)} /></Field>
             <Field label="Rate max ($)"><input type="number" min={0} className="input" value={v.rateMax ?? ""} onChange={(e) => set("rateMax", e.target.value ? Number(e.target.value) : null)} /></Field>
             <Field label="blank">
-              <label className="flex h-[42px] items-center gap-2 text-sm text-zinc-300">
+              <label className="flex h-[42px] items-center gap-2 text-sm text-muted">
                 <input type="checkbox" className="h-4 w-4 accent-brand-500" checked={v.rateHidden ?? false} onChange={(e) => set("rateHidden", e.target.checked)} />
                 Hide my rate
               </label>
@@ -156,7 +156,7 @@ export function ProfileEditor({ isPro, initial }: { isPro: boolean; initial: Pro
               {MUSICIAN_STATUS.map((s) => (
                 <label key={s.key} className="flex items-center gap-3">
                   <input type="checkbox" className="h-4 w-4 accent-brand-500" checked={Boolean(v[s.key as keyof ProfileValues])} onChange={(e) => set(s.key as keyof ProfileValues, e.target.checked as never)} />
-                  <span className="text-sm text-zinc-200">{s.label}</span>
+                  <span className="text-sm text-fg">{s.label}</span>
                 </label>
               ))}
             </div>
@@ -164,7 +164,7 @@ export function ProfileEditor({ isPro, initial }: { isPro: boolean; initial: Pro
           {type === "BAND" && (
             <label className="flex items-center gap-3">
               <input type="checkbox" className="h-5 w-5 accent-brand-500" checked={v.needsMusicians ?? false} onChange={(e) => set("needsMusicians", e.target.checked)} />
-              <span className="text-sm text-zinc-200">We have an open spot — looking for musicians</span>
+              <span className="text-sm text-fg">We have an open spot — looking for musicians</span>
             </label>
           )}
         </Section>
@@ -186,21 +186,21 @@ export function ProfileEditor({ isPro, initial }: { isPro: boolean; initial: Pro
 
       <Section title="Branding">
         <div className="flex items-center gap-4">
-          <input type="color" disabled={!isPro} value={v.themeColor ?? "#7c4dff"} onChange={(e) => set("themeColor", e.target.value)} className="h-11 w-16 cursor-pointer rounded-lg border border-white/10 bg-transparent disabled:opacity-50" />
+          <input type="color" disabled={!isPro} value={v.themeColor ?? "#7c4dff"} onChange={(e) => set("themeColor", e.target.value)} className="h-11 w-16 cursor-pointer rounded-lg border border-line bg-transparent disabled:opacity-50" />
           <div className="text-sm">
-            {isPro ? <span className="text-zinc-300">Theme color: {v.themeColor}</span> : (
-              <span className="text-zinc-400">Custom theme is a Pro feature. <Link href="/pricing" className="text-brand-300 hover:text-brand-200">Upgrade →</Link></span>
+            {isPro ? <span className="text-muted">Theme color: {v.themeColor}</span> : (
+              <span className="text-subtle">Custom theme is a Pro feature. <Link href="/pricing" className="text-brand-300 hover:text-brand-200">Upgrade →</Link></span>
             )}
           </div>
         </div>
       </Section>
 
-      <div className="sticky bottom-4 z-10 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-ink-soft/90 px-4 py-3 backdrop-blur">
+      <div className="sticky bottom-4 z-10 flex items-center justify-between gap-3 rounded-2xl border border-line bg-surface/90 px-4 py-3 backdrop-blur">
         <div className="text-sm">
           {status === "saved" && <span className="text-emerald-300">✓ Saved</span>}
           {status === "error" && <span className="text-red-300">{error}</span>}
-          {status === "saving" && <span className="text-zinc-400">Saving…</span>}
-          {status === "idle" && <span className="text-zinc-400">Make it yours.</span>}
+          {status === "saving" && <span className="text-subtle">Saving…</span>}
+          {status === "idle" && <span className="text-subtle">Make it yours.</span>}
         </div>
         <button type="submit" disabled={status === "saving"} className="btn-primary">{status === "saving" ? "Saving…" : "Save changes"}</button>
       </div>
@@ -212,7 +212,7 @@ function Section({ title, subtitle, children }: { title: string; subtitle?: stri
   return (
     <section className="card p-6">
       <h2 className="text-lg font-semibold">{title}</h2>
-      {subtitle && <p className="mt-1 text-sm text-zinc-400">{subtitle}</p>}
+      {subtitle && <p className="mt-1 text-sm text-subtle">{subtitle}</p>}
       <div className="mt-5 space-y-4">{children}</div>
     </section>
   );
@@ -233,7 +233,7 @@ function TagGrid({ options, selected, onToggle }: { options: readonly string[]; 
       {options.map((o) => {
         const active = selected.includes(o);
         return (
-          <button type="button" key={o} onClick={() => onToggle(o)} className={"rounded-full border px-3 py-1.5 text-sm transition " + (active ? "border-brand-400/60 bg-brand-500/20 text-white" : "border-white/10 bg-black/20 text-zinc-300 hover:border-white/25")}>
+          <button type="button" key={o} onClick={() => onToggle(o)} className={"rounded-full border px-3 py-1.5 text-sm transition " + (active ? "border-brand-400/60 bg-brand-500/20 text-fg" : "border-line bg-input text-muted hover:border-line")}>
             {o}
           </button>
         );

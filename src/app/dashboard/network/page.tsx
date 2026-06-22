@@ -32,7 +32,7 @@ export default async function NetworkPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-xl font-bold">Your network</h1>
-        <p className="text-sm text-zinc-400">People and places you&apos;re connected to.</p>
+        <p className="text-sm text-subtle">People and places you&apos;re connected to.</p>
       </div>
 
       {isFan && pending.length > 0 && (
@@ -68,7 +68,7 @@ export default async function NetworkPage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-zinc-400">{title}</h2>
+      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-subtle">{title}</h2>
       {children}
     </section>
   );
@@ -78,11 +78,11 @@ function Grid({ people }: { people: { id: string; slug: string; displayName: str
   return (
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {people.map((p) => (
-        <Link key={p.id} href={`/p/${p.slug}`} className="card flex items-center gap-3 p-4 transition hover:border-white/20">
+        <Link key={p.id} href={`/p/${p.slug}`} className="card flex items-center gap-3 p-4 transition hover:border-line">
           <span className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-brand-500/20 text-sm font-bold text-brand-200">{initials(p.displayName)}</span>
           <div className="min-w-0">
-            <p className="truncate font-medium text-white">{p.displayName}</p>
-            <p className="text-xs text-zinc-400">{profileTypeMeta(p.type).label}</p>
+            <p className="truncate font-medium text-fg">{p.displayName}</p>
+            <p className="text-xs text-subtle">{profileTypeMeta(p.type).label}</p>
           </div>
         </Link>
       ))}
@@ -95,13 +95,13 @@ function PersonLink({ slug, name, sub }: { slug: string; name: string; sub: stri
     <Link href={`/p/${slug}`} className="flex items-center gap-3">
       <span className="grid h-10 w-10 place-items-center rounded-full bg-brand-500/20 text-sm font-bold text-brand-200">{initials(name)}</span>
       <div>
-        <p className="font-medium text-white">{name}</p>
-        <p className="text-xs text-zinc-400">{sub}</p>
+        <p className="font-medium text-fg">{name}</p>
+        <p className="text-xs text-subtle">{sub}</p>
       </div>
     </Link>
   );
 }
 
 function Empty({ text }: { text: string }) {
-  return <p className="card p-6 text-sm text-zinc-400">{text}</p>;
+  return <p className="card p-6 text-sm text-subtle">{text}</p>;
 }

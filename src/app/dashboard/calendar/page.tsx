@@ -41,7 +41,7 @@ export default async function CalendarPage({ searchParams }: { searchParams: { m
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-bold">{isFan ? "My show calendar" : "My event calendar"}</h1>
-        <p className="text-sm text-zinc-400">{isFan ? "Every show you've RSVP'd to." : "Your hosted events."}</p>
+        <p className="text-sm text-subtle">{isFan ? "Every show you've RSVP'd to." : "Your hosted events."}</p>
       </div>
 
       <CalendarGrid
@@ -53,19 +53,19 @@ export default async function CalendarPage({ searchParams }: { searchParams: { m
       <section className="card p-6">
         <h2 className="text-lg font-semibold">Upcoming</h2>
         {upcoming.length === 0 ? (
-          <p className="mt-3 text-sm text-zinc-400">
+          <p className="mt-3 text-sm text-subtle">
             Nothing upcoming.{" "}
             <Link href={isFan ? "/" : "/dashboard/events"} className="text-brand-300 hover:text-brand-200">
               {isFan ? "Find shows →" : "Post an event →"}
             </Link>
           </p>
         ) : (
-          <ul className="mt-3 divide-y divide-white/5">
+          <ul className="mt-3 divide-y divide-line">
             {upcoming.map((e) => (
               <li key={e.id} className="flex items-center justify-between py-3">
                 <div>
-                  <Link href={`/event/${e.id}`} className="font-medium text-white hover:text-brand-200">{e.title}</Link>
-                  <p className="text-sm text-zinc-400">{formatDate(e.startAt)} · {formatTime(e.startAt)}{e.city ? ` · ${e.city}` : ""}</p>
+                  <Link href={`/event/${e.id}`} className="font-medium text-fg hover:text-brand-200">{e.title}</Link>
+                  <p className="text-sm text-subtle">{formatDate(e.startAt)} · {formatTime(e.startAt)}{e.city ? ` · ${e.city}` : ""}</p>
                 </div>
               </li>
             ))}

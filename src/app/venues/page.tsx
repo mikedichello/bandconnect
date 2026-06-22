@@ -35,7 +35,7 @@ export default async function VenuesPage({
     <div className="container-page py-10">
       <header className="mb-6">
         <h1 className="text-3xl font-bold">Venues & hosts</h1>
-        <p className="mt-2 text-zinc-400">Connecticut rooms booking live music. Follow them and never miss a show.</p>
+        <p className="mt-2 text-subtle">Connecticut rooms booking live music. Follow them and never miss a show.</p>
       </header>
 
       <form method="get" className="card mb-6 flex flex-col gap-3 sm:flex-row sm:items-end">
@@ -69,7 +69,7 @@ function EmptyState() {
     <div className="card p-12 text-center">
       <div className="text-3xl">🏛️</div>
       <h2 className="mt-3 text-lg font-semibold">No venues yet</h2>
-      <p className="mt-1 text-sm text-zinc-400">Check back soon, or list your venue.</p>
+      <p className="mt-1 text-sm text-subtle">Check back soon, or list your venue.</p>
     </div>
   );
 }

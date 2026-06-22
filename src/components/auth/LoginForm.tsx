@@ -37,7 +37,7 @@ export function LoginForm() {
     <div className="w-full max-w-md">
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold">Welcome back</h1>
-        <p className="mt-2 text-sm text-zinc-400">Log in to your BandConnect account.</p>
+        <p className="mt-2 text-sm text-subtle">Log in to your BandConnect account.</p>
       </div>
 
       <form onSubmit={onSubmit} className="card space-y-4 p-6">
@@ -64,7 +64,7 @@ export function LoginForm() {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-zinc-400">
+      <p className="mt-6 text-center text-sm text-subtle">
         New to BandConnect?{" "}
         <Link href="/signup" className="font-medium text-brand-300 hover:text-brand-200">
           Create an account

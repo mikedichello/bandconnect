@@ -60,8 +60,8 @@ export function CalendarGrid({
 
   return (
     <div className="card overflow-hidden">
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 px-3 py-3 sm:px-4">
-        <h2 className="font-display text-base font-bold text-white sm:text-lg">{monthLabel}</h2>
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-3 py-3 sm:px-4">
+        <h2 className="font-display text-base font-bold text-fg sm:text-lg">{monthLabel}</h2>
         <div className="flex gap-2">
           <Link href={buildMonthHref(prev.getFullYear(), prev.getMonth())} className="btn-ghost px-3 py-1.5 text-xs" aria-label="Previous month">← Prev</Link>
           <Link href={buildMonthHref(today.getFullYear(), today.getMonth())} className="btn-ghost px-3 py-1.5 text-xs">Today</Link>
@@ -70,7 +70,7 @@ export function CalendarGrid({
       </div>
 
       <div role="grid" aria-label={`${monthLabel} events`}>
-        <div role="row" className="grid grid-cols-7 border-b border-white/10 bg-black/20 text-center text-xs font-semibold uppercase tracking-wide text-zinc-400">
+        <div role="row" className="grid grid-cols-7 border-b border-line bg-input text-center text-xs font-semibold uppercase tracking-wide text-subtle">
           {WEEKDAYS.map((d) => (
             <div key={d} role="columnheader" className="py-2">
               <abbr title={d} className="no-underline">{d}</abbr>
@@ -92,13 +92,13 @@ export function CalendarGrid({
                   aria-label={cellLabel}
                   key={i}
                   className={cn(
-                    "min-h-[64px] border-b border-r border-white/5 p-1 sm:min-h-[120px] sm:p-1.5",
+                    "min-h-[64px] border-b border-r border-line p-1 sm:min-h-[120px] sm:p-1.5",
                     d == null && "bg-black/10",
                   )}
                 >
                   {d != null && (
                     <>
-                      <div className={cn("mb-1 text-[11px] font-semibold sm:text-xs", isToday(d) ? "grid h-5 w-5 place-items-center rounded-full bg-brand-500 text-white" : "text-zinc-400")}>
+                      <div className={cn("mb-1 text-[11px] font-semibold sm:text-xs", isToday(d) ? "grid h-5 w-5 place-items-center rounded-full bg-brand-500 text-white" : "text-subtle")}>
                         {d}
                         {isToday(d) && <span className="sr-only"> (today)</span>}
                       </div>
@@ -116,7 +116,7 @@ export function CalendarGrid({
                           </Link>
                         ))}
                         {dayEvents.length > 3 && (
-                          <span className="block px-1 text-[10px] text-zinc-400">+{dayEvents.length - 3} more</span>
+                          <span className="block px-1 text-[10px] text-subtle">+{dayEvents.length - 3} more</span>
                         )}
                       </div>
                     </>

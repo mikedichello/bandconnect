@@ -187,16 +187,16 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-white/10">
+      <section className="relative overflow-hidden border-b border-line">
         <div className="aurora absolute inset-0 -z-10" />
         <div className="container-page py-10 sm:py-12">
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
             <div>
               <span className="badge-brand mb-3">🎶 Connecticut live music</span>
-              <h1 className="font-display text-3xl font-bold text-white sm:text-4xl">
+              <h1 className="font-display text-3xl font-bold text-fg sm:text-4xl">
                 {followingMode ? "From who you follow" : "What's happening tonight in CT"}
               </h1>
-              <p className="mt-2 max-w-xl text-zinc-300">
+              <p className="mt-2 max-w-xl text-muted">
                 {followingMode
                   ? "Upcoming shows from the venues and artists you follow."
                   : "Every live show in Connecticut in one calendar. Filter by town, distance, genre, and more."}
@@ -213,9 +213,9 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
       <div className="container-page space-y-5 py-6">
         {/* Feed tabs (signed-in) */}
         {loggedIn && (
-          <div className="inline-flex overflow-hidden rounded-full border border-white/15" role="tablist" aria-label="Feed">
-            <Link href={feedHref("all")} role="tab" aria-selected={!followingMode} className={cn("px-5 py-2 text-sm font-semibold", !followingMode ? "bg-brand-500 text-white" : "bg-white/5 text-zinc-300 hover:text-white")}>All events</Link>
-            <Link href={feedHref("following")} role="tab" aria-selected={followingMode} className={cn("border-l border-white/15 px-5 py-2 text-sm font-semibold", followingMode ? "bg-brand-500 text-white" : "bg-white/5 text-zinc-300 hover:text-white")}>Following</Link>
+          <div className="inline-flex overflow-hidden rounded-full border border-line" role="tablist" aria-label="Feed">
+            <Link href={feedHref("all")} role="tab" aria-selected={!followingMode} className={cn("px-5 py-2 text-sm font-semibold", !followingMode ? "bg-brand-500 text-white" : "bg-elevated text-muted hover:text-fg")}>All events</Link>
+            <Link href={feedHref("following")} role="tab" aria-selected={followingMode} className={cn("border-l border-line px-5 py-2 text-sm font-semibold", followingMode ? "bg-brand-500 text-white" : "bg-elevated text-muted hover:text-fg")}>Following</Link>
           </div>
         )}
 
@@ -232,8 +232,8 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
                 className={cn(
                   "rounded-full border px-4 py-1.5 text-sm font-medium transition",
                   when === o.key
-                    ? "border-brand-400/60 bg-brand-500/20 text-white"
-                    : "border-white/10 bg-black/20 text-zinc-300 hover:border-white/25",
+                    ? "border-brand-400/60 bg-brand-500/20 text-fg"
+                    : "border-line bg-input text-muted hover:border-line",
                 )}
               >
                 {o.label}
@@ -244,13 +244,13 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
 
         {/* View toggle + count */}
         <div className="flex items-center justify-between">
-          <p className="text-sm text-zinc-400">
+          <p className="text-sm text-subtle">
             {cards.length} {cards.length === 1 ? "event" : "events"}
             {followingMode ? " from who you follow" : geo ? ` within ${radius} mi of ${geo.label}` : " across Connecticut"}
           </p>
-          <div className="inline-flex overflow-hidden rounded-full border border-white/15">
-            <Link href={viewHref("list")} className={cn("px-4 py-1.5 text-sm font-semibold", view === "list" ? "bg-brand-500 text-white" : "bg-white/5 text-zinc-300 hover:bg-white/10")}>List</Link>
-            <Link href={viewHref("calendar")} className={cn("border-l border-white/15 px-4 py-1.5 text-sm font-semibold", view === "calendar" ? "bg-brand-500 text-white" : "bg-white/5 text-zinc-300 hover:bg-white/10")}>Calendar</Link>
+          <div className="inline-flex overflow-hidden rounded-full border border-line">
+            <Link href={viewHref("list")} className={cn("px-4 py-1.5 text-sm font-semibold", view === "list" ? "bg-brand-500 text-white" : "bg-elevated text-muted hover:bg-elevated")}>List</Link>
+            <Link href={viewHref("calendar")} className={cn("border-l border-line px-4 py-1.5 text-sm font-semibold", view === "calendar" ? "bg-brand-500 text-white" : "bg-elevated text-muted hover:bg-elevated")}>Calendar</Link>
           </div>
         </div>
 
@@ -265,7 +265,7 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
             <div className="card p-12 text-center">
               <div className="text-3xl">🫶</div>
               <h2 className="mt-3 text-lg font-semibold">Your feed is quiet</h2>
-              <p className="mx-auto mt-1 max-w-sm text-sm text-zinc-400">
+              <p className="mx-auto mt-1 max-w-sm text-sm text-subtle">
                 {followIds.length === 0
                   ? "You're not following anyone yet. Follow venues and artists to see their shows here."
                   : "No upcoming shows from who you follow right now — check back soon."}
@@ -279,7 +279,7 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
             <div className="card p-12 text-center">
               <div className="text-3xl">📅</div>
               <h2 className="mt-3 text-lg font-semibold">No events match your filters</h2>
-              <p className="mt-1 text-sm text-zinc-400">Try widening your radius or clearing filters.</p>
+              <p className="mt-1 text-sm text-subtle">Try widening your radius or clearing filters.</p>
             </div>
           )
         ) : (

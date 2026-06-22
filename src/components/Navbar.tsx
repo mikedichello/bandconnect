@@ -6,6 +6,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Bell, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const publicLinks = [
   { href: "/", label: "Calendar" },
@@ -43,13 +44,13 @@ export function Navbar() {
   }, [status, pathname]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-ink/80 backdrop-blur-lg">
+    <header className="sticky top-0 z-40 border-b border-line bg-app/80 backdrop-blur-lg">
       <nav className="container-page flex h-16 items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-2">
           <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-500 text-white shadow-glow">
             <BoltIcon />
           </span>
-          <span className="font-display text-lg font-bold text-white">
+          <span className="font-display text-lg font-bold text-fg">
             Band<span className="text-brand-400">Connect</span>
           </span>
         </Link>
@@ -63,8 +64,8 @@ export function Navbar() {
                 className={cn(
                   "rounded-full px-3 py-1.5 text-sm font-medium",
                   (link.href === "/" ? pathname === "/" : pathname.startsWith(link.href))
-                    ? "bg-white/10 text-white"
-                    : "text-zinc-300 hover:text-white",
+                    ? "bg-elevated text-fg"
+                    : "text-muted hover:text-fg",
                 )}
               >
                 {link.label}
@@ -74,6 +75,7 @@ export function Navbar() {
         )}
 
         <div className="hidden items-center gap-3 md:flex">
+          <ThemeToggle />
           {status === "authenticated" ? (
             <>
               {canPost && (
@@ -84,7 +86,7 @@ export function Navbar() {
               <Link
                 href="/dashboard/notifications"
                 aria-label={unread > 0 ? `Notifications, ${unread} unread` : "Notifications"}
-                className="relative grid h-9 w-9 place-items-center rounded-full bg-white/5 text-zinc-200 hover:bg-white/10"
+                className="relative grid h-9 w-9 place-items-center rounded-full bg-elevated text-fg hover:bg-elevated"
               >
                 <Bell className="h-4 w-4" aria-hidden="true" />
                 {unread > 0 && (
@@ -96,15 +98,15 @@ export function Navbar() {
               <Link href="/dashboard" className="btn-ghost">
                 Dashboard
               </Link>
-              <button onClick={() => signOut({ callbackUrl: "/" })} className="text-sm text-zinc-400 hover:text-white">
+              <button onClick={() => signOut({ callbackUrl: "/" })} className="text-sm text-subtle hover:text-fg">
                 Sign out
               </button>
             </>
           ) : status === "loading" ? (
-            <div className="h-9 w-20 animate-pulse rounded-full bg-white/5" />
+            <div className="h-9 w-20 animate-pulse rounded-full bg-elevated" />
           ) : (
             <>
-              <Link href="/login" className="text-sm font-medium text-zinc-300 hover:text-white">
+              <Link href="/login" className="text-sm font-medium text-muted hover:text-fg">
                 Log in
               </Link>
               <Link href="/signup" className="btn-primary">
@@ -114,58 +116,61 @@ export function Navbar() {
           )}
         </div>
 
-        <button
-          className="md:hidden text-zinc-300"
-          onClick={() => setOpen((v) => !v)}
-          aria-label="Toggle menu"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-        >
-          <MenuIcon />
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            className="text-muted"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Toggle menu"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+          >
+            <MenuIcon />
+          </button>
+        </div>
       </nav>
 
       {open && (
-        <div id="mobile-menu" className="border-t border-white/10 bg-ink md:hidden">
+        <div id="mobile-menu" className="border-t border-line bg-app md:hidden">
           <div className="container-page flex flex-col gap-1 py-3">
             {publicLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-2 text-sm text-zinc-200 hover:bg-white/5"
+                className="rounded-lg px-3 py-2 text-sm text-fg hover:bg-elevated"
               >
                 {link.label}
               </Link>
             ))}
-            <div className="my-2 h-px bg-white/10" />
+            <div className="my-2 h-px bg-elevated" />
             {status === "authenticated" ? (
               <>
                 {canPost && (
-                  <Link href="/dashboard/events" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-semibold text-brand-300 hover:bg-white/5">
+                  <Link href="/dashboard/events" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-semibold text-brand-300 hover:bg-elevated">
                     + Post event
                   </Link>
                 )}
-                <Link href="/dashboard/notifications" onClick={() => setOpen(false)} className="flex items-center justify-between rounded-lg px-3 py-2 text-sm text-zinc-200 hover:bg-white/5">
+                <Link href="/dashboard/notifications" onClick={() => setOpen(false)} className="flex items-center justify-between rounded-lg px-3 py-2 text-sm text-fg hover:bg-elevated">
                   Notifications
                   {unread > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1.5 text-xs font-semibold text-white">{unread > 9 ? "9+" : unread}</span>}
                 </Link>
-                <Link href="/dashboard" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm text-white hover:bg-white/5">
+                <Link href="/dashboard" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm text-fg hover:bg-elevated">
                   Dashboard
                 </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: "/" })}
-                  className="rounded-lg px-3 py-2 text-left text-sm text-zinc-400 hover:bg-white/5"
+                  className="rounded-lg px-3 py-2 text-left text-sm text-subtle hover:bg-elevated"
                 >
                   Sign out
                 </button>
               </>
             ) : (
               <>
-                <Link href="/login" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm text-zinc-200 hover:bg-white/5">
+                <Link href="/login" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm text-fg hover:bg-elevated">
                   Log in
                 </Link>
-                <Link href="/signup" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-semibold text-brand-300 hover:bg-white/5">
+                <Link href="/signup" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-semibold text-brand-300 hover:bg-elevated">
                   Get started
                 </Link>
               </>

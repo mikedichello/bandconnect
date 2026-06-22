@@ -49,7 +49,7 @@ export default async function EditProfilePage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-bold">Edit your profile</h1>
-        <p className="text-sm text-zinc-400">This is your public page at /p/{p.slug}.</p>
+        <p className="text-sm text-subtle">This is your public page at /p/{p.slug}.</p>
       </div>
       <ProfileEditor isPro={isPro(user.plan)} initial={initial} />
       {(p.type === "VENUE" || isArtist(p.type)) && <MediaManager initial={media} />}

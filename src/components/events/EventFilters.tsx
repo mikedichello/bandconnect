@@ -107,7 +107,7 @@ export function EventFilters({ resolvedLabel }: { resolvedLabel: string | null }
           {geoActive && (
             <p className="mt-1 flex items-center gap-1 text-xs text-emerald-300">
               <MapPin className="h-3 w-3" aria-hidden="true" /> Near your location
-              <button type="button" onClick={clearGeo} className="ml-1 text-zinc-400 underline hover:text-white">clear</button>
+              <button type="button" onClick={clearGeo} className="ml-1 text-subtle underline hover:text-fg">clear</button>
             </p>
           )}
           {!geoActive && loc.trim() && resolvedLabel && (
@@ -145,7 +145,7 @@ export function EventFilters({ resolvedLabel }: { resolvedLabel: string | null }
           🆓 No cover
         </Chip>
         {(params.toString().replace(/view=\w+&?/, "").length > 0) && (
-          <button onClick={reset} className="ml-auto text-xs text-zinc-400 hover:text-white">
+          <button onClick={reset} className="ml-auto text-xs text-subtle hover:text-fg">
             Clear filters
           </button>
         )}
@@ -161,7 +161,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
       aria-pressed={active}
       className={cn(
         "rounded-full border px-3 py-1.5 text-sm transition",
-        active ? "border-brand-400/60 bg-brand-500/20 text-white" : "border-white/10 bg-black/20 text-zinc-300 hover:border-white/25",
+        active ? "border-brand-400/60 bg-brand-500/20 text-fg" : "border-line bg-input text-muted hover:border-line",
       )}
     >
       {children}

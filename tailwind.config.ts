@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,6 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Semantic, theme-aware tokens (driven by CSS variables in globals.css).
+        app: "rgb(var(--c-app) / <alpha-value>)",
+        surface: "rgb(var(--c-surface) / <alpha-value>)",
+        elevated: "rgb(var(--c-elevated) / <alpha-value>)",
+        line: "rgb(var(--c-line) / <alpha-value>)",
+        fg: "rgb(var(--c-fg) / <alpha-value>)",
+        muted: "rgb(var(--c-muted) / <alpha-value>)",
+        subtle: "rgb(var(--c-subtle) / <alpha-value>)",
         ink: {
           DEFAULT: "#0c0a14",
           soft: "#171327",
