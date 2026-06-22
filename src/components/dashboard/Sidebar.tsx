@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Home, SlidersHorizontal, CalendarPlus, CalendarDays, CalendarCheck,
-  Users, Mail, Bell, CreditCard, ExternalLink, type LucideIcon,
+  Users, Mail, Bell, BellRing, CreditCard, ExternalLink, type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +19,7 @@ const ICONS: Record<string, LucideIcon> = {
   network: Users,
   messages: Mail,
   notifications: Bell,
+  alerts: BellRing,
   billing: CreditCard,
 };
 

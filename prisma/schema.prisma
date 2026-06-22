@@ -38,6 +38,7 @@ model User {
   receivedMessages Message[]            @relation("ReceivedMessages")
   notifications    Notification[]
   resetTokens      PasswordResetToken[]
+  savedSearches    SavedSearch[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -231,6 +232,22 @@ model PasswordResetToken {
   expiresAt DateTime
   usedAt    DateTime?
   createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+// --- Saved searches / alerts ------------------------------------------------
+
+model SavedSearch {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  label String
+  city  String? // CT town to match (case-insensitive contains)
+  genre String? // genre to match
+
+  createdAt DateTime @default(now())
 
   @@index([userId])
 }

@@ -5,6 +5,7 @@ import { resolveCtLocation, distanceMiles } from "@/lib/ct-geo";
 import { EventFilters } from "@/components/events/EventFilters";
 import { EventCard, type EventCardData } from "@/components/events/EventCard";
 import { CalendarGrid } from "@/components/events/CalendarGrid";
+import { SaveAlertButton } from "@/components/events/SaveAlertButton";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -74,6 +75,9 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
       ? { lat, lng, label: "your location" }
       : resolveCtLocation(searchParams.loc);
   const radius = Number(searchParams.radius) || 25;
+
+  // A named CT town (not "use my location") that can be saved as an alert.
+  const alertCity = geo && geo.label !== "your location" ? geo.label.replace(/\s*\(.*\)$/, "") : "";
 
   // "Following" feed: events hosted by profiles the viewer follows.
   const followingMode = searchParams.feed === "following" && Boolean(me);
@@ -243,11 +247,16 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
         )}
 
         {/* View toggle + count */}
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-subtle">
-            {cards.length} {cards.length === 1 ? "event" : "events"}
-            {followingMode ? " from who you follow" : geo ? ` within ${radius} mi of ${geo.label}` : " across Connecticut"}
-          </p>
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-3">
+            <p className="text-sm text-subtle">
+              {cards.length} {cards.length === 1 ? "event" : "events"}
+              {followingMode ? " from who you follow" : geo ? ` within ${radius} mi of ${geo.label}` : " across Connecticut"}
+            </p>
+            {loggedIn && !followingMode && (alertCity || genre) && (
+              <SaveAlertButton city={alertCity} genre={genre} />
+            )}
+          </div>
           <div className="inline-flex overflow-hidden rounded-full border border-line">
             <Link href={viewHref("list")} className={cn("px-4 py-1.5 text-sm font-semibold", view === "list" ? "bg-brand-500 text-white" : "bg-elevated text-muted hover:bg-elevated")}>List</Link>
             <Link href={viewHref("calendar")} className={cn("border-l border-line px-4 py-1.5 text-sm font-semibold", view === "calendar" ? "bg-brand-500 text-white" : "bg-elevated text-muted hover:bg-elevated")}>Calendar</Link>

@@ -7,6 +7,7 @@ import { ImageWithFallback } from "@/components/ImageWithFallback";
 import { RsvpButton } from "@/components/RsvpButton";
 import { FollowButton } from "@/components/FollowButton";
 import { ShareButton } from "@/components/ShareButton";
+import { ShareToFriend } from "@/components/events/ShareToFriend";
 import { AddToCalendar } from "@/components/events/AddToCalendar";
 import { formatDate, formatTime, parseTags, initials, toEmbedUrl } from "@/lib/utils";
 
@@ -40,6 +41,15 @@ export default async function EventPage({ params }: { params: { id: string } }) 
         where: { followerId_followingId: { followerId: me.id, followingId: event.hostProfileId } },
       }))
     : false;
+
+  // Fans can share this event with their friends.
+  const friendRows = me && me.type === "FAN"
+    ? await prisma.friendship.findMany({
+        where: { status: "ACCEPTED", OR: [{ requesterId: me.id }, { addresseeId: me.id }] },
+        include: { requester: { select: { id: true, displayName: true } }, addressee: { select: { id: true, displayName: true } } },
+      })
+    : [];
+  const friends = friendRows.map((f) => (f.requesterId === me!.id ? f.addressee : f.requester));
 
   const tags = parseTags(event.genres);
   const accent = event.host.themeColor || "#7c4dff";
@@ -156,8 +166,9 @@ export default async function EventPage({ params }: { params: { id: string } }) 
               <span className="text-emerald-300">{going.length} going</span>
               <span className="text-amber-300">{maybe.length} interested</span>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 space-y-2">
               <ShareButton title={event.title} />
+              <ShareToFriend eventId={event.id} friends={friends} />
             </div>
           </div>
 

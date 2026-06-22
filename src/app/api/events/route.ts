@@ -111,5 +111,41 @@ export async function POST(req: Request) {
     });
   }
 
+  // Saved-search alerts: notify people whose alert matches this new event.
+  await notifySavedSearches(event, user.id, user.profile!.displayName);
+
   return NextResponse.json({ ok: true, event }, { status: 201 });
+}
+
+async function notifySavedSearches(
+  event: { id: string; title: string; city: string | null; genres: string | null },
+  hostUserId: string,
+  hostName: string,
+) {
+  // Bounded dataset for now; match in app code (city/genre contains).
+  const searches = await prisma.savedSearch.findMany({
+    include: { user: { select: { id: true, email: true } } },
+    take: 2000,
+  });
+  const eventCity = (event.city ?? "").toLowerCase();
+  const eventGenres = (event.genres ?? "").toLowerCase();
+  const matchedUserIds = new Set<string>();
+
+  for (const s of searches) {
+    if (s.userId === hostUserId || matchedUserIds.has(s.userId)) continue;
+    const cityOk = !s.city || eventCity.includes(s.city.toLowerCase());
+    const genreOk = !s.genre || eventGenres.includes(s.genre.toLowerCase());
+    if (cityOk && genreOk) matchedUserIds.add(s.userId);
+  }
+  if (matchedUserIds.size === 0) return;
+
+  await prisma.notification.createMany({
+    data: Array.from(matchedUserIds).map((userId) => ({
+      userId,
+      type: "EVENT_REMINDER",
+      title: `New show matching your alert: ${event.title}`,
+      body: `${hostName}${event.city ? ` · ${event.city}, CT` : ""}`,
+      linkUrl: `/event/${event.id}`,
+    })),
+  });
 }

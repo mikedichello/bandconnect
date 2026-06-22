@@ -203,6 +203,12 @@ async function main() {
     { profileId: harbor.id, date: daysFromNow(28, 0) },
   ]});
 
+  // --- Saved searches / alerts ---
+  await prisma.savedSearch.createMany({ data: [
+    { userId: await uid(fan.id), label: "Indie in New Haven", city: "New Haven", genre: "Indie" },
+    { userId: await uid(fan2.id), label: "Funk shows", city: null, genre: "Funk" },
+  ]});
+
   // --- Messages + notifications ---
   const convo = [
     { from: space, to: owls, body: "Loved your last set — want the Friday headline slot on the 4th?" },

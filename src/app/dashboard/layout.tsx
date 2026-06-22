@@ -29,6 +29,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     { href: "/dashboard/network", label: "Network", icon: "network", badge: pendingFriends || undefined },
     { href: "/dashboard/messages", label: "Messages", icon: "messages", badge: unreadMessages || undefined },
     { href: "/dashboard/notifications", label: "Notifications", icon: "notifications", badge: unreadNotifications || undefined },
+    { href: "/dashboard/alerts", label: "Alerts", icon: "alerts" },
     { href: "/dashboard/billing", label: "Billing", icon: "billing" },
   ];
 
