@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-ink text-zinc-200 antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display text-white;
+  }
+  a {
+    @apply transition-colors;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-brand-400/60 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-brand-500 text-white hover:bg-brand-400 shadow-glow;
+  }
+  .btn-accent {
+    @apply btn bg-accent text-white hover:bg-accent-soft;
+  }
+  .btn-ghost {
+    @apply btn bg-white/5 text-zinc-100 hover:bg-white/10 border border-white/10;
+  }
+  .btn-outline {
+    @apply btn border border-brand-400/40 text-brand-200 hover:bg-brand-500/10;
+  }
+
+  .card {
+    @apply rounded-2xl border border-white/10 bg-ink-soft/70 backdrop-blur;
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-white/10 bg-black/30 px-4 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-brand-400/60 focus:outline-none focus:ring-2 focus:ring-brand-500/30;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-zinc-300;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-zinc-300;
+  }
+  .badge-brand {
+    @apply badge border-brand-400/30 bg-brand-500/15 text-brand-200;
+  }
+  .badge-accent {
+    @apply badge border-accent/30 bg-accent/15 text-accent-soft;
+  }
+  .badge-green {
+    @apply badge border-emerald-400/30 bg-emerald-500/15 text-emerald-300;
+  }
+}
+
+/* Decorative gradient used on hero / section backgrounds */
+.aurora {
+  background:
+    radial-gradient(40% 60% at 20% 10%, rgba(124, 77, 255, 0.25), transparent 60%),
+    radial-gradient(40% 50% at 85% 15%, rgba(255, 93, 162, 0.22), transparent 60%),
+    radial-gradient(50% 60% at 50% 100%, rgba(124, 77, 255, 0.15), transparent 60%);
+}
+
+/* Thin scrollbar for message panes */
+.thin-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}

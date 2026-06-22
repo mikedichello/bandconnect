@@ -1,0 +1,178 @@
+// BandConnect data model
+// ---------------------------------------------------------------------------
+// Dev uses SQLite for zero-config local runs. To deploy on Postgres, change
+// `provider` below to "postgresql" and point DATABASE_URL at your database.
+// Enums are intentionally modeled as String fields so the schema is portable
+// across SQLite and Postgres without migration edits.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// --- Accounts ---------------------------------------------------------------
+
+model User {
+  id           String @id @default(cuid())
+  email        String @unique
+  passwordHash String
+  role         String // "BAND" | "VENUE"
+
+  // Billing (Stripe)
+  stripeCustomerId     String?   @unique
+  stripeSubscriptionId String?   @unique
+  plan                 String    @default("FREE") // "FREE" | "PRO"
+  planStatus           String? // mirror of Stripe subscription.status
+  planRenewsAt         DateTime?
+
+  bandProfile  BandProfile?
+  venueProfile VenueProfile?
+
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  events           Event[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// --- Public single-page profiles -------------------------------------------
+
+model BandProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name    String
+  slug    String  @unique
+  tagline String?
+  bio     String?
+  genre   String? // comma-separated tags, e.g. "indie,post-punk"
+  city    String?
+
+  imageUrl   String?
+  bannerUrl  String?
+  websiteUrl String?
+  instagram  String?
+  spotify    String?
+  bandcamp   String?
+  youtube    String?
+
+  lookingForGigs Boolean @default(true)
+  memberCount    Int?
+
+  // Pro-tier customization
+  themeColor String? @default("#7c4dff")
+  featured   Boolean @default(false)
+
+  submissions Submission[]
+  events      Event[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VenueProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name         String
+  slug         String  @unique
+  tagline      String?
+  description  String?
+  city         String?
+  address      String?
+  capacity     Int?
+  genresWanted String? // comma-separated
+
+  imageUrl   String?
+  bannerUrl  String?
+  websiteUrl String?
+  instagram  String?
+
+  acceptingSubmissions Boolean @default(true)
+
+  // Pro-tier customization
+  themeColor String? @default("#7c4dff")
+  featured   Boolean @default(false)
+
+  submissions Submission[]
+  events      Event[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// --- Booking submissions (band -> venue) -----------------------------------
+
+model Submission {
+  id String @id @default(cuid())
+
+  bandProfileId  String
+  band           BandProfile  @relation(fields: [bandProfileId], references: [id], onDelete: Cascade)
+  venueProfileId String
+  venue          VenueProfile @relation(fields: [venueProfileId], references: [id], onDelete: Cascade)
+
+  subject      String
+  message      String
+  proposedDate DateTime?
+  status       String    @default("PENDING") // "PENDING" | "ACCEPTED" | "DECLINED"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([venueProfileId, status])
+  @@index([bandProfileId, status])
+}
+
+// --- Direct messaging -------------------------------------------------------
+
+model Message {
+  id String @id @default(cuid())
+
+  senderId    String
+  sender      User   @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  recipientId String
+  recipient   User   @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  body   String
+  readAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([senderId, recipientId])
+  @@index([recipientId, readAt])
+}
+
+// --- Shows / calendar -------------------------------------------------------
+
+model Event {
+  id      String @id @default(cuid())
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  title       String
+  description String?
+  date        DateTime
+  city        String?
+  venueName   String?
+  bandName    String?
+  ticketUrl   String?
+  isPublic    Boolean  @default(true)
+
+  bandProfileId  String?
+  band           BandProfile?  @relation(fields: [bandProfileId], references: [id], onDelete: SetNull)
+  venueProfileId String?
+  venue          VenueProfile? @relation(fields: [venueProfileId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([date])
+  @@index([ownerId])
+}
