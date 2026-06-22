@@ -2,6 +2,10 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { PLANS } from "@/lib/plans";
 
+// Render dynamically so the community stats reflect live data rather than being
+// baked in at build time.
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   // Light social proof from real data (falls back gracefully when empty).
   const [bandCount, venueCount, showCount] = await Promise.all([

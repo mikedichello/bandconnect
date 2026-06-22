@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { initials, parseTags } from "@/lib/utils";
+import { ImageWithFallback } from "@/components/ImageWithFallback";
 
 export interface DiscoverCardData {
   slug: string;
@@ -35,14 +36,16 @@ export function DiscoverCard({
       )}
       <div className="flex items-center gap-4">
         <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-2xl bg-brand-500/15">
-          {data.imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={data.imageUrl} alt={data.name} className="h-full w-full object-cover" />
-          ) : (
-            <div className="grid h-full w-full place-items-center text-lg font-bold text-brand-200">
-              {initials(data.name)}
-            </div>
-          )}
+          <ImageWithFallback
+            src={data.imageUrl}
+            alt={data.name}
+            className="h-full w-full object-cover"
+            fallback={
+              <div className="grid h-full w-full place-items-center text-lg font-bold text-brand-200">
+                {initials(data.name)}
+              </div>
+            }
+          />
         </div>
         <div className="min-w-0">
           <h3 className="truncate text-lg font-semibold text-white group-hover:text-brand-200">

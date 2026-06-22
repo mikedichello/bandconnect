@@ -1,4 +1,5 @@
 import { initials } from "@/lib/utils";
+import { ImageWithFallback } from "@/components/ImageWithFallback";
 
 type Badge = { label: string; tone: "green" | "brand" | "plain" } | null;
 
@@ -27,17 +28,19 @@ export function PublicProfileHeader({
     <header className="relative">
       {/* Banner */}
       <div className="h-48 w-full overflow-hidden sm:h-64" style={{ backgroundColor: `${accent}22` }}>
-        {bannerUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={bannerUrl} alt="" className="h-full w-full object-cover" />
-        ) : (
-          <div
-            className="h-full w-full"
-            style={{
-              background: `radial-gradient(60% 120% at 20% 0%, ${accent}55, transparent 60%), radial-gradient(50% 100% at 90% 10%, ${accent}33, transparent 60%)`,
-            }}
-          />
-        )}
+        <ImageWithFallback
+          src={bannerUrl}
+          alt=""
+          className="h-full w-full object-cover"
+          fallback={
+            <div
+              className="h-full w-full"
+              style={{
+                background: `radial-gradient(60% 120% at 20% 0%, ${accent}55, transparent 60%), radial-gradient(50% 100% at 90% 10%, ${accent}33, transparent 60%)`,
+              }}
+            />
+          }
+        />
       </div>
 
       <div className="container-page">
@@ -47,14 +50,16 @@ export function PublicProfileHeader({
               className="grid h-28 w-28 flex-shrink-0 place-items-center overflow-hidden rounded-3xl border-4 border-ink bg-ink-soft"
               style={{ boxShadow: `0 0 40px -10px ${accent}` }}
             >
-              {imageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={imageUrl} alt={name} className="h-full w-full object-cover" />
-              ) : (
-                <span className="font-display text-3xl font-bold" style={{ color: accent }}>
-                  {initials(name)}
-                </span>
-              )}
+              <ImageWithFallback
+                src={imageUrl}
+                alt={name}
+                className="h-full w-full object-cover"
+                fallback={
+                  <span className="font-display text-3xl font-bold" style={{ color: accent }}>
+                    {initials(name)}
+                  </span>
+                }
+              />
             </div>
             <div className="pb-1">
               <h1 className="font-display text-3xl font-bold text-white sm:text-4xl">{name}</h1>
