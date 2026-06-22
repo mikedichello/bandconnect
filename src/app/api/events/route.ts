@@ -3,12 +3,19 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { eventSchema } from "@/lib/validations";
 import { planFor } from "@/lib/plans";
+import { coordsForTown, resolveCtLocation } from "@/lib/ct-geo";
 
-/** Create a show on the signed-in user's calendar (enforces plan limits). */
+/** Create an event. Hosts are venues, musicians, or bands. */
 export async function POST(req: Request) {
   const user = await getCurrentUser();
-  if (!user) {
+  if (!user || !user.profile) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+  }
+  if (user.profile.type === "FAN") {
+    return NextResponse.json(
+      { error: "Fans can't create events. Upgrade your profile to a venue, musician, or band." },
+      { status: 403 },
+    );
   }
 
   let body: unknown;
@@ -25,22 +32,24 @@ export async function POST(req: Request) {
       { status: 400 },
     );
   }
+  const d = parsed.data;
 
-  const when = new Date(parsed.data.date);
-  if (Number.isNaN(when.getTime())) {
-    return NextResponse.json({ error: "Invalid date" }, { status: 400 });
+  const startAt = new Date(d.startAt);
+  if (Number.isNaN(startAt.getTime())) {
+    return NextResponse.json({ error: "Invalid start date" }, { status: 400 });
   }
+  const endAt = d.endAt ? new Date(d.endAt) : null;
 
-  // Enforce upcoming-show limit by plan.
+  // Plan limit on upcoming events.
   const limit = planFor(user.plan).limits.maxEvents;
   if (Number.isFinite(limit)) {
     const upcoming = await prisma.event.count({
-      where: { ownerId: user.id, date: { gte: new Date() } },
+      where: { hostProfileId: user.profile.id, startAt: { gte: new Date() } },
     });
     if (upcoming >= limit) {
       return NextResponse.json(
         {
-          error: `Your plan allows up to ${limit} upcoming shows. Upgrade to Pro for unlimited shows.`,
+          error: `Your plan allows up to ${limit} upcoming events. Upgrade to Pro for unlimited.`,
           code: "PLAN_LIMIT",
         },
         { status: 402 },
@@ -48,22 +57,59 @@ export async function POST(req: Request) {
     }
   }
 
-  const d = parsed.data;
+  // Resolve coordinates: prefer the event city/zip, else fall back to the
+  // host's profile location (handy for venues whose events are at home).
+  const coords =
+    coordsForTown(d.city) ??
+    (d.zip ? resolveCtLocation(d.zip) : null) ??
+    (user.profile.lat != null && user.profile.lng != null
+      ? { lat: user.profile.lat, lng: user.profile.lng }
+      : null);
+
+  // If the host is a venue and didn't name a location, use their own.
+  const isVenue = user.profile.type === "VENUE";
+  const locationName = d.locationName || (isVenue ? user.profile.displayName : null);
+
   const event = await prisma.event.create({
     data: {
-      ownerId: user.id,
+      hostProfileId: user.profile.id,
+      venueProfileId: isVenue ? user.profile.id : null,
       title: d.title,
       description: d.description || null,
-      date: when,
-      city: d.city || null,
-      venueName: d.venueName || null,
-      bandName: d.bandName || null,
-      ticketUrl: d.ticketUrl || null,
-      isPublic: d.isPublic ?? true,
-      bandProfileId: user.bandProfile?.id ?? null,
-      venueProfileId: user.venueProfile?.id ?? null,
+      coverUrl: d.coverUrl || null,
+      coverType: d.coverType || "IMAGE",
+      coverThumbUrl: d.coverThumbUrl || null,
+      startAt,
+      endAt: endAt && !Number.isNaN(endAt.getTime()) ? endAt : null,
+      familyFriendly: d.familyFriendly ?? false,
+      hasCoverCharge: d.hasCoverCharge ?? false,
+      genres: d.genres || null,
+      locationName,
+      address: d.address || (isVenue ? user.profile.address : null),
+      city: d.city || user.profile.city || null,
+      zip: d.zip || user.profile.zip || null,
+      state: "CT",
+      lat: coords?.lat ?? null,
+      lng: coords?.lng ?? null,
     },
   });
+
+  // Notify followers that a new event was posted.
+  const followers = await prisma.follow.findMany({
+    where: { followingId: user.profile.id },
+    select: { follower: { select: { userId: true } } },
+  });
+  if (followers.length > 0) {
+    await prisma.notification.createMany({
+      data: followers.map((f) => ({
+        userId: f.follower.userId,
+        type: "EVENT_REMINDER",
+        title: `${user.profile!.displayName} posted a new event`,
+        body: d.title,
+        linkUrl: `/event/${event.id}`,
+      })),
+    });
+  }
 
   return NextResponse.json({ ok: true, event }, { status: 201 });
 }

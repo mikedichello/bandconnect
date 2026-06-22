@@ -1,24 +1,5 @@
 import { z } from "zod";
 
-// --- Auth -------------------------------------------------------------------
-
-export const signupSchema = z.object({
-  email: z.string().email("Enter a valid email address"),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .max(100, "Password is too long"),
-  role: z.enum(["BAND", "VENUE"], {
-    errorMap: () => ({ message: "Choose whether you're a band or a venue" }),
-  }),
-  name: z.string().min(2, "Name must be at least 2 characters").max(80),
-  city: z.string().max(80).optional().or(z.literal("")),
-});
-
-export type SignupInput = z.infer<typeof signupSchema>;
-
-// --- Profiles ---------------------------------------------------------------
-
 const urlOptional = z
   .string()
   .trim()
@@ -26,80 +7,95 @@ const urlOptional = z
   .optional()
   .or(z.literal(""));
 
-export const bandProfileSchema = z.object({
-  name: z.string().min(2, "Name is required").max(80),
-  tagline: z.string().max(120).optional().or(z.literal("")),
-  bio: z.string().max(2000).optional().or(z.literal("")),
-  genre: z.string().max(200).optional().or(z.literal("")),
+const hexOptional = z
+  .string()
+  .regex(/^#[0-9a-fA-F]{6}$/, "Use a hex color like #7c4dff")
+  .optional()
+  .or(z.literal(""));
+
+// --- Auth -------------------------------------------------------------------
+
+export const signupSchema = z.object({
+  email: z.string().email("Enter a valid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters").max(100),
+  role: z.enum(["FAN", "VENUE", "MUSICIAN", "BAND"], {
+    errorMap: () => ({ message: "Choose a profile type" }),
+  }),
+  displayName: z.string().min(2, "Name must be at least 2 characters").max(80),
   city: z.string().max(80).optional().or(z.literal("")),
-  imageUrl: urlOptional,
+  zip: z.string().max(10).optional().or(z.literal("")),
+});
+
+export type SignupInput = z.infer<typeof signupSchema>;
+
+// --- Profile (superset; fields are gated by type server-side) ---------------
+
+export const profileSchema = z.object({
+  displayName: z.string().min(2, "Name is required").max(80),
+  tagline: z.string().max(140).optional().or(z.literal("")),
+  bio: z.string().max(3000).optional().or(z.literal("")),
+  city: z.string().max(80).optional().or(z.literal("")),
+  zip: z.string().max(10).optional().or(z.literal("")),
+  address: z.string().max(160).optional().or(z.literal("")),
+  genres: z.string().max(300).optional().or(z.literal("")),
+  instruments: z.string().max(300).optional().or(z.literal("")),
+  avatarUrl: urlOptional,
   bannerUrl: urlOptional,
   websiteUrl: urlOptional,
   instagram: z.string().max(120).optional().or(z.literal("")),
   spotify: urlOptional,
-  bandcamp: urlOptional,
   youtube: urlOptional,
-  lookingForGigs: z.boolean().optional(),
-  memberCount: z.coerce.number().int().min(1).max(50).optional().nullable(),
-  themeColor: z
-    .string()
-    .regex(/^#[0-9a-fA-F]{6}$/, "Use a hex color like #7c4dff")
-    .optional()
-    .or(z.literal("")),
+  bandcamp: urlOptional,
+  availableForGigs: z.boolean().optional(),
+  rateMin: z.coerce.number().int().min(0).max(1000000).optional().nullable(),
+  rateMax: z.coerce.number().int().min(0).max(1000000).optional().nullable(),
+  rateHidden: z.boolean().optional(),
+  isSolo: z.boolean().optional(),
+  wantsStartBand: z.boolean().optional(),
+  wantsJoinBand: z.boolean().optional(),
+  openForFillIns: z.boolean().optional(),
+  needsMusicians: z.boolean().optional(),
+  themeColor: hexOptional,
 });
 
-export type BandProfileInput = z.infer<typeof bandProfileSchema>;
-
-export const venueProfileSchema = z.object({
-  name: z.string().min(2, "Name is required").max(80),
-  tagline: z.string().max(120).optional().or(z.literal("")),
-  description: z.string().max(2000).optional().or(z.literal("")),
-  city: z.string().max(80).optional().or(z.literal("")),
-  address: z.string().max(160).optional().or(z.literal("")),
-  capacity: z.coerce.number().int().min(0).max(100000).optional().nullable(),
-  genresWanted: z.string().max(200).optional().or(z.literal("")),
-  imageUrl: urlOptional,
-  bannerUrl: urlOptional,
-  websiteUrl: urlOptional,
-  instagram: z.string().max(120).optional().or(z.literal("")),
-  acceptingSubmissions: z.boolean().optional(),
-  themeColor: z
-    .string()
-    .regex(/^#[0-9a-fA-F]{6}$/, "Use a hex color like #7c4dff")
-    .optional()
-    .or(z.literal("")),
-});
-
-export type VenueProfileInput = z.infer<typeof venueProfileSchema>;
+export type ProfileInput = z.infer<typeof profileSchema>;
 
 // --- Events -----------------------------------------------------------------
 
 export const eventSchema = z.object({
-  title: z.string().min(2, "Title is required").max(120),
-  description: z.string().max(1000).optional().or(z.literal("")),
-  date: z.string().min(1, "Pick a date and time"),
+  title: z.string().min(2, "Title is required").max(140),
+  description: z.string().max(3000).optional().or(z.literal("")),
+  coverUrl: urlOptional,
+  coverType: z.enum(["IMAGE", "VIDEO"]).optional(),
+  coverThumbUrl: urlOptional,
+  startAt: z.string().min(1, "Pick a start date & time"),
+  endAt: z.string().optional().or(z.literal("")),
+  familyFriendly: z.boolean().optional(),
+  hasCoverCharge: z.boolean().optional(),
+  genres: z.string().max(300).optional().or(z.literal("")),
+  locationName: z.string().max(140).optional().or(z.literal("")),
+  address: z.string().max(200).optional().or(z.literal("")),
   city: z.string().max(80).optional().or(z.literal("")),
-  venueName: z.string().max(120).optional().or(z.literal("")),
-  bandName: z.string().max(120).optional().or(z.literal("")),
-  ticketUrl: urlOptional,
-  isPublic: z.boolean().optional(),
+  zip: z.string().max(10).optional().or(z.literal("")),
 });
 
 export type EventInput = z.infer<typeof eventSchema>;
 
-// --- Submissions ------------------------------------------------------------
+// --- Media ------------------------------------------------------------------
 
-export const submissionSchema = z.object({
-  venueProfileId: z.string().min(1, "Venue is required"),
-  subject: z.string().min(2, "Subject is required").max(120),
-  message: z.string().min(10, "Tell the venue a bit about your band").max(2000),
-  proposedDate: z.string().optional().or(z.literal("")),
+export const mediaSchema = z.object({
+  kind: z.enum(["IMAGE", "VIDEO"]),
+  url: z.string().trim().url("Enter a valid URL"),
+  caption: z.string().max(160).optional().or(z.literal("")),
 });
 
-export type SubmissionInput = z.infer<typeof submissionSchema>;
+export type MediaInput = z.infer<typeof mediaSchema>;
 
-export const submissionStatusSchema = z.object({
-  status: z.enum(["PENDING", "ACCEPTED", "DECLINED"]),
+// --- Availability -----------------------------------------------------------
+
+export const availabilitySchema = z.object({
+  date: z.string().min(1, "Pick a date"),
+  note: z.string().max(160).optional().or(z.literal("")),
 });
 
 // --- Messages ---------------------------------------------------------------

@@ -1,9 +1,12 @@
 // BandConnect data model
 // ---------------------------------------------------------------------------
+// A calendar-first platform for Connecticut's live-music scene with four
+// profile types (Fan, Venue, Musician, Band), events with geo + media, and a
+// social graph (follows, friendships, RSVPs).
+//
 // Dev uses SQLite for zero-config local runs. To deploy on Postgres, change
 // `provider` below to "postgresql" and point DATABASE_URL at your database.
-// Enums are intentionally modeled as String fields so the schema is portable
-// across SQLite and Postgres without migration edits.
+// Enum-like fields are modeled as String for SQLite/Postgres portability.
 
 generator client {
   provider = "prisma-client-js"
@@ -20,159 +23,239 @@ model User {
   id           String @id @default(cuid())
   email        String @unique
   passwordHash String
-  role         String // "BAND" | "VENUE"
+  role         String // "FAN" | "VENUE" | "MUSICIAN" | "BAND"
 
   // Billing (Stripe)
   stripeCustomerId     String?   @unique
   stripeSubscriptionId String?   @unique
   plan                 String    @default("FREE") // "FREE" | "PRO"
-  planStatus           String? // mirror of Stripe subscription.status
+  planStatus           String?
   planRenewsAt         DateTime?
 
-  bandProfile  BandProfile?
-  venueProfile VenueProfile?
+  profile Profile?
 
-  sentMessages     Message[] @relation("SentMessages")
-  receivedMessages Message[] @relation("ReceivedMessages")
-  events           Event[]
+  sentMessages     Message[]      @relation("SentMessages")
+  receivedMessages Message[]      @relation("ReceivedMessages")
+  notifications    Notification[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// --- Public single-page profiles -------------------------------------------
+// --- Unified profile (one per user, type-discriminated) ---------------------
 
-model BandProfile {
+model Profile {
   id     String @id @default(cuid())
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  name    String
-  slug    String  @unique
-  tagline String?
-  bio     String?
-  genre   String? // comma-separated tags, e.g. "indie,post-punk"
+  type        String // "FAN" | "VENUE" | "MUSICIAN" | "BAND"
+  displayName String
+  slug        String  @unique
+  avatarUrl   String?
+  bannerUrl   String?
+  tagline     String?
+  bio         String? // bio / description
+
+  // Location (used for venues + events; artists may set a home city)
   city    String?
+  zip     String?
+  address String?
+  lat     Float?
+  lng     Float?
 
-  imageUrl   String?
-  bannerUrl  String?
-  websiteUrl String?
-  instagram  String?
-  spotify    String?
-  bandcamp   String?
-  youtube    String?
+  // Artist / venue attributes
+  genres      String? // comma-separated
+  instruments String? // comma-separated (musician)
+  websiteUrl  String?
+  instagram   String?
+  spotify     String?
+  youtube     String?
+  bandcamp    String?
 
-  lookingForGigs Boolean @default(true)
-  memberCount    Int?
+  // Gig availability (musician / band)
+  availableForGigs Boolean @default(false)
+  rateMin          Int?
+  rateMax          Int?
+  rateHidden       Boolean @default(false)
 
-  // Pro-tier customization
+  // Musician seeking flags
+  isSolo         Boolean @default(false)
+  wantsStartBand Boolean @default(false)
+  wantsJoinBand  Boolean @default(false)
+  openForFillIns Boolean @default(false)
+
+  // Band seeking flag
+  needsMusicians Boolean @default(false)
+
+  // Pro customization
   themeColor String? @default("#7c4dff")
   featured   Boolean @default(false)
 
-  submissions Submission[]
-  events      Event[]
+  media           MediaItem[]
+  hostedEvents    Event[]            @relation("HostedEvents")
+  venueEvents     Event[]            @relation("VenueEvents")
+  availability    AvailabilityDate[]
+  rsvps           Rsvp[]
+  following       Follow[]           @relation("Follower")
+  followers       Follow[]           @relation("Following")
+  friendshipsSent Friendship[]       @relation("Requester")
+  friendshipsRecv Friendship[]       @relation("Addressee")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([type])
+  @@index([availableForGigs])
 }
 
-model VenueProfile {
-  id     String @id @default(cuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+// --- Media gallery (images + video, by URL) ---------------------------------
 
-  name         String
-  slug         String  @unique
-  tagline      String?
-  description  String?
-  city         String?
+model MediaItem {
+  id        String  @id @default(cuid())
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  kind         String // "IMAGE" | "VIDEO"
+  url          String
+  thumbnailUrl String?
+  caption      String?
+  sortOrder    Int     @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@index([profileId])
+}
+
+// --- Events -----------------------------------------------------------------
+
+model Event {
+  id            String  @id @default(cuid())
+  hostProfileId String
+  host          Profile @relation("HostedEvents", fields: [hostProfileId], references: [id], onDelete: Cascade)
+
+  // Optional link to a registered venue profile
+  venueProfileId String?
+  venue          Profile? @relation("VenueEvents", fields: [venueProfileId], references: [id], onDelete: SetNull)
+
+  title       String
+  description String?
+
+  // Cover media: image or video (video plays on the event page; thumbnail used elsewhere)
+  coverUrl      String?
+  coverType     String  @default("IMAGE") // "IMAGE" | "VIDEO"
+  coverThumbUrl String?
+
+  startAt DateTime
+  endAt   DateTime?
+
+  familyFriendly Boolean @default(false)
+  hasCoverCharge Boolean @default(false)
+  genres         String? // comma-separated
+
+  // Location (defaults to Connecticut)
+  locationName String?
   address      String?
-  capacity     Int?
-  genresWanted String? // comma-separated
+  city         String?
+  zip          String?
+  state        String  @default("CT")
+  lat          Float?
+  lng          Float?
 
-  imageUrl   String?
-  bannerUrl  String?
-  websiteUrl String?
-  instagram  String?
-
-  acceptingSubmissions Boolean @default(true)
-
-  // Pro-tier customization
-  themeColor String? @default("#7c4dff")
-  featured   Boolean @default(false)
-
-  submissions Submission[]
-  events      Event[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-// --- Booking submissions (band -> venue) -----------------------------------
-
-model Submission {
-  id String @id @default(cuid())
-
-  bandProfileId  String
-  band           BandProfile  @relation(fields: [bandProfileId], references: [id], onDelete: Cascade)
-  venueProfileId String
-  venue          VenueProfile @relation(fields: [venueProfileId], references: [id], onDelete: Cascade)
-
-  subject      String
-  message      String
-  proposedDate DateTime?
-  status       String    @default("PENDING") // "PENDING" | "ACCEPTED" | "DECLINED"
+  rsvps Rsvp[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([venueProfileId, status])
-  @@index([bandProfileId, status])
+  @@index([startAt])
+  @@index([hostProfileId])
+  @@index([city])
 }
 
-// --- Direct messaging -------------------------------------------------------
+// --- Social graph -----------------------------------------------------------
+
+model Follow {
+  id          String  @id @default(cuid())
+  followerId  String
+  follower    Profile @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  followingId String
+  following   Profile @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([followerId, followingId])
+  @@index([followingId])
+}
+
+model Friendship {
+  id          String  @id @default(cuid())
+  requesterId String
+  requester   Profile @relation("Requester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addresseeId String
+  addressee   Profile @relation("Addressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+
+  status String @default("PENDING") // "PENDING" | "ACCEPTED"
+
+  createdAt DateTime @default(now())
+
+  @@unique([requesterId, addresseeId])
+  @@index([addresseeId, status])
+}
+
+model Rsvp {
+  id        String  @id @default(cuid())
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  eventId   String
+  event     Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  status String @default("GOING") // "GOING" | "MAYBE"
+
+  createdAt DateTime @default(now())
+
+  @@unique([profileId, eventId])
+  @@index([eventId])
+}
+
+model AvailabilityDate {
+  id        String  @id @default(cuid())
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  date DateTime
+  note String?
+
+  @@unique([profileId, date])
+  @@index([profileId])
+}
+
+// --- Messaging & notifications ----------------------------------------------
 
 model Message {
-  id String @id @default(cuid())
-
+  id          String    @id @default(cuid())
   senderId    String
-  sender      User   @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  sender      User      @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
   recipientId String
-  recipient   User   @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: Cascade)
-
-  body   String
-  readAt DateTime?
-
-  createdAt DateTime @default(now())
+  recipient   User      @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: Cascade)
+  body        String
+  readAt      DateTime?
+  createdAt   DateTime  @default(now())
 
   @@index([senderId, recipientId])
   @@index([recipientId, readAt])
 }
 
-// --- Shows / calendar -------------------------------------------------------
-
-model Event {
-  id      String @id @default(cuid())
-  ownerId String
-  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-
-  title       String
-  description String?
-  date        DateTime
-  city        String?
-  venueName   String?
-  bandName    String?
-  ticketUrl   String?
-  isPublic    Boolean  @default(true)
-
-  bandProfileId  String?
-  band           BandProfile?  @relation(fields: [bandProfileId], references: [id], onDelete: SetNull)
-  venueProfileId String?
-  venue          VenueProfile? @relation(fields: [venueProfileId], references: [id], onDelete: SetNull)
+model Notification {
+  id      String  @id @default(cuid())
+  userId  String
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type    String // "FOLLOW" | "FRIEND_REQUEST" | "FRIEND_ACCEPT" | "MESSAGE" | "RSVP" | "SHARE" | "EVENT_REMINDER"
+  title   String
+  body    String?
+  linkUrl String?
+  read    Boolean @default(false)
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
-  @@index([date])
-  @@index([ownerId])
+  @@index([userId, read])
 }

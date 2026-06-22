@@ -1,58 +1,58 @@
 import { requireUser } from "@/lib/session";
+import { prisma } from "@/lib/prisma";
 import { isPro } from "@/lib/plans";
-import { ProfileForm, type ProfileFormValues } from "@/components/dashboard/ProfileForm";
+import { isArtist } from "@/lib/constants";
+import { ProfileEditor, type ProfileValues } from "@/components/dashboard/ProfileEditor";
+import { MediaManager } from "@/components/dashboard/MediaManager";
 
 export const metadata = { title: "Edit profile" };
 
-export default async function ProfilePage() {
+export default async function EditProfilePage() {
   const user = await requireUser();
-  const isBand = user.role === "BAND";
-  const profile = isBand ? user.bandProfile : user.venueProfile;
+  const p = user.profile!;
 
-  if (!profile) {
-    return <p className="text-zinc-400">Profile not found.</p>;
-  }
+  const media = await prisma.mediaItem.findMany({
+    where: { profileId: p.id },
+    orderBy: { sortOrder: "asc" },
+  });
 
-  const initial: ProfileFormValues = {
-    name: profile.name,
-    tagline: profile.tagline,
-    city: profile.city,
-    imageUrl: profile.imageUrl,
-    bannerUrl: profile.bannerUrl,
-    websiteUrl: profile.websiteUrl,
-    instagram: profile.instagram,
-    themeColor: profile.themeColor,
-    ...(isBand && user.bandProfile
-      ? {
-          bio: user.bandProfile.bio,
-          genre: user.bandProfile.genre,
-          spotify: user.bandProfile.spotify,
-          bandcamp: user.bandProfile.bandcamp,
-          youtube: user.bandProfile.youtube,
-          lookingForGigs: user.bandProfile.lookingForGigs,
-          memberCount: user.bandProfile.memberCount,
-        }
-      : {}),
-    ...(!isBand && user.venueProfile
-      ? {
-          description: user.venueProfile.description,
-          address: user.venueProfile.address,
-          genresWanted: user.venueProfile.genresWanted,
-          capacity: user.venueProfile.capacity,
-          acceptingSubmissions: user.venueProfile.acceptingSubmissions,
-        }
-      : {}),
+  const initial: ProfileValues = {
+    type: p.type,
+    displayName: p.displayName,
+    tagline: p.tagline,
+    bio: p.bio,
+    city: p.city,
+    zip: p.zip,
+    address: p.address,
+    genres: p.genres,
+    instruments: p.instruments,
+    avatarUrl: p.avatarUrl,
+    bannerUrl: p.bannerUrl,
+    websiteUrl: p.websiteUrl,
+    instagram: p.instagram,
+    spotify: p.spotify,
+    youtube: p.youtube,
+    bandcamp: p.bandcamp,
+    availableForGigs: p.availableForGigs,
+    rateMin: p.rateMin,
+    rateMax: p.rateMax,
+    rateHidden: p.rateHidden,
+    isSolo: p.isSolo,
+    wantsStartBand: p.wantsStartBand,
+    wantsJoinBand: p.wantsJoinBand,
+    openForFillIns: p.openForFillIns,
+    needsMusicians: p.needsMusicians,
+    themeColor: p.themeColor,
   };
 
   return (
-    <div>
-      <div className="mb-5">
+    <div className="space-y-6">
+      <div>
         <h1 className="text-xl font-bold">Edit your profile</h1>
-        <p className="text-sm text-zinc-400">
-          This is your public {isBand ? "band" : "venue"} page. Make it shine.
-        </p>
+        <p className="text-sm text-zinc-400">This is your public page at /p/{p.slug}.</p>
       </div>
-      <ProfileForm role={user.role as "BAND" | "VENUE"} isPro={isPro(user.plan)} initial={initial} />
+      <ProfileEditor isPro={isPro(user.plan)} initial={initial} />
+      {(p.type === "VENUE" || isArtist(p.type)) && <MediaManager initial={media} />}
     </div>
   );
 }

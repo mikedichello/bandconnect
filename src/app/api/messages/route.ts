@@ -48,6 +48,21 @@ export async function POST(req: Request) {
     },
   });
 
+  // Notify the recipient.
+  const me = await prisma.profile.findUnique({
+    where: { userId },
+    select: { displayName: true },
+  });
+  await prisma.notification.create({
+    data: {
+      userId: parsed.data.recipientId,
+      type: "MESSAGE",
+      title: `New message from ${me?.displayName ?? "someone"}`,
+      body: parsed.data.body.slice(0, 120),
+      linkUrl: "/dashboard/messages",
+    },
+  });
+
   return NextResponse.json({ ok: true, message }, { status: 201 });
 }
 

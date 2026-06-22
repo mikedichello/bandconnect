@@ -81,29 +81,25 @@ export function initials(name: string): string {
     .toUpperCase();
 }
 
-export const GENRES = [
-  "Rock",
-  "Indie",
-  "Punk",
-  "Metal",
-  "Hardcore",
-  "Pop",
-  "Hip-Hop",
-  "R&B",
-  "Soul",
-  "Funk",
-  "Jazz",
-  "Blues",
-  "Folk",
-  "Country",
-  "Americana",
-  "Electronic",
-  "House",
-  "Techno",
-  "Ambient",
-  "Experimental",
-  "Post-Rock",
-  "Shoegaze",
-  "Emo",
-  "Singer-Songwriter",
-] as const;
+/** Format a rate range like "$200–$500" or "$200+". Returns null when empty. */
+export function formatRate(
+  min: number | null | undefined,
+  max: number | null | undefined,
+): string | null {
+  if (min == null && max == null) return null;
+  if (min != null && max != null) {
+    return min === max ? `$${min}` : `$${min}–$${max}`;
+  }
+  if (min != null) return `$${min}+`;
+  return `Up to $${max}`;
+}
+
+/** Convert a YouTube/Vimeo/direct video URL into an embeddable URL. */
+export function toEmbedUrl(url: string): { kind: "iframe" | "video"; src: string } {
+  const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/);
+  if (yt) return { kind: "iframe", src: `https://www.youtube.com/embed/${yt[1]}` };
+  const vimeo = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vimeo) return { kind: "iframe", src: `https://player.vimeo.com/video/${vimeo[1]}` };
+  return { kind: "video", src: url };
+}
+

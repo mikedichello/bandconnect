@@ -30,10 +30,10 @@ export const PLANS: Record<PlanId, PlanDefinition> = {
     tagline: "Everything you need to get discovered.",
     features: [
       "Public single-page profile",
-      "Listed in band & venue discovery",
-      "Up to 3 upcoming shows on your calendar",
-      "Send up to 5 booking submissions / month",
-      "Direct messaging with bands & venues",
+      "Listed in venue & artist discovery",
+      "Post up to 3 upcoming events",
+      "Follow, RSVP & message anyone",
+      "Personal show calendar & notifications",
     ],
     limits: {
       maxEvents: 3,
@@ -52,11 +52,11 @@ export const PLANS: Record<PlanId, PlanDefinition> = {
     tagline: "Stand out, book more, grow faster.",
     features: [
       "Everything in Starter",
-      "Unlimited upcoming shows",
-      "Unlimited booking submissions",
+      "Unlimited events",
+      "Featured placement in discovery & calendar",
       "Custom profile theme color & branding",
-      "Featured placement in discovery",
-      "Profile analytics",
+      "Profile & event analytics",
+      "Priority in search results",
       "Remove BandConnect branding",
     ],
     limits: {

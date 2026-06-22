@@ -7,11 +7,9 @@ export const metadata = { title: "Messages" };
 
 function displayFor(u: {
   role: string;
-  bandProfile: { name: string; slug: string } | null;
-  venueProfile: { name: string; slug: string } | null;
+  profile: { displayName: string; slug: string; type: string } | null;
 }) {
-  if (u.bandProfile) return { name: u.bandProfile.name, slug: u.bandProfile.slug, role: "BAND" };
-  if (u.venueProfile) return { name: u.venueProfile.name, slug: u.venueProfile.slug, role: "VENUE" };
+  if (u.profile) return { name: u.profile.displayName, slug: u.profile.slug, role: u.profile.type };
   return { name: "BandConnect user", slug: null, role: u.role };
 }
 
@@ -28,8 +26,8 @@ export default async function MessagesPage({
     },
     orderBy: { createdAt: "asc" },
     include: {
-      sender: { include: { bandProfile: true, venueProfile: true } },
-      recipient: { include: { bandProfile: true, venueProfile: true } },
+      sender: { include: { profile: true } },
+      recipient: { include: { profile: true } },
     },
   });
 
@@ -70,7 +68,7 @@ export default async function MessagesPage({
   if (to && to !== user.id && !map.has(to)) {
     const target = await prisma.user.findUnique({
       where: { id: to },
-      include: { bandProfile: true, venueProfile: true },
+      include: { profile: true },
     });
     if (target) {
       const d = displayFor(target);

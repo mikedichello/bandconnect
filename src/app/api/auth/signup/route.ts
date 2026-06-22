@@ -3,11 +3,12 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { signupSchema } from "@/lib/validations";
 import { slugify } from "@/lib/utils";
+import { coordsForTown } from "@/lib/ct-geo";
 
 /**
- * Create a band or venue account. Passwords are hashed with bcrypt; a starter
- * profile (with a unique slug) is provisioned in the same transaction so the
- * user lands on a usable page immediately.
+ * Create an account of any of the four profile types. Passwords are hashed
+ * with bcrypt; a matching profile (with a unique slug) is provisioned in the
+ * same write so the user lands on a usable page immediately.
  */
 export async function POST(req: Request) {
   let body: unknown;
@@ -25,7 +26,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const { email, password, role, name, city } = parsed.data;
+  const { email, password, role, displayName, city, zip } = parsed.data;
   const normalizedEmail = email.toLowerCase().trim();
 
   const existing = await prisma.user.findUnique({ where: { email: normalizedEmail } });
@@ -37,7 +38,8 @@ export async function POST(req: Request) {
   }
 
   const passwordHash = await bcrypt.hash(password, 12);
-  const slug = await uniqueSlug(name, role);
+  const slug = await uniqueSlug(displayName);
+  const coords = coordsForTown(city);
 
   try {
     const user = await prisma.user.create({
@@ -45,17 +47,17 @@ export async function POST(req: Request) {
         email: normalizedEmail,
         passwordHash,
         role,
-        ...(role === "BAND"
-          ? {
-              bandProfile: {
-                create: { name, slug, city: city || null },
-              },
-            }
-          : {
-              venueProfile: {
-                create: { name, slug, city: city || null },
-              },
-            }),
+        profile: {
+          create: {
+            type: role,
+            displayName,
+            slug,
+            city: city || null,
+            zip: zip || null,
+            lat: coords?.lat ?? null,
+            lng: coords?.lng ?? null,
+          },
+        },
       },
     });
 
@@ -69,19 +71,13 @@ export async function POST(req: Request) {
   }
 }
 
-/** Build a slug from the name and ensure it's globally unique across profiles. */
-async function uniqueSlug(name: string, role: "BAND" | "VENUE"): Promise<string> {
-  const base = slugify(name) || (role === "BAND" ? "band" : "venue");
+async function uniqueSlug(name: string): Promise<string> {
+  const base = slugify(name) || "profile";
   let candidate = base;
   let n = 1;
-  // Slugs share a namespace conceptually (/bands/x vs /venues/x are distinct,
-  // but we keep them unique within each table). Check the relevant table.
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    const taken =
-      role === "BAND"
-        ? await prisma.bandProfile.findUnique({ where: { slug: candidate } })
-        : await prisma.venueProfile.findUnique({ where: { slug: candidate } });
+    const taken = await prisma.profile.findUnique({ where: { slug: candidate } });
     if (!taken) return candidate;
     n += 1;
     candidate = `${base}-${n}`;

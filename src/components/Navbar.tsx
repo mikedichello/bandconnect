@@ -7,9 +7,9 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const publicLinks = [
-  { href: "/discover/bands", label: "Find Bands" },
-  { href: "/discover/venues", label: "Find Venues" },
-  { href: "/shows", label: "Shows" },
+  { href: "/", label: "Calendar" },
+  { href: "/venues", label: "Venues" },
+  { href: "/artists", label: "Artists" },
   { href: "/pricing", label: "Pricing" },
 ];
 
@@ -41,7 +41,7 @@ export function Navbar() {
                 href={link.href}
                 className={cn(
                   "rounded-full px-3 py-1.5 text-sm font-medium",
-                  pathname.startsWith(link.href)
+                  (link.href === "/" ? pathname === "/" : pathname.startsWith(link.href))
                     ? "bg-white/10 text-white"
                     : "text-zinc-300 hover:text-white",
                 )}

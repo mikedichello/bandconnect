@@ -24,9 +24,9 @@ export function Footer() {
         <div>
           <h4 className="text-sm font-semibold text-white">Explore</h4>
           <ul className="mt-3 space-y-2 text-sm text-zinc-400">
-            <li><Link href="/discover/bands" className="hover:text-white">Find bands</Link></li>
-            <li><Link href="/discover/venues" className="hover:text-white">Find venues</Link></li>
-            <li><Link href="/shows" className="hover:text-white">Upcoming shows</Link></li>
+            <li><Link href="/" className="hover:text-white">Event calendar</Link></li>
+            <li><Link href="/venues" className="hover:text-white">Venues & hosts</Link></li>
+            <li><Link href="/artists" className="hover:text-white">Musicians & bands</Link></li>
             <li><Link href="/pricing" className="hover:text-white">Pricing</Link></li>
           </ul>
         </div>

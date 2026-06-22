@@ -14,17 +14,21 @@ export async function getCurrentUserId(): Promise<string | null> {
   return session?.user?.id ?? null;
 }
 
-/**
- * Load the full current user with both profile relations. Returns null when
- * not signed in.
- */
+/** Load the full current user with their profile. Null when signed out. */
 export async function getCurrentUser() {
   const id = await getCurrentUserId();
   if (!id) return null;
   return prisma.user.findUnique({
     where: { id },
-    include: { bandProfile: true, venueProfile: true },
+    include: { profile: true },
   });
+}
+
+/** Load just the current user's profile (null when signed out / no profile). */
+export async function getCurrentProfile() {
+  const id = await getCurrentUserId();
+  if (!id) return null;
+  return prisma.profile.findUnique({ where: { userId: id } });
 }
 
 /** Require auth in a server component; redirects to /login if signed out. */

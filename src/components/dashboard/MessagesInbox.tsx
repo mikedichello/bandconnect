@@ -134,12 +134,12 @@ export function MessagesInbox({
                 </button>
                 <div>
                   <p className="font-semibold text-white">{active.name}</p>
-                  <p className="text-xs text-zinc-500">{active.role === "BAND" ? "Band" : "Venue"}</p>
+                  <p className="text-xs capitalize text-zinc-500">{active.role.toLowerCase()}</p>
                 </div>
               </div>
               {active.slug && (
                 <Link
-                  href={active.role === "BAND" ? `/bands/${active.slug}` : `/venues/${active.slug}`}
+                  href={`/p/${active.slug}`}
                   target="_blank"
                   className="text-xs text-brand-300 hover:text-brand-200"
                 >
