@@ -20,6 +20,7 @@ type SP = {
   when?: string;
   lat?: string;
   lng?: string;
+  feed?: string;
 };
 
 const WHEN_OPTIONS = [
@@ -74,6 +75,15 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
       : resolveCtLocation(searchParams.loc);
   const radius = Number(searchParams.radius) || 25;
 
+  // "Following" feed: events hosted by profiles the viewer follows.
+  const followingMode = searchParams.feed === "following" && Boolean(me);
+  let followIds: string[] = [];
+  if (followingMode && me) {
+    followIds = (
+      await prisma.follow.findMany({ where: { followerId: me.id }, select: { followingId: true } })
+    ).map((f) => f.followingId);
+  }
+
   // Determine the time window.
   const now = new Date();
   let rangeStart = now;
@@ -90,10 +100,13 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
     rangeEnd = w.end;
   }
 
-  const events = await prisma.event.findMany({
+  const events = followingMode && followIds.length === 0
+    ? []
+    : await prisma.event.findMany({
     where: {
       state: "CT",
       startAt: { gte: rangeStart, ...(rangeEnd ? { lt: rangeEnd } : {}) },
+      ...(followingMode ? { hostProfileId: { in: followIds } } : {}),
       ...(genre ? { genres: { contains: genre } } : {}),
       ...(family ? { familyFriendly: true } : {}),
       ...(noCover ? { hasCoverCharge: false } : {}),
@@ -164,6 +177,12 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
     if (k) p.set("when", k);
     return `/?${p.toString()}`;
   };
+  const feedHref = (f: string) => {
+    const p = new URLSearchParams(filterQs);
+    p.delete("feed");
+    if (f === "following") p.set("feed", "following");
+    return `/?${p.toString()}`;
+  };
 
   return (
     <div>
@@ -175,10 +194,12 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
             <div>
               <span className="badge-brand mb-3">🎶 Connecticut live music</span>
               <h1 className="font-display text-3xl font-bold text-white sm:text-4xl">
-                What&apos;s happening tonight in CT
+                {followingMode ? "From who you follow" : "What's happening tonight in CT"}
               </h1>
               <p className="mt-2 max-w-xl text-zinc-300">
-                Every live show in Connecticut in one calendar. Filter by town, distance, genre, and more.
+                {followingMode
+                  ? "Upcoming shows from the venues and artists you follow."
+                  : "Every live show in Connecticut in one calendar. Filter by town, distance, genre, and more."}
               </p>
             </div>
             <div className="flex gap-2">
@@ -190,6 +211,14 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
       </section>
 
       <div className="container-page space-y-5 py-6">
+        {/* Feed tabs (signed-in) */}
+        {loggedIn && (
+          <div className="inline-flex overflow-hidden rounded-full border border-white/15" role="tablist" aria-label="Feed">
+            <Link href={feedHref("all")} role="tab" aria-selected={!followingMode} className={cn("px-5 py-2 text-sm font-semibold", !followingMode ? "bg-brand-500 text-white" : "bg-white/5 text-zinc-300 hover:text-white")}>All events</Link>
+            <Link href={feedHref("following")} role="tab" aria-selected={followingMode} className={cn("border-l border-white/15 px-5 py-2 text-sm font-semibold", followingMode ? "bg-brand-500 text-white" : "bg-white/5 text-zinc-300 hover:text-white")}>Following</Link>
+          </div>
+        )}
+
         <EventFilters resolvedLabel={geo?.label ?? null} />
 
         {/* Date quick-filters (list view) */}
@@ -217,7 +246,7 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
         <div className="flex items-center justify-between">
           <p className="text-sm text-zinc-400">
             {cards.length} {cards.length === 1 ? "event" : "events"}
-            {geo ? ` within ${radius} mi of ${geo.label}` : " across Connecticut"}
+            {followingMode ? " from who you follow" : geo ? ` within ${radius} mi of ${geo.label}` : " across Connecticut"}
           </p>
           <div className="inline-flex overflow-hidden rounded-full border border-white/15">
             <Link href={viewHref("list")} className={cn("px-4 py-1.5 text-sm font-semibold", view === "list" ? "bg-brand-500 text-white" : "bg-white/5 text-zinc-300 hover:bg-white/10")}>List</Link>
@@ -232,11 +261,27 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
             buildMonthHref={buildMonthHref}
           />
         ) : cards.length === 0 ? (
-          <div className="card p-12 text-center">
-            <div className="text-3xl">📅</div>
-            <h2 className="mt-3 text-lg font-semibold">No events match your filters</h2>
-            <p className="mt-1 text-sm text-zinc-400">Try widening your radius or clearing filters.</p>
-          </div>
+          followingMode ? (
+            <div className="card p-12 text-center">
+              <div className="text-3xl">🫶</div>
+              <h2 className="mt-3 text-lg font-semibold">Your feed is quiet</h2>
+              <p className="mx-auto mt-1 max-w-sm text-sm text-zinc-400">
+                {followIds.length === 0
+                  ? "You're not following anyone yet. Follow venues and artists to see their shows here."
+                  : "No upcoming shows from who you follow right now — check back soon."}
+              </p>
+              <div className="mt-5 flex justify-center gap-2">
+                <Link href="/venues" className="btn-ghost">Find venues</Link>
+                <Link href="/artists" className="btn-primary">Find artists</Link>
+              </div>
+            </div>
+          ) : (
+            <div className="card p-12 text-center">
+              <div className="text-3xl">📅</div>
+              <h2 className="mt-3 text-lg font-semibold">No events match your filters</h2>
+              <p className="mt-1 text-sm text-zinc-400">Try widening your radius or clearing filters.</p>
+            </div>
+          )
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {cards.map((c) => (
