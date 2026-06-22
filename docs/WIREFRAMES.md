@@ -1,231 +1,142 @@
 # BandConnect — Wireframes
 
-Low-fidelity wireframes for every key screen. These map 1:1 to the implemented
-routes so you can cross-reference the code in `src/app`.
+Low-fidelity wireframes for the key screens, mapped 1:1 to routes in `src/app`.
 
-Legend: `[ Button ]` · `( input )` · `▣ image/avatar` · `★ Pro feature`
+Legend: `[ Button ]` · `( input )` · `▣ media` · `★ Pro`
 
 ---
 
-## 1. Landing — `/`  → `src/app/page.tsx`
+## 1. Home — event calendar — `/`  → `src/app/page.tsx`
 
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│ ⚡ BandConnect    Find Bands  Find Venues  Shows  Pricing   Log in [Get started] │
-├──────────────────────────────────────────────────────────────────┤
-│                      🎸 For the local music scene                  │
-│            Where local bands and venues actually connect           │
-│        Bands find rooms. Venues find acts. Calendars, booking,     │
-│                       and messaging in one place.                  │
-│                  [ I'm a band → ]   [ I'm a venue → ]              │
-│                   Free to start. No credit card.                   │
-│                                                                    │
-│            ┌────────┐   ┌────────┐   ┌────────────┐               │
-│            │  6     │   │  5     │   │  9         │   ← live counts │
-│            │ Bands  │   │ Venues │   │ Shows      │               │
-│            └────────┘   └────────┘   └────────────┘               │
-├──────────────────────────────────────────────────────────────────┤
-│  ┌── For Bands ──────────────┐   ┌── For Venues ─────────────┐    │
-│  │ Get booked, not buried    │   │ Fill your calendar        │    │
-│  │ ✓ One-page band site      │   │ ✓ Publish what you book   │    │
-│  │ ✓ Browse venues           │   │ ✓ Discover local bands    │    │
-│  │ ✓ One-click submissions   │   │ ✓ Manage submissions      │    │
-│  │ [ Create your band page ] │   │ [ List your venue ]       │    │
-│  └───────────────────────────┘   └───────────────────────────┘    │
-│                                                                    │
-│   How it works:  ① Create page  → ② Discover & connect → ③ Book    │
-│   Features grid:  🌐 📅 ✉️ 📨 🔎 🎨   |   Pricing teaser  | CTA     │
+┌───────────────────────────────────────────────────────────────────────┐
+│ ⚡ BandConnect   Calendar  Venues  Artists  Pricing      Log in [Get started]│
+├───────────────────────────────────────────────────────────────────────┤
+│ 🎶 Connecticut live music                                              │
+│ What's happening tonight in CT                  [Browse venues][artists]│
+├───────────────────────────────────────────────────────────────────────┤
+│ ┌ Filters ─────────────────────────────────────────────────────────┐  │
+│ │ City or ZIP ( New Haven / 06511 )  Within [25 mi▾]  Genre [All▾] 🔍│  │
+│ │ [👨‍👩‍👧 Family friendly]  [🆓 No cover]                    Clear filters│  │
+│ └───────────────────────────────────────────────────────────────────┘  │
+│ 12 events across Connecticut                          [ List | Calendar ]│
+│ ┌───────────┐ ┌───────────┐ ┌───────────┐                              │
+│ │ ▣ cover   │ │ ▣ ▶ video │ │ ▣ cover   │   ← event cards              │
+│ │ FRI JUN 26│ │ SAT JUN 27│ │ SUN JUN 28│                              │
+│ │ Night Owls│ │ Jazz Jam  │ │ Mara Quinn│                              │
+│ │ Space·Hmdn│ │ Cafe Nine │ │ Westville │                              │
+│ │ Family·$  │ │ Free      │ │ Free      │                              │
+│ │ 🎸 host   │ │ [Going|Mby]│ │ [Going|Mby]│                             │
+│ └───────────┘ └───────────┘ └───────────┘                              │
+└───────────────────────────────────────────────────────────────────────┘
+```
+
+**Calendar view** (`?view=calendar`): month grid, today highlighted, ≤3 events
+per day cell with `+N more`, `← Prev / Today / Next →`.
+
+## 2. Sign up — `/signup`  → 4-role picker
+
+```
+┌──────────── Join BandConnect ────────────┐
+│ [🎟️ Fan] [🏛️ Venue] [🎸 Musician] [🥁 Band] │  ← pick one
+│ "Showcase yourself, find gigs & bandmates" │
+│ Name ( )  Email ( )  Town ( )  ZIP ( )     │
+│ Password ( )           [ Create account ]  │
+└────────────────────────────────────────────┘
+```
+
+## 3. Event page — `/event/[id]`
+
+```
+← Back to calendar
+┌─────────────────────────────┐  ┌─ Are you going? ─────────┐
+│  ▣ cover photo OR video      │  │ [ Going | Maybe ]        │
+│  (video plays here)          │  │ 12 going · 3 interested  │
+│                              │  │ [ 🔗 Share ]             │
+├─────────────────────────────┤  ├─ Hosted by ──────────────┤
+│ [Cover] [Indie] [Folk]       │  │ ▣ The Space  [Follow][✉] │
+│ The Night Owls + Harbor Lights│ ├─ Who's going ────────────┤
+│ 🗓 Fri Jun 26 · 8:00 PM       │  │ ◯ ◯ ◯ ◯ ◯ …             │
+│ 📍 The Space · Hamden, CT     │  └──────────────────────────┘
+│ About this event…            │
+└─────────────────────────────┘
+```
+
+## 4. Discovery — `/venues` · `/artists`
+
+```
+Musicians & bands                                       (/artists)
+┌ Search( ) Type[All▾] Genre[Any▾] Open on(date) 🔍                ┐
+│ [✓ Available for gigs]  [Seeking: Musicians joining a band ▾]    │
 └──────────────────────────────────────────────────────────────────┘
-```
-
-## 2. Sign up — `/signup`  → `src/app/signup/page.tsx`
-
-```
-┌────────────────────────────────────────┐
-│           Create your account          │
-│   ┌──────────────┐  ┌──────────────┐   │
-│   │ 🎸 I'm a band │  │ 🏛️ I'm a venue│   │  ← role toggle (?role= preselects)
-│   │ Find venues  │  │ Find bands   │   │
-│   └──────────────┘  └──────────────┘   │
-│   Band/Venue name ( ___________ )      │
-│   Email           ( ___________ )      │
-│   City (optional) ( ___________ )      │
-│   Password        ( ___________ )      │   min 8 chars
-│            [ Create account ]          │
-│      Already have an account? Log in    │
-└────────────────────────────────────────┘
-```
-On submit → `POST /api/auth/signup` (bcrypt hash, auto-creates profile + slug)
-→ auto sign-in → `/dashboard`.
-
-## 3. Dashboard shell — `/dashboard/*`  → `src/app/dashboard/layout.tsx`
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│ Band dashboard                         [Free plan] [Upgrade] ★    │
-│ The Night Owls                                                    │
-├──────────────┬───────────────────────────────────────────────────┤
-│ 🏠 Overview   │                                                   │
-│ 🎛️ Edit profile│            « page content renders here »          │
-│ 📅 My shows    │                                                   │
-│ 📨 Submissions⁴│   (badges show unread messages / pending reqs)   │
-│ ✉️ Messages  ²  │                                                   │
-│ 💳 Billing     │                                                   │
-│ [View page ↗] │                                                   │
-└──────────────┴───────────────────────────────────────────────────┘
-```
-
-## 4. Dashboard overview — `/dashboard`
-
-```
-┌── Upcoming shows ──┐ ┌── Submissions ──┐ ┌── Unread msgs ──┐
-│        2/3         │ │        4        │ │       1        │
-└────────────────────┘ └─────────────────┘ └────────────────┘
-┌─ Your public page ───────────────────────────────────────────┐
-│ /bands/the-night-owls            [ Edit profile ] [ View ↗ ]  │
-└───────────────────────────────────────────────────────────────┘
-Quick actions:  [➕ Add a show] [🔎 Find venues] [✉️ Open inbox]
-Next up:  • Fri Night Live — Jun 29 · The Underground
-Upgrade nudge (free users only) ─────────────────────── [See Pro]
-```
-
-## 5. Profile editor — `/dashboard/profile`  → `ProfileForm.tsx`
-
-```
-┌─ Basics ───────────────────────────────────────────┐
-│ Name ( ____ )  Tagline ( ____ )                     │
-│ City ( ____ )  Members/Capacity ( __ )              │
-│ Bio / About ( ________________________________ )    │
-├─ Genres ───────────────────────────────────────────┤
-│ [Rock][Indie•][Punk][Metal][Jazz•]… (tap to toggle) │
-├─ Links & media ────────────────────────────────────┤
-│ Profile img URL ( __ )  Banner URL ( __ )           │
-│ Website ( __ ) Instagram ( __ ) Spotify ( __ ) …    │
-├─ Availability ─────────────────────────────────────┤
-│ [✓] Actively looking for gigs / accepting subs      │
-├─ Branding ─────────────────────────────────────────┤
-│ ★ Theme color [▣] (Pro only — locked for free)      │
-└────────────────────────────────────────────────────┘
-   sticky:  ✓ Saved                       [ Save changes ]
-```
-
-## 6. My shows — `/dashboard/shows`  → `ShowsManager.tsx`
-
-```
-My shows  (2 of 3 upcoming used)                 [ + Add show ]
-┌─ add form (toggles) ───────────────────────────────────────┐
-│ Title( ) Date&time( ) City( ) Venue( ) Lineup( ) Tickets( )│
-│                                  [Cancel] [Add show]        │
-└────────────────────────────────────────────────────────────┘
-UPCOMING
-┌────┬───────────────────────────────────────────────┐
-│ JUN│ Friday Night Live                              │
-│ 29 │ Sat Jun 29 · 8:00 PM · The Underground   Tickets↗ Delete │
-└────┴───────────────────────────────────────────────┘
-PAST  (dimmed)
-```
-At limit → amber banner + "Upgrade to Pro for unlimited shows".
-
-## 7. Submissions
-
-**Band view** (`sent`) — `/dashboard/submissions`
-```
-My submissions                                   [ Find venues ]
-┌──────────────────────────────────────────────────────────────┐
-│ The Underground          [Pending]               [ Message ]  │
-│ "Austin folk trio touring through NYC…"                       │
-│ Sent 2d ago · Proposed Aug 6                                  │
-└──────────────────────────────────────────────────────────────┘
-```
-**Venue view** (`received`)
-```
-Booking requests
-┌──────────────────────────────────────────────────────────────┐
-│ Wild Honey  (Austin, TX)                                      │
-│ "Austin folk trio…"                          [Accept][Decline]│
-│ 2d ago · Proposed Aug 6                       Message band →   │
-└──────────────────────────────────────────────────────────────┘
-```
-
-## 8. Messages — `/dashboard/messages`  → `MessagesInbox.tsx`
-
-```
-┌─ Conversations ─┬─ Thread: The Underground ───── [View page ↗] ─┐
-│ ▣ The Underground│                                              │
-│   "Load-in at 5…"│        Loved your set! Want the Friday slot?  │
-│ ▣ Wild Honey   ¹ │   We're in — the 7th works. Load-in?  ▏(me)   │
-│   "Thanks!"      │        Load-in at 5, doors at 8.              │
-│                  │                                              │
-│                  │ ( Message The Underground…        ) [ Send ] │
-└──────────────────┴──────────────────────────────────────────────┘
-```
-Opening a thread marks it read (`PATCH /api/messages`). `?to=<userId>` deep-links
-a new conversation (used by "Message" buttons across the app).
-
-## 9. Discovery — `/discover/bands` · `/discover/venues`
-
-```
-Find venues
-┌─ filters ─────────────────────────────────────────────────────┐
-│ Search( city / keyword )  Genre[▼ All]  [✓]Accepting  [Filter] │
-└────────────────────────────────────────────────────────────────┘
 ┌── card ──────────┐ ┌── card ──────────┐ ┌── card ──────────┐
-│ ▣ The Underground │ │ ▣ Echo Lounge    │ │ ▣ Warehouse 9    │
-│ Brooklyn·Cap.200  │ │ Austin·Cap.120   │ │ Chicago·Cap.500  │
-│ ★Featured         │ │                  │ │                  │
-│ [Booking now]     │ │ [Booking now]    │ │ [Booking now]    │
-│ Indie Punk Rock   │ │ Jazz Soul Folk   │ │ Electronic House │
-└───────────────────┘ └──────────────────┘ └──────────────────┘
-```
-Featured (★ Pro) profiles sort first.
-
-## 10. Public profile — `/bands/[slug]` · `/venues/[slug]`
-
-```
-┌──────────── banner (theme-tinted ▣) ─────────────────────────────┐
-│                                                                  │
-│  ▣      The Night Owls                          [✉️ Message]      │
-│ avatar  Loud, fast & from Brooklyn              [🎤 Submit]*      │
-│         📍 Brooklyn, NY                                           │
-│  [Looking for gigs] [4-piece] [★ Featured]                       │
-├───────────────────────────────────┬──────────────────────────────┤
-│ About                             │ Details                      │
-│ Four-piece indie outfit forged…   │ Based in   Brooklyn, NY      │
-│                                   │ Members    4                 │
-│ Upcoming shows                    │ Status     Available         │
-│ ┌──┬────────────────────────┐     │ ──────────────────────────   │
-│ │29│ Friday Night Live  Tix↗│     │ Genres  Indie Post-Punk      │
-│ └──┴────────────────────────┘     │ Links   🌐 📷 🎧             │
-└───────────────────────────────────┴──────────────────────────────┘
-* "Submit to play" appears for signed-in bands on venue pages →
-  opens a modal (subject, pitch, proposed date) → POST /api/submissions.
+│ ▣ Mara Quinn ★   │ │ ▣ The Night Owls │ │ ▣ Devon Park     │
+│ Musician·New Hvn │ │ Band·New Haven   │ │ Musician·Hartford│
+│ [Available][$150–│ │ [Available][$300–│ │ [Available]      │
+│ 300] Folk Indie  │ │ 600] Indie Punk  │ │ Rock Funk        │
+└──────────────────┘ └──────────────────┘ └──────────────────┘
 ```
 
-## 11. Pricing — `/pricing`  → `PricingTable.tsx`
+## 5. Public profile — `/p/[slug]` (type-aware)
 
 ```
-                  ( Monthly | Yearly  save $24 )    ← toggle
-┌── Starter ───────────────┐   ┌── Pro  ★ Most popular ──┐
-│ $0 /mo                   │   │ $12 /mo                 │
-│ ✓ Public profile         │   │ ✓ Everything in Starter │
-│ ✓ Up to 3 shows          │   │ ✓ Unlimited shows       │
-│ ✓ 5 submissions/mo       │   │ ✓ Unlimited submissions │
-│ ✓ Messaging              │   │ ✓ Custom branding       │
-│ [ Get started free ]     │   │ ✓ Featured placement    │
-│                          │   │ [ Upgrade to Pro ]      │
-└──────────────────────────┘   └─────────────────────────┘
-                         FAQ ↓
+┌──────────── banner (theme-tinted) ───────────────────────────────┐
+│ ▣      Mara Quinn          🎸 Musician      [Following ✓] [✉ Message]│
+│ avatar Singer-songwriter & multi-instrumentalist                  │
+│  📍 New Haven   [Available for gigs] [$150–$300] [42 followers]    │
+├───────────────────────────────────────┬──────────────────────────┤
+│ About …                               │ Genres  Folk Indie        │
+│ Upcoming events  ▣ ▣                  │ Instruments  Vocals Guitar│
+│ Media  ▣ video  ▣ image               │ ── Availability ──        │
+│                                       │ ✓ Available · $150–$300   │
+│ (Fan profile instead shows: Following,│ • Solo • Start a band     │
+│  Friends, and RSVP'd shows)           │ • Open for fill-ins       │
+│                                       │ Open dates: Mon Mon Mon   │
+│                                       │ Links 🌐 📷 🎧            │
+└───────────────────────────────────────┴──────────────────────────┘
 ```
-Logged-in free users → Stripe Checkout. Pro users → "Manage your plan".
-Demo billing mode → button disabled with an explanatory note.
 
-## 12. Billing — `/dashboard/billing`
+## 6. Dashboard (type-aware sidebar)
 
 ```
-Current plan
-┌──────────────────────────────────────────────────────────────┐
-│ Pro  ★              Renews Jul 22, 2026      [ Manage billing ]│
-└──────────────────────────────────────────────────────────────┘
-[ Starter ✓Current ]   [ Pro — feature list — Upgrade ]
-(success banner after returning from Stripe Checkout)
+┌ 🎸 Musician dashboard ─────────────── [★ Pro]  [Upgrade] ─┐
+│ 🏠 Overview                                              │
+│ 🎛 Edit profile        «  content area  »                │
+│ 📅 My events  (venue/musician/band)                      │
+│ 🗓 Calendar    (fan: RSVP'd · others: hosted)            │
+│ ✅ Availability (musician/band)                          │
+│ 👥 Network ²   (following / followers / friends)         │
+│ ✉ Messages ³                                             │
+│ 🔔 Notifications ⁵                                        │
+│ 💳 Billing                                               │
+│ [ View public profile ↗ ]                                │
+└──────────────────────────────────────────────────────────┘
+```
+
+- **Overview:** stat tiles (followers · upcoming/RSVP'd · unread) + quick actions.
+- **Edit profile:** type-aware form (basics, genres, instruments, gigs & rate,
+  status flags, photos/links, ★ theme color) + **Media manager** (add/remove
+  image & video URLs).
+- **My events:** create/edit/delete — title, cover photo/video (+ thumbnail),
+  description, start/optional-end, `👨‍👩‍👧 family-friendly`, `💵 cover charge`,
+  genre tags, CT town/ZIP.
+- **Calendar:** month grid of your shows + upcoming list.
+- **Availability:** add/remove open dates (with notes).
+- **Network:** friend requests (accept), friends, following, followers.
+- **Notifications:** new follower / friend request / RSVP / message / new event,
+  with unread dots and "mark all read."
+- **Messages:** two-pane inbox; deep-linked via `?to=<userId>` from any profile.
+- **Billing:** current plan, Stripe upgrade / manage (or demo-mode notice).
+
+## 7. Pricing — `/pricing`
+
+```
+            ( Monthly | Yearly  save $24 )
+┌─ Starter $0 ─────────┐   ┌─ Pro $12 ★ ──────────┐
+│ ✓ Profile & discovery│   │ ✓ Everything in free │
+│ ✓ Up to 3 events     │   │ ✓ Unlimited events   │
+│ ✓ Follow/RSVP/message│   │ ✓ Featured placement │
+│ [ Get started ]      │   │ ✓ Custom branding    │
+└──────────────────────┘   │ [ Upgrade to Pro ]   │
+                           └──────────────────────┘
 ```

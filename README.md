@@ -1,12 +1,11 @@
 <div align="center">
 
-# 🎸 BandConnect
+# 🎶 BandConnect
 
-### Where local bands and venues actually connect.
+### The calendar for Connecticut's live-music scene.
 
-Bands find rooms to play. Venues find acts to book. Everyone gets a beautiful
-single-page profile, a show calendar, direct messaging, and a simple booking
-workflow — with a free tier and a Pro subscription.
+Every live show in CT in one place. Fans discover and RSVP to gigs; venues,
+musicians, and bands build profiles, post events, and find each other.
 
 [Features](#-features) · [Quick start](#-quick-start) · [Deploy](#-deployment) · [Plan & wireframes](#-docs)
 
@@ -16,170 +15,128 @@ workflow — with a free tier and a Pro subscription.
 
 ## ✨ Features
 
-| For everyone | For bands | For venues |
-| --- | --- | --- |
-| Secure email/password auth (bcrypt) | One-page band site at `/bands/your-name` | One-page venue site at `/venues/your-room` |
-| Direct messaging inbox | Browse & filter venues | Browse & filter bands |
-| Public show calendar | Send booking submissions | Receive & accept/decline submissions |
-| Free tier + Pro subscription | Promote shows with tickets | Publish what & who you book |
-| Discovery with search & genre filters | Spotify / Bandcamp / YouTube links | Capacity, address, genres booked |
+### Calendar-first home page
+- Every Connecticut event in one feed, with **list ⇄ month-calendar** views.
+- Filter by **town or ZIP + radius (miles)** — a built-in CT geocode table and
+  the haversine formula, no external API.
+- Secondary filters: **family-friendly** and **no cover**, plus genre.
 
-**Free vs Pro**
+### Four profile types
+| Type | What they do |
+| --- | --- |
+| 🎟️ **Fan** | Follow venues/artists, friend other fans, RSVP (going/maybe), keep a personal show calendar, get notifications. |
+| 🏛️ **Venue / Host** | Promote the room, post events, media gallery, find acts available for gigs. |
+| 🎸 **Musician** | Bio, genres, instruments, media, rate range (hideable), gig status (solo / start a band / join a band / fill-ins), open-date availability calendar. |
+| 🥁 **Band** | Bio, genres, media, rate range, post shows, mark "needs musicians," find venues & players. |
 
-- **Starter (Free):** public profile, discovery listing, up to 3 upcoming shows,
-  5 booking submissions / month, full messaging.
-- **Pro ($12/mo):** unlimited shows & submissions, custom profile theme color,
-  featured placement in discovery, analytics, and branding removal.
+### Events
+Title · cover **photo or video** (video plays on the event page, thumbnail in
+lists) · description · start + optional end · **family-friendly** toggle ·
+**cover-charge** toggle · genre tags · Connecticut geo.
 
-Billing is powered by **Stripe** (Checkout + Billing Portal + webhooks). When
-Stripe keys aren't configured the app runs in **demo billing mode** — every
-feature still works, upgrade buttons just explain that billing is disabled.
+### Social
+Follow any profile · fan↔fan **friendships** · **RSVP** going/maybe · direct
+**messaging** · **share** · in-app **notifications** (new follower, friend
+request, RSVP, message, new event from someone you follow).
+
+### Discovery & search
+Browse **/venues** and **/artists**. Artists are searchable by genre,
+**availability date**, and **seeking status** (joining/forming a band, open for
+fill-ins, bands needing musicians).
+
+### Free vs Pro (Stripe)
+- **Starter (free):** profile, discovery, up to 3 events, full social features.
+- **Pro ($12/mo):** unlimited events, featured placement, custom theme color,
+  analytics, branding removal.
+
+Billing runs on Stripe (Checkout + Portal + signature-verified webhooks). With
+no Stripe keys set, the app runs in **demo billing mode** — fully usable,
+upgrade buttons just explain billing is off.
 
 ## 🧱 Tech stack
 
-- **[Next.js 14](https://nextjs.org/)** (App Router) — full-stack React, one codebase
-- **TypeScript** end to end
-- **[Prisma](https://www.prisma.io/)** ORM — SQLite for dev, Postgres for prod
-- **[NextAuth](https://next-auth.js.org/)** (credentials + JWT sessions, bcrypt hashing)
-- **[Stripe](https://stripe.com/)** — subscriptions
-- **[Tailwind CSS](https://tailwindcss.com/)** — styling
-- **[Zod](https://zod.dev/)** — runtime validation on every API route
+Next.js 14 (App Router) · TypeScript · Prisma (SQLite dev / Postgres prod) ·
+NextAuth (credentials + bcrypt) · Stripe · Tailwind CSS · Zod.
 
 ## 🚀 Quick start
 
 ```bash
-# 1. Install dependencies (also generates the Prisma client)
 npm install
-
-# 2. Create your env file
-cp .env.example .env
-#   The defaults work out of the box for local dev (SQLite, billing disabled).
-
-# 3. Create the database and load demo data
-npm run db:push
-npm run db:seed
-
-# 4. Run it
-npm run dev
+cp .env.example .env       # defaults work for local dev (SQLite, billing off)
+npm run db:push            # create the database
+npm run db:seed            # load CT demo data
+npm run dev                # http://localhost:3000
 ```
 
-Open **http://localhost:3000**.
-
 ### Demo logins
+Password for all accounts is **`password123`**:
 
-The seed creates a full demo scene. Password for all accounts is **`password123`**.
+| Account | Type |
+| --- | --- |
+| `fan@demo.com` | Fan |
+| `venue@demo.com` | Venue (Pro) |
+| `musician@demo.com` | Musician (Pro) |
+| `band@demo.com` | Band (Pro) |
 
-| Account | Role | Plan |
-| --- | --- | --- |
-| `band@demo.com` | Band (The Night Owls) | Pro |
-| `venue@demo.com` | Venue (The Underground) | Pro |
+Plus more venues, bands, musicians, fans, a dozen events across CT, follows,
+RSVPs, availability, and a message thread.
 
-Plus 5 more bands and 4 more venues, with shows, submissions, and a message thread.
-
-### Useful scripts
-
+### Scripts
 ```bash
-npm run dev        # start dev server
-npm run build      # production build (runs prisma generate)
-npm start          # run the production build
-npm run db:push    # sync schema to the database
-npm run db:seed    # load demo data
-npm run db:reset   # wipe + re-seed (dev only)
-npm run db:studio  # open Prisma Studio to browse data
+npm run dev | build | start
+npm run db:push     # sync schema to the database
+npm run db:seed     # load demo data
+npm run db:reset    # wipe + reseed (dev only)
+npm run db:studio   # browse data in Prisma Studio
 ```
 
 ## ☁️ Deployment
 
-BandConnect deploys to any Node host. The fastest path is **Vercel + a hosted Postgres**.
+Fastest path: **Vercel + hosted Postgres**.
 
-### 1. Switch the database to Postgres
-
-In `prisma/schema.prisma`, change the datasource provider:
-
-```prisma
-datasource db {
-  provider = "postgresql"   // was "sqlite"
-  url      = env("DATABASE_URL")
-}
-```
-
-Create a Postgres database (Vercel Postgres, Neon, Supabase, Railway…) and set
-`DATABASE_URL` to its connection string.
-
-### 2. Set environment variables
-
-| Variable | Required | Notes |
-| --- | --- | --- |
-| `DATABASE_URL` | ✅ | Postgres connection string |
-| `NEXTAUTH_SECRET` | ✅ | `openssl rand -base64 32` |
-| `NEXTAUTH_URL` | ✅ | Your deployed URL, e.g. `https://bandconnect.app` |
-| `NEXT_PUBLIC_APP_URL` | ✅ | Same as above |
-| `STRIPE_SECRET_KEY` | for billing | From the Stripe dashboard |
-| `STRIPE_WEBHOOK_SECRET` | for billing | From your webhook endpoint |
-| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | for billing | Publishable key |
-| `STRIPE_PRICE_ID_PRO_MONTHLY` | for billing | Price ID for the monthly Pro plan |
-| `STRIPE_PRICE_ID_PRO_YEARLY` | for billing | Price ID for the yearly Pro plan |
-
-### 3. Push the schema and deploy
-
-```bash
-npx prisma db push      # create tables on your Postgres database
-# (optional) npm run db:seed
-```
-
-Deploy on Vercel (`vercel --prod`) or any Node host running `npm run build && npm start`.
-
-### 4. Enable Stripe billing (optional)
-
-1. Create a **Product** with monthly and yearly **Prices** in the Stripe dashboard.
-2. Put the price IDs in `STRIPE_PRICE_ID_PRO_MONTHLY` / `_YEARLY`.
-3. Add a webhook endpoint pointing at `https://YOUR_DOMAIN/api/stripe/webhook`,
-   subscribed to `checkout.session.completed`,
-   `customer.subscription.updated`, and `customer.subscription.deleted`.
-4. Copy the webhook signing secret into `STRIPE_WEBHOOK_SECRET`.
-
-For local webhook testing: `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
+1. In `prisma/schema.prisma`, set `provider = "postgresql"`.
+2. Set env vars (see `.env.example`): `DATABASE_URL`, `NEXTAUTH_SECRET`
+   (`openssl rand -base64 32`), `NEXTAUTH_URL`, `NEXT_PUBLIC_APP_URL`, and—for
+   live billing—the `STRIPE_*` keys + price IDs.
+3. `npx prisma db push` against your Postgres, then deploy.
+4. For Stripe: add a webhook to `/api/stripe/webhook` for
+   `checkout.session.completed`, `customer.subscription.updated`, and
+   `customer.subscription.deleted`.
 
 ## 🗂️ Project structure
 
 ```
 src/
 ├── app/
-│   ├── page.tsx                 # marketing landing page
-│   ├── login, signup/           # auth screens
-│   ├── discover/bands|venues/   # directory + filters
-│   ├── bands|venues/[slug]/     # public single-page profiles
-│   ├── shows/                   # public show calendar
-│   ├── pricing/                 # plans + FAQ
-│   ├── dashboard/               # authed app (profile, shows, submissions, messages, billing)
-│   └── api/                     # auth, profile, events, submissions, messages, stripe
-├── components/                  # UI + feature components
-├── lib/                         # prisma, auth, stripe, plans, validations, utils
-└── types/                       # NextAuth type augmentation
-prisma/
-├── schema.prisma                # data model
-└── seed.ts                      # demo data
-docs/
-├── PLAN.md                      # product & technical plan + roadmap
-└── WIREFRAMES.md                # screen wireframes
+│   ├── page.tsx                # home: CT event calendar (list + calendar)
+│   ├── event/[id]/             # event detail (video plays here)
+│   ├── venues/ · artists/      # discovery
+│   ├── p/[slug]/               # unified public profile (4 types)
+│   ├── login/ · signup/        # auth (4 roles)
+│   ├── pricing/
+│   ├── dashboard/              # overview, profile+media, events, calendar,
+│   │                           # availability, network, notifications,
+│   │                           # messages, billing
+│   └── api/                    # auth, profile, events, follow, friend, rsvp,
+│                               # media, availability, notifications, messages,
+│                               # stripe
+├── components/                 # UI + feature components
+└── lib/                        # prisma, auth, stripe, plans, ct-geo,
+                                # constants, validations, utils
+prisma/  schema.prisma · seed.ts
+docs/    PLAN.md · WIREFRAMES.md
 ```
 
-## 🔐 Security notes
+## 🔐 Security
 
-- Passwords are hashed with **bcrypt** (cost 12); plaintext is never stored.
-- Every API route validates input with **Zod** and checks authentication and
-  ownership before writing.
-- Sessions are stateless **JWTs** signed with `NEXTAUTH_SECRET`.
-- Stripe webhooks are **signature-verified** before any database change.
-- Plan limits are enforced **server-side**, not just hidden in the UI.
+bcrypt password hashing · Zod validation on every mutating route · server-side
+authorization & ownership checks · JWT sessions · signature-verified Stripe
+webhooks · plan limits enforced server-side.
 
 ## 📚 Docs
-
-- **[docs/PLAN.md](docs/PLAN.md)** — the product vision, data model, architecture, and roadmap.
+- **[docs/PLAN.md](docs/PLAN.md)** — product vision, data model, architecture, roadmap.
 - **[docs/WIREFRAMES.md](docs/WIREFRAMES.md)** — wireframes for every key screen.
 
 ---
 
-<div align="center">
-Built for the local scene with Next.js, Prisma & Stripe.
-</div>
+<div align="center">Built for the Connecticut scene with Next.js, Prisma & Stripe.</div>
