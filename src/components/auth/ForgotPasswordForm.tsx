@@ -1,0 +1,57 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+
+export function ForgotPasswordForm() {
+  const [email, setEmail] = useState("");
+  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    await fetch("/api/auth/forgot-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    }).catch(() => {});
+    setSent(true);
+    setLoading(false);
+  }
+
+  return (
+    <div className="w-full max-w-md">
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold">Reset your password</h1>
+        <p className="mt-2 text-sm text-zinc-400">We&apos;ll email you a link to set a new one.</p>
+      </div>
+
+      {sent ? (
+        <div className="card p-6 text-center">
+          <div className="text-3xl">📧</div>
+          <p className="mt-3 text-zinc-200">
+            If an account exists for <strong>{email}</strong>, a reset link is on its way.
+          </p>
+          <p className="mt-2 text-sm text-zinc-400">Check your inbox (and spam). The link expires in 1 hour.</p>
+          <Link href="/login" className="btn-primary mt-5">Back to log in</Link>
+        </div>
+      ) : (
+        <form onSubmit={onSubmit} className="card space-y-4 p-6">
+          <div>
+            <label htmlFor="fp-email" className="label">Email</label>
+            <input id="fp-email" type="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@email.com" />
+          </div>
+          <button type="submit" disabled={loading} className="btn-primary w-full">
+            {loading ? "Sending…" : "Send reset link"}
+          </button>
+        </form>
+      )}
+
+      <p className="mt-6 text-center text-sm text-zinc-400">
+        Remembered it?{" "}
+        <Link href="/login" className="font-medium text-brand-300 hover:text-brand-200">Log in</Link>
+      </p>
+    </div>
+  );
+}

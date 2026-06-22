@@ -93,6 +93,23 @@ specifically so the schema is portable.
 
 Without these the app runs fine in **demo billing mode**.
 
+## Email & reminders (optional, for live email)
+
+Transactional email (welcome, password reset, event reminders) uses **Resend**.
+
+1. Get a key at <https://resend.com>, verify a sending domain (or use
+   `onboarding@resend.dev` for testing).
+2. Set `RESEND_API_KEY` and `EMAIL_FROM`.
+
+Without `RESEND_API_KEY` the app runs in **log mode** — emails are written to
+the server console instead of sent, so every flow still works.
+
+**Event reminders** are sent by `/api/cron/reminders`, which reminds each
+RSVP'd show starting within 24h exactly once. On Vercel this is wired up by
+`vercel.json` (hourly). Protect it by setting `CRON_SECRET` — Vercel Cron sends
+it automatically as a Bearer token. On other hosts, call the endpoint on a
+schedule with `Authorization: Bearer $CRON_SECRET` (or `?key=$CRON_SECRET`).
+
 ## What about a static page on GitHub Pages?
 
 If you specifically want *something* on GitHub Pages, the only sensible use is a

@@ -34,9 +34,10 @@ model User {
 
   profile Profile?
 
-  sentMessages     Message[]      @relation("SentMessages")
-  receivedMessages Message[]      @relation("ReceivedMessages")
+  sentMessages     Message[]            @relation("SentMessages")
+  receivedMessages Message[]            @relation("ReceivedMessages")
   notifications    Notification[]
+  resetTokens      PasswordResetToken[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -211,10 +212,27 @@ model Rsvp {
 
   status String @default("GOING") // "GOING" | "MAYBE"
 
+  // Set once a pre-show reminder has been delivered (prevents duplicates).
+  reminderSentAt DateTime?
+
   createdAt DateTime @default(now())
 
   @@unique([profileId, eventId])
   @@index([eventId])
+}
+
+// --- Password reset ---------------------------------------------------------
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
 }
 
 model AvailabilityDate {

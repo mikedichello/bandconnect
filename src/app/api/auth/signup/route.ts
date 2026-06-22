@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { signupSchema } from "@/lib/validations";
 import { slugify } from "@/lib/utils";
 import { coordsForTown } from "@/lib/ct-geo";
+import { sendWelcomeEmail } from "@/lib/email";
 
 /**
  * Create an account of any of the four profile types. Passwords are hashed
@@ -60,6 +61,9 @@ export async function POST(req: Request) {
         },
       },
     });
+
+    // Fire-and-forget welcome email (no-ops to a console log without a key).
+    void sendWelcomeEmail(normalizedEmail, displayName);
 
     return NextResponse.json({ ok: true, userId: user.id }, { status: 201 });
   } catch (err) {
