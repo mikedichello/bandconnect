@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Bell, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const publicLinks = [
@@ -17,9 +18,29 @@ export function Navbar() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
+  const [unread, setUnread] = useState(0);
+  const role = session?.user?.role;
+  const canPost = role && role !== "FAN";
 
   // Hide the marketing navbar chrome on auth pages for a cleaner look.
   const isAuthPage = pathname === "/login" || pathname === "/signup";
+
+  // Poll unread notification + message counts for the bell badge.
+  useEffect(() => {
+    if (status !== "authenticated") return;
+    let active = true;
+    const load = () =>
+      fetch("/api/me/badges")
+        .then((r) => r.json())
+        .then((d) => active && setUnread((d.notifications || 0) + (d.messages || 0)))
+        .catch(() => {});
+    load();
+    const t = setInterval(load, 60000);
+    return () => {
+      active = false;
+      clearInterval(t);
+    };
+  }, [status, pathname]);
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-ink/80 backdrop-blur-lg">
@@ -55,6 +76,23 @@ export function Navbar() {
         <div className="hidden items-center gap-3 md:flex">
           {status === "authenticated" ? (
             <>
+              {canPost && (
+                <Link href="/dashboard/events" className="btn-primary px-4 py-2 text-sm">
+                  <Plus className="h-4 w-4" aria-hidden="true" /> Post event
+                </Link>
+              )}
+              <Link
+                href="/dashboard/notifications"
+                aria-label={unread > 0 ? `Notifications, ${unread} unread` : "Notifications"}
+                className="relative grid h-9 w-9 place-items-center rounded-full bg-white/5 text-zinc-200 hover:bg-white/10"
+              >
+                <Bell className="h-4 w-4" aria-hidden="true" />
+                {unread > 0 && (
+                  <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-accent px-1 text-[10px] font-semibold text-white">
+                    {unread > 9 ? "9+" : unread}
+                  </span>
+                )}
+              </Link>
               <Link href="/dashboard" className="btn-ghost">
                 Dashboard
               </Link>
@@ -103,6 +141,15 @@ export function Navbar() {
             <div className="my-2 h-px bg-white/10" />
             {status === "authenticated" ? (
               <>
+                {canPost && (
+                  <Link href="/dashboard/events" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-semibold text-brand-300 hover:bg-white/5">
+                    + Post event
+                  </Link>
+                )}
+                <Link href="/dashboard/notifications" onClick={() => setOpen(false)} className="flex items-center justify-between rounded-lg px-3 py-2 text-sm text-zinc-200 hover:bg-white/5">
+                  Notifications
+                  {unread > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1.5 text-xs font-semibold text-white">{unread > 9 ? "9+" : unread}</span>}
+                </Link>
                 <Link href="/dashboard" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm text-white hover:bg-white/5">
                   Dashboard
                 </Link>

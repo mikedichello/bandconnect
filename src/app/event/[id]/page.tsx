@@ -7,7 +7,10 @@ import { ImageWithFallback } from "@/components/ImageWithFallback";
 import { RsvpButton } from "@/components/RsvpButton";
 import { FollowButton } from "@/components/FollowButton";
 import { ShareButton } from "@/components/ShareButton";
+import { AddToCalendar } from "@/components/events/AddToCalendar";
 import { formatDate, formatTime, parseTags, initials, toEmbedUrl } from "@/lib/utils";
+
+const BASE = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const event = await prisma.event.findUnique({ where: { id: params.id } });
@@ -41,8 +44,43 @@ export default async function EventPage({ params }: { params: { id: string } }) 
   const tags = parseTags(event.genres);
   const accent = event.host.themeColor || "#7c4dff";
 
+  // schema.org MusicEvent for Google event rich results.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "MusicEvent",
+    name: event.title,
+    startDate: event.startAt.toISOString(),
+    ...(event.endAt ? { endDate: event.endAt.toISOString() } : {}),
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    ...(event.coverType === "IMAGE" && event.coverUrl ? { image: [event.coverUrl] } : {}),
+    ...(event.description ? { description: event.description } : {}),
+    location: {
+      "@type": "Place",
+      name: event.locationName ?? "Venue TBA",
+      address: {
+        "@type": "PostalAddress",
+        ...(event.address ? { streetAddress: event.address } : {}),
+        ...(event.city ? { addressLocality: event.city } : {}),
+        addressRegion: "CT",
+        ...(event.zip ? { postalCode: event.zip } : {}),
+        addressCountry: "US",
+      },
+    },
+    organizer: { "@type": "Organization", name: event.host.displayName, url: `${BASE}/p/${event.host.slug}` },
+    offers: {
+      "@type": "Offer",
+      price: event.hasCoverCharge ? undefined : "0",
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+      url: `${BASE}/event/${event.id}`,
+    },
+    url: `${BASE}/event/${event.id}`,
+  };
+
   return (
     <article className="container-page py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Link href="/" className="text-sm text-zinc-400 hover:text-white">← Back to calendar</Link>
 
       <div className="mt-4 grid gap-8 lg:grid-cols-[1fr_320px]">
@@ -122,6 +160,8 @@ export default async function EventPage({ params }: { params: { id: string } }) 
               <ShareButton title={event.title} />
             </div>
           </div>
+
+          <AddToCalendar event={event} />
 
           {/* Host */}
           <div className="card p-5">

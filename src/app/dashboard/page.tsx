@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { isPro, planFor } from "@/lib/plans";
 import { isArtist } from "@/lib/constants";
 import { formatDate, formatTime } from "@/lib/utils";
+import { OnboardingChecklist, type ChecklistStep } from "@/components/dashboard/OnboardingChecklist";
 
 export const metadata = { title: "Dashboard" };
 
@@ -13,7 +14,7 @@ export default async function DashboardHome() {
   const type = profile.type;
   const now = new Date();
 
-  const [followers, following, upcomingHosted, rsvped, unreadMessages] = await Promise.all([
+  const [followers, following, upcomingHosted, rsvped, unreadMessages, totalHosted, totalRsvps] = await Promise.all([
     prisma.follow.count({ where: { followingId: profile.id } }),
     prisma.follow.count({ where: { followerId: profile.id } }),
     type !== "FAN"
@@ -26,10 +27,23 @@ export default async function DashboardHome() {
       include: { event: true },
     }),
     prisma.message.count({ where: { recipientId: user.id, readAt: null } }),
+    type !== "FAN" ? prisma.event.count({ where: { hostProfileId: profile.id } }) : Promise.resolve(0),
+    type === "FAN" ? prisma.rsvp.count({ where: { profileId: profile.id } }) : Promise.resolve(0),
   ]);
+
+  // Onboarding checklist steps (per profile type).
+  const steps: ChecklistStep[] = [
+    { label: "Add a profile photo", done: Boolean(profile.avatarUrl), href: "/dashboard/profile" },
+    { label: "Write a short bio", done: Boolean(profile.bio), href: "/dashboard/profile" },
+    type === "FAN"
+      ? { label: "RSVP to your first show", done: totalRsvps > 0, href: "/" }
+      : { label: "Post your first event", done: totalHosted > 0, href: "/dashboard/events" },
+    { label: `Follow 3 ${type === "FAN" ? "artists or venues" : "profiles"}`, done: following >= 3, href: type === "VENUE" ? "/artists" : "/venues" },
+  ];
 
   return (
     <div className="space-y-6">
+      <OnboardingChecklist steps={steps} />
       <div className="grid gap-4 sm:grid-cols-3">
         <Stat label="Followers" value={followers} href="/dashboard/network" icon="👥" />
         <Stat label={type === "FAN" ? "Shows RSVP'd" : "Upcoming events"} value={type === "FAN" ? rsvped.length : upcomingHosted.length} href={type === "FAN" ? "/dashboard/calendar" : "/dashboard/events"} icon="🗓️" />

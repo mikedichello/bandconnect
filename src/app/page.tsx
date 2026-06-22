@@ -17,7 +17,43 @@ type SP = {
   noCover?: string;
   view?: string;
   month?: string;
+  when?: string;
+  lat?: string;
+  lng?: string;
 };
+
+const WHEN_OPTIONS = [
+  { key: "", label: "Upcoming" },
+  { key: "tonight", label: "Tonight" },
+  { key: "weekend", label: "This weekend" },
+  { key: "week", label: "This week" },
+];
+
+/** Compute the [start, end) window for a quick date filter. */
+function whenWindow(when: string | undefined, now: Date): { start: Date; end?: Date } {
+  if (when === "tonight") {
+    const end = new Date(now);
+    end.setHours(23, 59, 59, 999);
+    return { start: now, end };
+  }
+  if (when === "week") {
+    const end = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    return { start: now, end };
+  }
+  if (when === "weekend") {
+    const day = now.getDay(); // 0 Sun … 6 Sat
+    const inWeekend = day === 5 || day === 6 || day === 0;
+    const start = new Date(now);
+    if (!inWeekend) start.setDate(now.getDate() + ((5 - day + 7) % 7)); // next Friday
+    if (!inWeekend) start.setHours(0, 0, 0, 0);
+    const end = new Date(start);
+    const toSunday = (7 - end.getDay()) % 7; // days until Sunday
+    end.setDate(end.getDate() + toSunday);
+    end.setHours(23, 59, 59, 999);
+    return { start: inWeekend ? now : start, end };
+  }
+  return { start: now };
+}
 
 export default async function HomePage({ searchParams }: { searchParams: SP }) {
   const me = await getCurrentProfile();
@@ -27,7 +63,15 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
   const genre = searchParams.genre?.trim() || "";
   const family = searchParams.family === "1";
   const noCover = searchParams.noCover === "1";
-  const geo = resolveCtLocation(searchParams.loc);
+  const when = searchParams.when || "";
+
+  // Geo center: explicit lat/lng (from "use my location") wins over a typed town/ZIP.
+  const lat = Number(searchParams.lat);
+  const lng = Number(searchParams.lng);
+  const geo =
+    !Number.isNaN(lat) && !Number.isNaN(lng) && searchParams.lat && searchParams.lng
+      ? { lat, lng, label: "your location" }
+      : resolveCtLocation(searchParams.loc);
   const radius = Number(searchParams.radius) || 25;
 
   // Determine the time window.
@@ -40,6 +84,10 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
     monthDate = m ? new Date(Number(m[1]), Number(m[2]) - 1, 1) : new Date(now.getFullYear(), now.getMonth(), 1);
     rangeStart = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
     rangeEnd = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 1);
+  } else {
+    const w = whenWindow(when, now);
+    rangeStart = w.start;
+    rangeEnd = w.end;
   }
 
   const events = await prisma.event.findMany({
@@ -108,6 +156,14 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
     p.set("month", `${y}-${String(m + 1).padStart(2, "0")}`);
     return `/?${p.toString()}`;
   };
+  const whenHref = (k: string) => {
+    const p = new URLSearchParams(filterQs);
+    p.delete("when");
+    p.delete("month");
+    p.set("view", "list");
+    if (k) p.set("when", k);
+    return `/?${p.toString()}`;
+  };
 
   return (
     <div>
@@ -135,6 +191,27 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
 
       <div className="container-page space-y-5 py-6">
         <EventFilters resolvedLabel={geo?.label ?? null} />
+
+        {/* Date quick-filters (list view) */}
+        {view === "list" && (
+          <div className="flex flex-wrap gap-2" role="group" aria-label="Date filter">
+            {WHEN_OPTIONS.map((o) => (
+              <Link
+                key={o.key || "all"}
+                href={whenHref(o.key)}
+                aria-current={when === o.key ? "true" : undefined}
+                className={cn(
+                  "rounded-full border px-4 py-1.5 text-sm font-medium transition",
+                  when === o.key
+                    ? "border-brand-400/60 bg-brand-500/20 text-white"
+                    : "border-white/10 bg-black/20 text-zinc-300 hover:border-white/25",
+                )}
+              >
+                {o.label}
+              </Link>
+            ))}
+          </div>
+        )}
 
         {/* View toggle + count */}
         <div className="flex items-center justify-between">
