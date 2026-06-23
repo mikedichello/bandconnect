@@ -33,11 +33,11 @@ export function ProfileCard({ data }: { data: ProfileCardData }) {
             src={data.avatarUrl}
             alt={data.displayName}
             className="h-full w-full object-cover"
-            fallback={<div className="grid h-full w-full place-items-center text-lg font-bold text-brand-200">{initials(data.displayName)}</div>}
+            fallback={<div className="grid h-full w-full place-items-center text-lg font-bold text-brand-700 dark:text-brand-200">{initials(data.displayName)}</div>}
           />
         </div>
         <div className="min-w-0">
-          <h3 className="truncate text-lg font-semibold text-fg group-hover:text-brand-200">{data.displayName}</h3>
+          <h3 className="truncate text-lg font-semibold text-fg group-hover:text-brand-700 dark:group-hover:text-brand-200">{data.displayName}</h3>
           <p className="truncate text-sm text-subtle">
             {typeLabel}{data.city ? ` · ${data.city}` : ""}
           </p>

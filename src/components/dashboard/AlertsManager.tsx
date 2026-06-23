@@ -30,7 +30,7 @@ export function AlertsManager({ initial }: { initial: AlertRow[] }) {
         <h1 className="text-xl font-bold">Alerts</h1>
         <p className="text-sm text-subtle">
           Get notified when a new show matches. Create one from the{" "}
-          <Link href="/" className="text-brand-300 hover:text-brand-200">calendar</Link> — filter
+          <Link href="/" className="link">calendar</Link> — filter
           by town or genre, then “Save this search”.
         </p>
       </div>
@@ -46,7 +46,7 @@ export function AlertsManager({ initial }: { initial: AlertRow[] }) {
           {alerts.map((a) => (
             <li key={a.id} className="card flex items-center justify-between gap-3 p-4">
               <div className="flex items-center gap-3">
-                <span className="grid h-9 w-9 place-items-center rounded-full bg-brand-500/15 text-brand-300">
+                <span className="grid h-9 w-9 place-items-center rounded-full bg-brand-500/15 text-brand-700 dark:text-brand-300">
                   <Bell className="h-4 w-4" aria-hidden="true" />
                 </span>
                 <div>
@@ -56,7 +56,7 @@ export function AlertsManager({ initial }: { initial: AlertRow[] }) {
                   </p>
                 </div>
               </div>
-              <button onClick={() => remove(a.id)} className="text-sm text-subtle hover:text-red-300">Remove</button>
+              <button onClick={() => remove(a.id)} className="text-sm text-subtle hover:text-red-600 dark:hover:text-red-300">Remove</button>
             </li>
           ))}
         </ul>

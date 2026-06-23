@@ -51,7 +51,7 @@ export function Navbar() {
             <BoltIcon />
           </span>
           <span className="font-display text-lg font-bold text-fg">
-            Band<span className="text-brand-400">Connect</span>
+            Band<span className="text-brand-600 dark:text-brand-400">Connect</span>
           </span>
         </Link>
 
@@ -147,7 +147,7 @@ export function Navbar() {
             {status === "authenticated" ? (
               <>
                 {canPost && (
-                  <Link href="/dashboard/events" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-semibold text-brand-300 hover:bg-elevated">
+                  <Link href="/dashboard/events" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-semibold text-brand-700 hover:bg-elevated dark:text-brand-300">
                     + Post event
                   </Link>
                 )}
@@ -170,7 +170,7 @@ export function Navbar() {
                 <Link href="/login" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm text-fg hover:bg-elevated">
                   Log in
                 </Link>
-                <Link href="/signup" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-semibold text-brand-300 hover:bg-elevated">
+                <Link href="/signup" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-semibold text-brand-700 hover:bg-elevated dark:text-brand-300">
                   Get started
                 </Link>
               </>

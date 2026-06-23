@@ -62,11 +62,11 @@ export function EventCard({
       <div className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wide text-brand-300">
+            <p className="text-xs font-semibold uppercase tracking-wide text-brand-700 dark:text-brand-300">
               {event.startAt.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })} · {formatTime(event.startAt)}
             </p>
             <Link href={`/event/${event.id}`}>
-              <h3 className="mt-0.5 truncate text-lg font-bold text-fg hover:text-brand-200">{event.title}</h3>
+              <h3 className="mt-0.5 truncate text-lg font-bold text-fg hover:text-brand-700 dark:hover:text-brand-200">{event.title}</h3>
             </Link>
             <p className="truncate text-sm text-subtle">
               {event.locationName ?? "Venue TBA"}
@@ -77,7 +77,7 @@ export function EventCard({
         </div>
 
         <div className="mt-3 flex items-center gap-1.5">
-          <span className="grid h-6 w-6 flex-shrink-0 place-items-center rounded-full bg-brand-500/20 text-[10px] font-bold text-brand-200">
+          <span className="grid h-6 w-6 flex-shrink-0 place-items-center rounded-full bg-brand-500/20 text-[10px] font-bold text-brand-700 dark:text-brand-200">
             {initials(event.host.displayName)}
           </span>
           <Link href={`/p/${event.host.slug}`} className="truncate text-xs text-subtle hover:text-fg">

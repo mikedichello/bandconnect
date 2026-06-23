@@ -57,22 +57,22 @@ export function MediaManager({ initial }: { initial: MediaRow[] }) {
 
       <form onSubmit={add} className="mt-4 grid gap-3 sm:grid-cols-[120px_1fr_auto] sm:items-end">
         <div>
-          <label className="label">Type</label>
-          <select className="input" value={kind} onChange={(e) => setKind(e.target.value as "IMAGE" | "VIDEO")}>
+          <label htmlFor="m-kind" className="label">Type</label>
+          <select id="m-kind" className="input" value={kind} onChange={(e) => setKind(e.target.value as "IMAGE" | "VIDEO")}>
             <option value="IMAGE">Image</option>
             <option value="VIDEO">Video</option>
           </select>
         </div>
         <div>
-          <label className="label">URL</label>
-          <input className="input" value={url} onChange={(e) => setUrl(e.target.value)} placeholder={kind === "VIDEO" ? "https://youtube.com/watch?v=…" : "https://…/photo.jpg"} required />
+          <label htmlFor="m-url" className="label">URL</label>
+          <input id="m-url" className="input" value={url} onChange={(e) => setUrl(e.target.value)} placeholder={kind === "VIDEO" ? "https://youtube.com/watch?v=…" : "https://…/photo.jpg"} required />
         </div>
         <button className="btn-primary" disabled={busy}>{busy ? "Adding…" : "Add"}</button>
         <div className="sm:col-span-3">
-          <input className="input" value={caption} onChange={(e) => setCaption(e.target.value)} placeholder="Caption (optional)" maxLength={160} />
+          <input className="input" aria-label="Caption" value={caption} onChange={(e) => setCaption(e.target.value)} placeholder="Caption (optional)" maxLength={160} />
         </div>
       </form>
-      {error && <p className="mt-2 text-sm text-red-300">{error}</p>}
+      {error && <p role="alert" className="mt-2 text-sm text-red-700 dark:text-red-300">{error}</p>}
 
       {items.length > 0 && (
         <div className="mt-5 grid gap-3 sm:grid-cols-3">

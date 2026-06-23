@@ -55,7 +55,7 @@ export default async function DashboardHome() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-lg font-semibold">Your public profile</h2>
-            <code className="mt-2 inline-block rounded-lg bg-input px-3 py-1.5 text-xs text-brand-200">/p/{profile.slug}</code>
+            <code className="mt-2 inline-block rounded-lg bg-input px-3 py-1.5 text-xs text-brand-700 dark:text-brand-200">/p/{profile.slug}</code>
           </div>
           <div className="flex gap-2">
             <Link href="/dashboard/profile" className="btn-ghost">Edit</Link>
@@ -81,12 +81,12 @@ export default async function DashboardHome() {
       <section className="card p-6">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">{type === "FAN" ? "Your upcoming shows" : "Your next events"}</h2>
-          <Link href="/dashboard/calendar" className="text-sm text-brand-300 hover:text-brand-200">View calendar →</Link>
+          <Link href="/dashboard/calendar" className="text-sm link">View calendar →</Link>
         </div>
         {(type === "FAN" ? rsvped.length : upcomingHosted.length) === 0 ? (
           <p className="mt-4 text-sm text-subtle">
             Nothing upcoming yet.{" "}
-            <Link href={type === "FAN" ? "/" : "/dashboard/events"} className="text-brand-300 hover:text-brand-200">
+            <Link href={type === "FAN" ? "/" : "/dashboard/events"} className="link">
               {type === "FAN" ? "Find a show →" : "Post an event →"}
             </Link>
           </p>
@@ -95,7 +95,7 @@ export default async function DashboardHome() {
             {(type === "FAN" ? rsvped.map((r) => r.event) : upcomingHosted).map((e) => (
               <li key={e.id} className="flex items-center justify-between py-3">
                 <div>
-                  <Link href={`/event/${e.id}`} className="font-medium text-fg hover:text-brand-200">{e.title}</Link>
+                  <Link href={`/event/${e.id}`} className="font-medium text-fg hover:text-brand-700 dark:hover:text-brand-200">{e.title}</Link>
                   <p className="text-sm text-subtle">{formatDate(e.startAt)} · {formatTime(e.startAt)}{e.city ? ` · ${e.city}` : ""}</p>
                 </div>
               </li>

@@ -57,15 +57,15 @@ export function AvailabilityManager({ initial }: { initial: OpenDate[] }) {
 
       <form onSubmit={add} className="card grid gap-3 p-6 sm:grid-cols-[180px_1fr_auto] sm:items-end">
         <div>
-          <label className="label">Open date</label>
-          <input type="date" className="input" value={date} onChange={(e) => setDate(e.target.value)} required />
+          <label htmlFor="av-date" className="label">Open date</label>
+          <input id="av-date" type="date" className="input" value={date} onChange={(e) => setDate(e.target.value)} required />
         </div>
         <div>
-          <label className="label">Note <span className="text-subtle">(optional)</span></label>
-          <input className="input" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Prefer evenings, will travel…" maxLength={160} />
+          <label htmlFor="av-note" className="label">Note <span className="text-subtle">(optional)</span></label>
+          <input id="av-note" className="input" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Prefer evenings, will travel…" maxLength={160} />
         </div>
         <button className="btn-primary" disabled={busy}>{busy ? "Adding…" : "Add date"}</button>
-        {error && <p className="text-sm text-red-300 sm:col-span-3">{error}</p>}
+        {error && <p role="alert" className="text-sm text-red-700 dark:text-red-300 sm:col-span-3">{error}</p>}
       </form>
 
       <div className="card p-6">
@@ -80,7 +80,7 @@ export function AvailabilityManager({ initial }: { initial: OpenDate[] }) {
                   <p className="font-medium text-fg">{formatDate(d.date)}</p>
                   {d.note && <p className="text-sm text-subtle">{d.note}</p>}
                 </div>
-                <button onClick={() => remove(d.id)} className="text-sm text-subtle hover:text-red-300">Remove</button>
+                <button onClick={() => remove(d.id)} className="text-sm text-subtle hover:text-red-600 dark:hover:text-red-300">Remove</button>
               </li>
             ))}
           </ul>

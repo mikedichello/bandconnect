@@ -36,7 +36,7 @@ export function UpgradeButton({
       <button onClick={go} disabled={loading} className={className}>
         {loading ? "Redirecting…" : label}
       </button>
-      {error && <p className="mt-2 text-sm text-amber-300">{error}</p>}
+      {error && <p role="alert" className="mt-2 text-sm text-amber-700 dark:text-amber-300">{error}</p>}
     </div>
   );
 }
@@ -63,7 +63,7 @@ export function ManageBillingButton() {
       <button onClick={go} disabled={loading} className="btn-ghost">
         {loading ? "Opening…" : "Manage billing"}
       </button>
-      {error && <p className="mt-2 text-sm text-amber-300">{error}</p>}
+      {error && <p role="alert" className="mt-2 text-sm text-amber-700 dark:text-amber-300">{error}</p>}
     </div>
   );
 }

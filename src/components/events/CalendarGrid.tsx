@@ -107,11 +107,11 @@ export function CalendarGrid({
                           <Link
                             key={e.id}
                             href={`/event/${e.id}`}
-                            className="block truncate rounded bg-brand-500/15 px-1 py-0.5 text-[10px] leading-tight text-brand-100 hover:bg-brand-500/30 sm:rounded-md sm:px-1.5 sm:py-1 sm:text-[11px]"
+                            className="block truncate rounded bg-brand-500/15 px-1 py-0.5 text-[10px] leading-tight text-brand-800 hover:bg-brand-500/30 dark:text-brand-100 sm:rounded-md sm:px-1.5 sm:py-1 sm:text-[11px]"
                             title={e.title}
                           >
                             {/* Time is hidden on phones so the title gets the space. */}
-                            <span className="hidden text-brand-300 sm:inline">{formatTime(e.startAt)} </span>
+                            <span className="hidden text-brand-600 dark:text-brand-300 sm:inline">{formatTime(e.startAt)} </span>
                             {e.title}
                           </Link>
                         ))}

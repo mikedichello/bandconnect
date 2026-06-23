@@ -163,8 +163,8 @@ export default async function EventPage({ params }: { params: { id: string } }) 
               />
             </div>
             <div className="mt-4 flex gap-4 text-sm">
-              <span className="text-emerald-300">{going.length} going</span>
-              <span className="text-amber-300">{maybe.length} interested</span>
+              <span className="text-emerald-700 dark:text-emerald-300">{going.length} going</span>
+              <span className="text-amber-700 dark:text-amber-300">{maybe.length} interested</span>
             </div>
             <div className="mt-4 space-y-2">
               <ShareButton title={event.title} />
@@ -178,11 +178,11 @@ export default async function EventPage({ params }: { params: { id: string } }) 
           <div className="card p-5">
             <p className="text-xs font-semibold uppercase tracking-wide text-subtle">Hosted by</p>
             <div className="mt-3 flex items-center gap-3">
-              <span className="grid h-11 w-11 place-items-center rounded-full bg-brand-500/20 text-sm font-bold text-brand-200">
+              <span className="grid h-11 w-11 place-items-center rounded-full bg-brand-500/20 text-sm font-bold text-brand-700 dark:text-brand-200">
                 {initials(event.host.displayName)}
               </span>
               <div className="min-w-0">
-                <Link href={`/p/${event.host.slug}`} className="block truncate font-semibold text-fg hover:text-brand-200">
+                <Link href={`/p/${event.host.slug}`} className="block truncate font-semibold text-fg hover:text-brand-700 dark:hover:text-brand-200">
                   {event.host.displayName}
                 </Link>
                 <p className="text-xs capitalize text-subtle">{event.host.type.toLowerCase()}</p>

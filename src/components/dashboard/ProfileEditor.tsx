@@ -143,16 +143,17 @@ export function ProfileEditor({ isPro, initial }: { isPro: boolean; initial: Pro
           <div className="grid gap-4 sm:grid-cols-3">
             <Field label="Rate min ($)"><input type="number" min={0} className="input" value={v.rateMin ?? ""} onChange={(e) => set("rateMin", e.target.value ? Number(e.target.value) : null)} /></Field>
             <Field label="Rate max ($)"><input type="number" min={0} className="input" value={v.rateMax ?? ""} onChange={(e) => set("rateMax", e.target.value ? Number(e.target.value) : null)} /></Field>
-            <Field label="blank">
+            <div>
+              <span className="label" aria-hidden="true">&nbsp;</span>
               <label className="flex h-[42px] items-center gap-2 text-sm text-muted">
                 <input type="checkbox" className="h-4 w-4 accent-brand-500" checked={v.rateHidden ?? false} onChange={(e) => set("rateHidden", e.target.checked)} />
                 Hide my rate
               </label>
-            </Field>
+            </div>
           </div>
           {type === "MUSICIAN" && (
-            <div className="space-y-2">
-              <p className="label">I&apos;m…</p>
+            <div className="space-y-2" role="group" aria-labelledby="pe-status-label">
+              <p className="label" id="pe-status-label">I&apos;m…</p>
               {MUSICIAN_STATUS.map((s) => (
                 <label key={s.key} className="flex items-center gap-3">
                   <input type="checkbox" className="h-4 w-4 accent-brand-500" checked={Boolean(v[s.key as keyof ProfileValues])} onChange={(e) => set(s.key as keyof ProfileValues, e.target.checked as never)} />
@@ -189,16 +190,16 @@ export function ProfileEditor({ isPro, initial }: { isPro: boolean; initial: Pro
           <input type="color" disabled={!isPro} value={v.themeColor ?? "#7c4dff"} onChange={(e) => set("themeColor", e.target.value)} className="h-11 w-16 cursor-pointer rounded-lg border border-line bg-transparent disabled:opacity-50" />
           <div className="text-sm">
             {isPro ? <span className="text-muted">Theme color: {v.themeColor}</span> : (
-              <span className="text-subtle">Custom theme is a Pro feature. <Link href="/pricing" className="text-brand-300 hover:text-brand-200">Upgrade →</Link></span>
+              <span className="text-subtle">Custom theme is a Pro feature. <Link href="/pricing" className="link">Upgrade →</Link></span>
             )}
           </div>
         </div>
       </Section>
 
       <div className="sticky bottom-4 z-10 flex items-center justify-between gap-3 rounded-2xl border border-line bg-surface/90 px-4 py-3 backdrop-blur">
-        <div className="text-sm">
-          {status === "saved" && <span className="text-emerald-300">✓ Saved</span>}
-          {status === "error" && <span className="text-red-300">{error}</span>}
+        <div className="text-sm" role="status" aria-live="polite">
+          {status === "saved" && <span className="text-emerald-700 dark:text-emerald-300">✓ Saved</span>}
+          {status === "error" && <span className="text-red-700 dark:text-red-300">{error}</span>}
           {status === "saving" && <span className="text-subtle">Saving…</span>}
           {status === "idle" && <span className="text-subtle">Make it yours.</span>}
         </div>
@@ -218,12 +219,14 @@ function Section({ title, subtitle, children }: { title: string; subtitle?: stri
   );
 }
 
+// Wrapping the control inside the <label> gives an implicit, always-correct
+// label association (WCAG 1.3.1 / 4.1.2) without hand-managing id/htmlFor pairs.
 function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
   return (
-    <div>
-      <label className="label">{label === "blank" ? " " : label} {required && <span className="text-accent">*</span>}</label>
+    <label className="block">
+      <span className="label">{label === "blank" ?" " : label} {required && <span className="text-accent">*</span>}</span>
       {children}
-    </div>
+    </label>
   );
 }
 

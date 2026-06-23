@@ -49,7 +49,7 @@ export function ResetPasswordForm() {
       </div>
 
       {done ? (
-        <div className="card p-6 text-center">
+        <div role="status" className="card p-6 text-center">
           <div className="text-3xl">✅</div>
           <p className="mt-3 text-fg">Password updated! Taking you to log in…</p>
         </div>
@@ -57,10 +57,10 @@ export function ResetPasswordForm() {
         <form onSubmit={onSubmit} className="card space-y-4 p-6">
           <div>
             <label htmlFor="rp-password" className="label">New password</label>
-            <input id="rp-password" type="password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} placeholder="At least 8 characters" />
+            <input id="rp-password" type="password" autoComplete="new-password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} placeholder="At least 8 characters" />
           </div>
           {error && (
-            <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">{error}</p>
+            <p role="alert" className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-700 dark:text-red-300">{error}</p>
           )}
           <button type="submit" disabled={loading} className="btn-primary w-full">
             {loading ? "Saving…" : "Update password"}

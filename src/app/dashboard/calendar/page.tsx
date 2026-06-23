@@ -55,7 +55,7 @@ export default async function CalendarPage({ searchParams }: { searchParams: { m
         {upcoming.length === 0 ? (
           <p className="mt-3 text-sm text-subtle">
             Nothing upcoming.{" "}
-            <Link href={isFan ? "/" : "/dashboard/events"} className="text-brand-300 hover:text-brand-200">
+            <Link href={isFan ? "/" : "/dashboard/events"} className="link">
               {isFan ? "Find shows →" : "Post an event →"}
             </Link>
           </p>
@@ -64,7 +64,7 @@ export default async function CalendarPage({ searchParams }: { searchParams: { m
             {upcoming.map((e) => (
               <li key={e.id} className="flex items-center justify-between py-3">
                 <div>
-                  <Link href={`/event/${e.id}`} className="font-medium text-fg hover:text-brand-200">{e.title}</Link>
+                  <Link href={`/event/${e.id}`} className="font-medium text-fg hover:text-brand-700 dark:hover:text-brand-200">{e.title}</Link>
                   <p className="text-sm text-subtle">{formatDate(e.startAt)} · {formatTime(e.startAt)}{e.city ? ` · ${e.city}` : ""}</p>
                 </div>
               </li>

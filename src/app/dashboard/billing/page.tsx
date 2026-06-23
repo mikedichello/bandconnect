@@ -24,13 +24,13 @@ export default async function BillingPage({
       </div>
 
       {searchParams.status === "success" && (
-        <div className="rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
+        <div className="rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-200">
           🎉 You&apos;re on Pro! It may take a few seconds to reflect everywhere — refresh if needed.
         </div>
       )}
 
       {!billingEnabled && (
-        <div className="rounded-xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+        <div className="rounded-xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-200">
           <strong>Billing is in demo mode.</strong> Stripe keys aren&apos;t configured on
           this deployment, so subscriptions are disabled. See the README to wire
           up Stripe and enable live payments.
@@ -88,7 +88,7 @@ export default async function BillingPage({
               <ul className="mt-4 space-y-2 text-sm text-muted">
                 {p.features.map((f) => (
                   <li key={f} className="flex items-start gap-2">
-                    <span className="mt-0.5 text-brand-400">✓</span>
+                    <span className="mt-0.5 text-brand-600 dark:text-brand-400">✓</span>
                     <span>{f}</span>
                   </li>
                 ))}
@@ -104,7 +104,7 @@ export default async function BillingPage({
       </section>
 
       <p className="text-center text-xs text-subtle">
-        Questions about billing? See <Link href="/pricing" className="text-brand-300 hover:text-brand-200">pricing</Link>.
+        Questions about billing? See <Link href="/pricing" className="link">pricing</Link>.
       </p>
     </div>
   );

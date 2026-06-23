@@ -106,7 +106,8 @@ family/no-cover, **Following feed**), event CRUD with cover photo/video +
 media/availability, follow/friend/RSVP, **real-time-ish messaging**,
 **share-to-friend**, **saved-search alerts**, in-app notifications + **email
 (Resend) reminders via cron**, browse + availability search, **light/dark
-theme**, an **accessibility** pass, and Stripe billing with a demo fallback.
+theme**, a **WCAG 2.1 AA accessibility** pass (see
+**[ADA_AUDIT.md](ADA_AUDIT.md)**), and Stripe billing with a demo fallback.
 
 A full QA pass confirms: production build + lint + types green; every public and
 dashboard route returns correctly (200 / 404 / 307-redirect) across all four

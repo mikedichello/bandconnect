@@ -33,9 +33,9 @@ export function SaveAlertButton({ city, genre }: { city: string; genre: string }
 
   if (state === "saved") {
     return (
-      <span className="text-xs text-emerald-400">
+      <span role="status" className="text-xs text-emerald-700 dark:text-emerald-400">
         ✓ Alert saved ·{" "}
-        <Link href="/dashboard/alerts" className="underline hover:text-emerald-300">manage</Link>
+        <Link href="/dashboard/alerts" className="underline link">manage</Link>
       </span>
     );
   }

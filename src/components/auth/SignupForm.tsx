@@ -85,29 +85,29 @@ export function SignupForm() {
       <form onSubmit={onSubmit} className="card space-y-4 p-6">
         <div>
           <label htmlFor="su-name" className="label">{role === "FAN" ? "Your name" : role === "VENUE" ? "Venue name" : "Name"}</label>
-          <input id="su-name" className="input" value={displayName} onChange={(e) => setDisplayName(e.target.value)} required placeholder={role === "VENUE" ? "The Space Ballroom" : role === "BAND" ? "The Night Owls" : "Your name"} />
+          <input id="su-name" autoComplete={role === "FAN" ? "name" : "organization"} className="input" value={displayName} onChange={(e) => setDisplayName(e.target.value)} required placeholder={role === "VENUE" ? "The Space Ballroom" : role === "BAND" ? "The Night Owls" : "Your name"} />
         </div>
         <div>
           <label htmlFor="su-email" className="label">Email</label>
-          <input id="su-email" type="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@email.com" />
+          <input id="su-email" type="email" autoComplete="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@email.com" />
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="su-city" className="label">CT town <span className="text-subtle">(optional)</span></label>
-            <input id="su-city" className="input" value={city} onChange={(e) => setCity(e.target.value)} placeholder="New Haven" />
+            <input id="su-city" autoComplete="address-level2" className="input" value={city} onChange={(e) => setCity(e.target.value)} placeholder="New Haven" />
           </div>
           <div>
             <label htmlFor="su-zip" className="label">ZIP <span className="text-subtle">(optional)</span></label>
-            <input id="su-zip" className="input" value={zip} onChange={(e) => setZip(e.target.value)} placeholder="06511" />
+            <input id="su-zip" autoComplete="postal-code" className="input" value={zip} onChange={(e) => setZip(e.target.value)} placeholder="06511" />
           </div>
         </div>
         <div>
           <label htmlFor="su-password" className="label">Password</label>
-          <input id="su-password" type="password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} placeholder="At least 8 characters" />
+          <input id="su-password" type="password" autoComplete="new-password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} placeholder="At least 8 characters" />
         </div>
 
         {error && (
-          <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">{error}</p>
+          <p role="alert" className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-700 dark:text-red-300">{error}</p>
         )}
 
         <button type="submit" disabled={loading} className="btn-primary w-full">
@@ -117,7 +117,7 @@ export function SignupForm() {
 
       <p className="mt-6 text-center text-sm text-subtle">
         Already have an account?{" "}
-        <Link href="/login" className="font-medium text-brand-300 hover:text-brand-200">Log in</Link>
+        <Link href="/login" className="font-medium link">Log in</Link>
       </p>
     </div>
   );

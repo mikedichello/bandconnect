@@ -48,7 +48,7 @@ export function ShareToFriend({ eventId, friends }: { eventId: string; friends: 
   return (
     <div className="rounded-xl border border-line bg-elevated p-3">
       {state === "sent" ? (
-        <p className="text-sm text-emerald-400">✓ Shared! Your friend got a message.</p>
+        <p role="status" className="text-sm text-emerald-700 dark:text-emerald-400">✓ Shared! Your friend got a message.</p>
       ) : (
         <>
           <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-subtle">Send to a friend</p>
@@ -62,7 +62,7 @@ export function ShareToFriend({ eventId, friends }: { eventId: string; friends: 
                   (toId === f.id ? "bg-brand-500/15 text-fg" : "text-muted hover:bg-app")
                 }
               >
-                <span className="grid h-6 w-6 place-items-center rounded-full bg-brand-500/20 text-[10px] font-bold text-brand-200">
+                <span className="grid h-6 w-6 place-items-center rounded-full bg-brand-500/20 text-[10px] font-bold text-brand-700 dark:text-brand-200">
                   {initials(f.displayName)}
                 </span>
                 {f.displayName}
@@ -76,7 +76,7 @@ export function ShareToFriend({ eventId, friends }: { eventId: string; friends: 
             maxLength={300}
             className="input mt-2 text-sm"
           />
-          {error && <p className="mt-1 text-xs text-red-300">{error}</p>}
+          {error && <p role="alert" className="mt-1 text-xs text-red-700 dark:text-red-300">{error}</p>}
           <div className="mt-2 flex justify-end gap-2">
             <button onClick={() => setOpen(false)} className="btn-ghost px-3 py-1.5 text-xs">Cancel</button>
             <button onClick={send} disabled={!toId || state === "sending"} className="btn-primary px-3 py-1.5 text-xs">

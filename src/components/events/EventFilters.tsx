@@ -105,16 +105,16 @@ export function EventFilters({ resolvedLabel }: { resolvedLabel: string | null }
             </button>
           </div>
           {geoActive && (
-            <p className="mt-1 flex items-center gap-1 text-xs text-emerald-300">
+            <p className="mt-1 flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-300">
               <MapPin className="h-3 w-3" aria-hidden="true" /> Near your location
               <button type="button" onClick={clearGeo} className="ml-1 text-subtle underline hover:text-fg">clear</button>
             </p>
           )}
           {!geoActive && loc.trim() && resolvedLabel && (
-            <p className="mt-1 text-xs text-emerald-300">📍 {resolvedLabel}</p>
+            <p className="mt-1 text-xs text-emerald-700 dark:text-emerald-300">📍 {resolvedLabel}</p>
           )}
           {!geoActive && loc.trim() && !resolvedLabel && (
-            <p className="mt-1 text-xs text-amber-300">Couldn&apos;t match that CT location.</p>
+            <p className="mt-1 text-xs text-amber-700 dark:text-amber-300">Couldn&apos;t match that CT location.</p>
           )}
         </div>
         <div className="lg:w-40">
@@ -126,8 +126,8 @@ export function EventFilters({ resolvedLabel }: { resolvedLabel: string | null }
           </select>
         </div>
         <div className="lg:w-44">
-          <label className="label">Genre</label>
-          <select value={genre} onChange={(e) => setGenre(e.target.value)} className="input">
+          <label htmlFor="genre" className="label">Genre</label>
+          <select id="genre" value={genre} onChange={(e) => setGenre(e.target.value)} className="input">
             <option value="">All genres</option>
             {GENRES.map((g) => (
               <option key={g} value={g}>{g}</option>

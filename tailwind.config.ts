@@ -14,6 +14,7 @@ const config: Config = {
         surface: "rgb(var(--c-surface) / <alpha-value>)",
         elevated: "rgb(var(--c-elevated) / <alpha-value>)",
         line: "rgb(var(--c-line) / <alpha-value>)",
+        field: "rgb(var(--c-field) / <alpha-value>)",
         fg: "rgb(var(--c-fg) / <alpha-value>)",
         muted: "rgb(var(--c-muted) / <alpha-value>)",
         subtle: "rgb(var(--c-subtle) / <alpha-value>)",

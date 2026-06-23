@@ -100,7 +100,7 @@ export function EventsManager({ initial, atLimit, limitLabel }: { initial: Event
       </div>
 
       {atLimit && (
-        <div className="rounded-xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+        <div className="rounded-xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-300">
           You&apos;ve hit your plan&apos;s upcoming-event limit. <Link href="/pricing" className="font-medium underline">Upgrade to Pro</Link> for unlimited.
         </div>
       )}
@@ -109,53 +109,53 @@ export function EventsManager({ initial, atLimit, limitLabel }: { initial: Event
         <form onSubmit={submit} className="card space-y-4 p-6">
           <h2 className="font-semibold">{editing ? "Edit event" : "New event"}</h2>
           <div>
-            <label className="label">Title *</label>
-            <input className="input" value={form.title} onChange={(e) => field("title", e.target.value)} required placeholder="Friday Night Live" />
+            <label htmlFor="ev-title" className="label">Title *</label>
+            <input id="ev-title" className="input" value={form.title} onChange={(e) => field("title", e.target.value)} required placeholder="Friday Night Live" />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="label">Cover type</label>
-              <select className="input" value={form.coverType} onChange={(e) => field("coverType", e.target.value as "IMAGE" | "VIDEO")}>
+              <label htmlFor="ev-coverType" className="label">Cover type</label>
+              <select id="ev-coverType" className="input" value={form.coverType} onChange={(e) => field("coverType", e.target.value as "IMAGE" | "VIDEO")}>
                 <option value="IMAGE">Image</option>
                 <option value="VIDEO">Video</option>
               </select>
             </div>
             <div>
-              <label className="label">{form.coverType === "VIDEO" ? "Video URL" : "Cover image URL"}</label>
-              <input className="input" value={form.coverUrl} onChange={(e) => field("coverUrl", e.target.value)} placeholder={form.coverType === "VIDEO" ? "https://youtube.com/…" : "https://…/cover.jpg"} />
+              <label htmlFor="ev-coverUrl" className="label">{form.coverType === "VIDEO" ? "Video URL" : "Cover image URL"}</label>
+              <input id="ev-coverUrl" className="input" value={form.coverUrl} onChange={(e) => field("coverUrl", e.target.value)} placeholder={form.coverType === "VIDEO" ? "https://youtube.com/…" : "https://…/cover.jpg"} />
             </div>
             {form.coverType === "VIDEO" && (
               <div className="sm:col-span-2">
-                <label className="label">Video thumbnail URL <span className="text-subtle">(shown in search/list)</span></label>
-                <input className="input" value={form.coverThumbUrl} onChange={(e) => field("coverThumbUrl", e.target.value)} placeholder="https://…/thumb.jpg" />
+                <label htmlFor="ev-coverThumb" className="label">Video thumbnail URL <span className="text-subtle">(shown in search/list)</span></label>
+                <input id="ev-coverThumb" className="input" value={form.coverThumbUrl} onChange={(e) => field("coverThumbUrl", e.target.value)} placeholder="https://…/thumb.jpg" />
               </div>
             )}
           </div>
           <div>
-            <label className="label">Description</label>
-            <textarea className="input min-h-[90px]" value={form.description} onChange={(e) => field("description", e.target.value)} placeholder="Doors 8pm, all ages…" />
+            <label htmlFor="ev-desc" className="label">Description</label>
+            <textarea id="ev-desc" className="input min-h-[90px]" value={form.description} onChange={(e) => field("description", e.target.value)} placeholder="Doors 8pm, all ages…" />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="label">Start *</label>
-              <input type="datetime-local" className="input" value={form.startAt} onChange={(e) => field("startAt", e.target.value)} required />
+              <label htmlFor="ev-start" className="label">Start *</label>
+              <input id="ev-start" type="datetime-local" className="input" value={form.startAt} onChange={(e) => field("startAt", e.target.value)} required />
             </div>
             <div>
-              <label className="label">End <span className="text-subtle">(optional)</span></label>
-              <input type="datetime-local" className="input" value={form.endAt} onChange={(e) => field("endAt", e.target.value)} />
+              <label htmlFor="ev-end" className="label">End <span className="text-subtle">(optional)</span></label>
+              <input id="ev-end" type="datetime-local" className="input" value={form.endAt} onChange={(e) => field("endAt", e.target.value)} />
             </div>
             <div>
-              <label className="label">Venue / location name</label>
-              <input className="input" value={form.locationName} onChange={(e) => field("locationName", e.target.value)} placeholder="The Space Ballroom" />
+              <label htmlFor="ev-locname" className="label">Venue / location name</label>
+              <input id="ev-locname" className="input" value={form.locationName} onChange={(e) => field("locationName", e.target.value)} placeholder="The Space Ballroom" />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="label">CT town</label>
-                <input className="input" value={form.city} onChange={(e) => field("city", e.target.value)} placeholder="Hamden" />
+                <label htmlFor="ev-city" className="label">CT town</label>
+                <input id="ev-city" className="input" value={form.city} onChange={(e) => field("city", e.target.value)} placeholder="Hamden" />
               </div>
               <div>
-                <label className="label">ZIP</label>
-                <input className="input" value={form.zip} onChange={(e) => field("zip", e.target.value)} placeholder="06514" />
+                <label htmlFor="ev-zip" className="label">ZIP</label>
+                <input id="ev-zip" className="input" value={form.zip} onChange={(e) => field("zip", e.target.value)} placeholder="06514" />
               </div>
             </div>
           </div>
@@ -168,8 +168,8 @@ export function EventsManager({ initial, atLimit, limitLabel }: { initial: Event
             </label>
           </div>
           <div>
-            <label className="label">Genre tags</label>
-            <div className="flex flex-wrap gap-2">
+            <span className="label" id="ev-genres-label">Genre tags</span>
+            <div role="group" aria-labelledby="ev-genres-label" className="flex flex-wrap gap-2">
               {GENRES.map((g) => {
                 const active = form.genres.split(",").map((s) => s.trim()).includes(g);
                 return (
@@ -178,7 +178,7 @@ export function EventsManager({ initial, atLimit, limitLabel }: { initial: Event
               })}
             </div>
           </div>
-          {error && <p className="text-sm text-red-300">{error}</p>}
+          {error && <p role="alert" className="text-sm text-red-700 dark:text-red-300">{error}</p>}
           <div className="flex justify-end gap-2">
             <button type="button" onClick={() => setOpen(false)} className="btn-ghost">Cancel</button>
             <button type="submit" disabled={busy} className="btn-primary">{busy ? "Saving…" : editing ? "Save event" : "Create event"}</button>
@@ -204,11 +204,11 @@ function Group({ title, rows, onDelete, empty, dim }: { title: string; rows: Eve
             <li key={e.id} className="card flex items-center justify-between gap-4 p-4">
               <div className="flex items-center gap-4">
                 <div className="grid h-14 w-14 flex-shrink-0 place-items-center rounded-xl bg-brand-500/15 text-center">
-                  <div className="text-xs font-semibold uppercase text-brand-300">{new Date(e.startAt).toLocaleDateString("en-US", { month: "short" })}</div>
+                  <div className="text-xs font-semibold uppercase text-brand-700 dark:text-brand-300">{new Date(e.startAt).toLocaleDateString("en-US", { month: "short" })}</div>
                   <div className="font-display text-lg font-bold leading-none text-fg">{new Date(e.startAt).getDate()}</div>
                 </div>
                 <div>
-                  <Link href={`/event/${e.id}`} className="font-semibold text-fg hover:text-brand-200">{e.title}</Link>
+                  <Link href={`/event/${e.id}`} className="font-semibold text-fg hover:text-brand-700 dark:hover:text-brand-200">{e.title}</Link>
                   <p className="text-sm text-subtle">
                     {formatDate(e.startAt)} · {formatTime(e.startAt)}{e.locationName ? ` · ${e.locationName}` : ""}{e.city ? ` · ${e.city}` : ""}
                   </p>
@@ -219,7 +219,7 @@ function Group({ title, rows, onDelete, empty, dim }: { title: string; rows: Eve
                   </div>
                 </div>
               </div>
-              <button onClick={() => onDelete(e.id)} className="text-sm text-subtle hover:text-red-300">Delete</button>
+              <button onClick={() => onDelete(e.id)} className="text-sm text-subtle hover:text-red-600 dark:hover:text-red-300">Delete</button>
             </li>
           ))}
         </ul>

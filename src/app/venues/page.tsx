@@ -40,12 +40,12 @@ export default async function VenuesPage({
 
       <form method="get" className="card mb-6 flex flex-col gap-3 sm:flex-row sm:items-end">
         <div className="flex-1">
-          <label className="label">Search</label>
-          <input name="q" defaultValue={q} className="input" placeholder="Name, vibe, or genre" />
+          <label htmlFor="ve-q" className="label">Search</label>
+          <input id="ve-q" name="q" defaultValue={q} className="input" placeholder="Name, vibe, or genre" />
         </div>
         <div className="sm:w-56">
-          <label className="label">Town</label>
-          <select name="city" defaultValue={city} className="input">
+          <label htmlFor="ve-city" className="label">Town</label>
+          <select id="ve-city" name="city" defaultValue={city} className="input">
             <option value="">All of CT</option>
             {CT_TOWN_NAMES.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>

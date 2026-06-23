@@ -12,7 +12,7 @@ export function Footer() {
               </svg>
             </span>
             <span className="font-display text-base font-bold text-fg">
-              Band<span className="text-brand-400">Connect</span>
+              Band<span className="text-brand-600 dark:text-brand-400">Connect</span>
             </span>
           </div>
           <p className="mt-3 max-w-sm text-sm text-subtle">

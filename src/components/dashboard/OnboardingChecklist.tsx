@@ -55,16 +55,16 @@ export function OnboardingChecklist({ steps }: { steps: ChecklistStep[] }) {
           <li key={s.label}>
             {s.done ? (
               <span className="flex items-center gap-3 text-sm text-subtle">
-                <span className="grid h-5 w-5 place-items-center rounded-full bg-emerald-500/20 text-emerald-300">
+                <span className="grid h-5 w-5 place-items-center rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300">
                   <Check className="h-3 w-3" aria-hidden="true" />
                 </span>
                 <span className="line-through">{s.label}</span>
               </span>
             ) : (
-              <Link href={s.href} className="flex items-center gap-3 text-sm text-fg hover:text-brand-200">
+              <Link href={s.href} className="flex items-center gap-3 text-sm text-fg hover:text-brand-700 dark:hover:text-brand-200">
                 <span className="grid h-5 w-5 place-items-center rounded-full border border-line" aria-hidden="true" />
                 {s.label}
-                <span className="ml-auto text-xs text-brand-300">Do it →</span>
+                <span className="ml-auto text-xs text-brand-700 dark:text-brand-300">Do it →</span>
               </Link>
             )}
           </li>

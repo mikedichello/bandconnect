@@ -27,7 +27,7 @@ export function PricingTable({
           Monthly
         </ToggleBtn>
         <ToggleBtn active={interval === "yearly"} onClick={() => setInterval("yearly")}>
-          Yearly <span className="ml-1 text-xs text-emerald-300">save ${yearlySavings}</span>
+          Yearly <span className="ml-1 text-xs text-emerald-700 dark:text-emerald-300">save ${yearlySavings}</span>
         </ToggleBtn>
       </div>
 
@@ -42,7 +42,7 @@ export function PricingTable({
           <ul className="mt-6 flex-1 space-y-3 text-sm text-muted">
             {PLANS.FREE.features.map((f) => (
               <li key={f} className="flex items-start gap-2">
-                <span className="mt-0.5 text-brand-400">✓</span> {f}
+                <span className="mt-0.5 text-brand-600 dark:text-brand-400">✓</span> {f}
               </li>
             ))}
           </ul>
@@ -66,12 +66,12 @@ export function PricingTable({
             <span className="text-base font-normal text-subtle">/mo</span>
           </div>
           {interval === "yearly" && (
-            <p className="mt-1 text-xs text-emerald-300">Billed ${pro.priceYearly}/year</p>
+            <p className="mt-1 text-xs text-emerald-700 dark:text-emerald-300">Billed ${pro.priceYearly}/year</p>
           )}
           <ul className="mt-6 flex-1 space-y-3 text-sm text-fg">
             {pro.features.map((f) => (
               <li key={f} className="flex items-start gap-2">
-                <span className="mt-0.5 text-brand-400">✓</span> {f}
+                <span className="mt-0.5 text-brand-600 dark:text-brand-400">✓</span> {f}
               </li>
             ))}
           </ul>
@@ -84,7 +84,7 @@ export function PricingTable({
               ) : (
                 <div>
                   <button disabled className="btn-primary w-full opacity-60">Upgrade to Pro</button>
-                  <p className="mt-2 text-center text-xs text-amber-300">
+                  <p className="mt-2 text-center text-xs text-amber-700 dark:text-amber-300">
                     Billing is in demo mode on this deployment.
                   </p>
                 </div>

@@ -204,7 +204,7 @@ export default async function ProfilePage({ params }: { params: { slug: string }
             <div className="card p-5">
               <h3 className="text-sm font-semibold uppercase tracking-wide text-subtle">Availability</h3>
               <p className="mt-2 text-sm">
-                {profile.availableForGigs ? <span className="text-emerald-300">✓ Available for gigs</span> : <span className="text-subtle">Not currently booking</span>}
+                {profile.availableForGigs ? <span className="text-emerald-700 dark:text-emerald-300">✓ Available for gigs</span> : <span className="text-subtle">Not currently booking</span>}
               </p>
               {rate && <p className="mt-1 text-sm text-muted">Rate: {rate}</p>}
               {profile.type === "MUSICIAN" && (
@@ -215,7 +215,7 @@ export default async function ProfilePage({ params }: { params: { slug: string }
                 </ul>
               )}
               {profile.type === "BAND" && profile.needsMusicians && (
-                <p className="mt-3 text-sm text-brand-200">🎯 Looking for musicians to join</p>
+                <p className="mt-3 text-sm text-brand-700 dark:text-brand-200">🎯 Looking for musicians to join</p>
               )}
               {profile.availability.length > 0 && (
                 <>

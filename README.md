@@ -57,8 +57,9 @@ fill-ins, bands needing musicians).
 
 ### Polish
 **Light / dark theme** toggle (semantic tokens, no-flash) · fully **responsive**
-(mobile-tuned calendar) · **accessibility** pass (ARIA, focus, contrast,
-reduced-motion) · onboarding checklist · `sitemap.xml` + `robots.txt`.
+(mobile-tuned calendar) · **WCAG 2.1 AA accessibility** (associated labels, ARIA
+live regions, theme-aware contrast, visible focus, reduced-motion) · onboarding
+checklist · `sitemap.xml` + `robots.txt`.
 
 ### Free vs Pro (Stripe)
 - **Starter (free):** profile, discovery, up to 3 events, all social features.
@@ -171,7 +172,7 @@ src/
 └── lib/                          # prisma, auth, stripe, email, plans, ct-geo,
                                   # constants, validations, utils
 prisma/   schema.prisma · seed.ts
-docs/     PLAN.md · DEPLOYMENT.md · ROADMAP.md · UX_AUDIT.md · WIREFRAMES.md
+docs/     PLAN.md · DEPLOYMENT.md · ROADMAP.md · UX_AUDIT.md · WIREFRAMES.md · ADA_AUDIT.md
 ```
 
 ## 🔐 Security
@@ -186,6 +187,7 @@ enforced server-side.
 - **[docs/PLAN.md](docs/PLAN.md)** — product vision, data model, architecture.
 - **[docs/ROADMAP.md](docs/ROADMAP.md)** — feature roadmap (Phase 1 & 2 shipped).
 - **[docs/UX_AUDIT.md](docs/UX_AUDIT.md)** — UI/UX audit.
+- **[docs/ADA_AUDIT.md](docs/ADA_AUDIT.md)** — WCAG 2.1 AA accessibility conformance audit.
 - **[docs/WIREFRAMES.md](docs/WIREFRAMES.md)** — screen wireframes.
 
 ---

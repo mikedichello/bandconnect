@@ -70,27 +70,27 @@ export default async function ArtistsPage({
 
       <form method="get" className="card mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-6 lg:items-end">
         <div className="lg:col-span-2">
-          <label className="label">Search</label>
-          <input name="q" defaultValue={q} className="input" placeholder="Name, genre, instrument" />
+          <label htmlFor="ar-q" className="label">Search</label>
+          <input id="ar-q" name="q" defaultValue={q} className="input" placeholder="Name, genre, instrument" />
         </div>
         <div>
-          <label className="label">Type</label>
-          <select name="type" defaultValue={type} className="input">
+          <label htmlFor="ar-type" className="label">Type</label>
+          <select id="ar-type" name="type" defaultValue={type} className="input">
             <option value="">All</option>
             <option value="MUSICIAN">Musicians</option>
             <option value="BAND">Bands</option>
           </select>
         </div>
         <div>
-          <label className="label">Genre</label>
-          <select name="genre" defaultValue={genre} className="input">
+          <label htmlFor="ar-genre" className="label">Genre</label>
+          <select id="ar-genre" name="genre" defaultValue={genre} className="input">
             <option value="">Any</option>
             {GENRES.map((g) => <option key={g} value={g}>{g}</option>)}
           </select>
         </div>
         <div>
-          <label className="label">Open on</label>
-          <input type="date" name="date" defaultValue={date} className="input" />
+          <label htmlFor="ar-date" className="label">Open on</label>
+          <input id="ar-date" type="date" name="date" defaultValue={date} className="input" />
         </div>
         <div className="flex items-center gap-2">
           <button className="btn-primary w-full">Search</button>
@@ -100,7 +100,7 @@ export default async function ArtistsPage({
             <input type="checkbox" name="available" value="1" defaultChecked={available} className="h-4 w-4 accent-brand-500" />
             Available for gigs
           </label>
-          <select name="seeking" defaultValue={seeking} className="input max-w-[220px]">
+          <select name="seeking" aria-label="Availability" defaultValue={seeking} className="input max-w-[220px]">
             <option value="">Any availability</option>
             <option value="JOIN_BAND">Musicians seeking a band</option>
             <option value="START_BAND">Musicians starting a band</option>

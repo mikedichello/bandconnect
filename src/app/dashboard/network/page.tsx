@@ -79,7 +79,7 @@ function Grid({ people }: { people: { id: string; slug: string; displayName: str
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {people.map((p) => (
         <Link key={p.id} href={`/p/${p.slug}`} className="card flex items-center gap-3 p-4 transition hover:border-line">
-          <span className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-brand-500/20 text-sm font-bold text-brand-200">{initials(p.displayName)}</span>
+          <span className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-brand-500/20 text-sm font-bold text-brand-700 dark:text-brand-200">{initials(p.displayName)}</span>
           <div className="min-w-0">
             <p className="truncate font-medium text-fg">{p.displayName}</p>
             <p className="text-xs text-subtle">{profileTypeMeta(p.type).label}</p>
@@ -93,7 +93,7 @@ function Grid({ people }: { people: { id: string; slug: string; displayName: str
 function PersonLink({ slug, name, sub }: { slug: string; name: string; sub: string }) {
   return (
     <Link href={`/p/${slug}`} className="flex items-center gap-3">
-      <span className="grid h-10 w-10 place-items-center rounded-full bg-brand-500/20 text-sm font-bold text-brand-200">{initials(name)}</span>
+      <span className="grid h-10 w-10 place-items-center rounded-full bg-brand-500/20 text-sm font-bold text-brand-700 dark:text-brand-200">{initials(name)}</span>
       <div>
         <p className="font-medium text-fg">{name}</p>
         <p className="text-xs text-subtle">{sub}</p>

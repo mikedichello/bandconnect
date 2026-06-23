@@ -17,6 +17,7 @@
   --c-fg: 255 255 255; /* primary text */
   --c-muted: 212 212 216; /* secondary text (zinc-300) */
   --c-subtle: 161 161 170; /* tertiary text (zinc-400) */
+  --c-field: 106 101 134; /* form-control border — meets 3:1 vs card (WCAG 1.4.11) */
   --aurora-opacity: 1;
 }
 
@@ -28,6 +29,7 @@
   --c-fg: 17 15 33; /* near-ink primary text */
   --c-muted: 71 71 92; /* slate secondary */
   --c-subtle: 113 113 130; /* slate tertiary */
+  --c-field: 124 128 139; /* form-control border — meets 3:1 vs white card (WCAG 1.4.11) */
   --aurora-opacity: 0.5;
 }
 
@@ -69,10 +71,16 @@
   }
 
   .input {
-    @apply w-full rounded-xl border border-line bg-app px-4 py-2.5 text-sm text-fg placeholder:text-subtle focus:border-brand-400/60 focus:outline-none focus:ring-2 focus:ring-brand-500/30;
+    @apply w-full rounded-xl border border-field bg-app px-4 py-2.5 text-sm text-fg placeholder:text-subtle focus:border-brand-400/60 focus:outline-none focus:ring-2 focus:ring-brand-500/30;
   }
   .label {
     @apply mb-1.5 block text-sm font-medium text-muted;
+  }
+
+  /* Theme-aware link color: dark = light lavender on dark surfaces; light =
+     deep violet on white. Both clear 4.5:1 (WCAG 1.4.3). */
+  .link {
+    @apply text-brand-600 transition-colors hover:text-brand-700 dark:text-brand-300 dark:hover:text-brand-200;
   }
 
   .badge {
@@ -82,7 +90,7 @@
     @apply badge border-brand-400/30 bg-brand-500/15 text-brand-700 dark:text-brand-200;
   }
   .badge-accent {
-    @apply badge border-accent/30 bg-accent/15 text-accent dark:text-accent-soft;
+    @apply badge border-accent/30 bg-accent/15 text-pink-700 dark:text-accent-soft;
   }
   .badge-green {
     @apply badge border-emerald-400/30 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300;

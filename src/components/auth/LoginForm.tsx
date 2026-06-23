@@ -43,18 +43,18 @@ export function LoginForm() {
       <form onSubmit={onSubmit} className="card space-y-4 p-6">
         <div>
           <label className="label" htmlFor="email">Email</label>
-          <input id="email" type="email" className="input" placeholder="you@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input id="email" type="email" autoComplete="email" className="input" placeholder="you@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </div>
         <div>
           <div className="flex items-center justify-between">
             <label className="label" htmlFor="password">Password</label>
-            <Link href="/forgot-password" className="mb-1.5 text-xs text-brand-300 hover:text-brand-200">Forgot password?</Link>
+            <Link href="/forgot-password" className="mb-1.5 text-xs link">Forgot password?</Link>
           </div>
-          <input id="password" type="password" className="input" placeholder="Your password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input id="password" type="password" autoComplete="current-password" className="input" placeholder="Your password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
 
         {error && (
-          <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+          <p role="alert" className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-700 dark:text-red-300">
             {error}
           </p>
         )}
@@ -66,7 +66,7 @@ export function LoginForm() {
 
       <p className="mt-6 text-center text-sm text-subtle">
         New to BandConnect?{" "}
-        <Link href="/signup" className="font-medium text-brand-300 hover:text-brand-200">
+        <Link href="/signup" className="font-medium link">
           Create an account
         </Link>
       </p>

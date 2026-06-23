@@ -142,7 +142,7 @@ export function MessagesInbox({
               c.otherId === activeId ? "bg-brand-500/10" : "hover:bg-elevated",
             )}
           >
-            <div className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-brand-500/20 text-sm font-semibold text-brand-200">
+            <div className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-brand-500/20 text-sm font-semibold text-brand-700 dark:text-brand-200">
               {initials(c.name)}
             </div>
             <div className="min-w-0 flex-1">
@@ -183,7 +183,7 @@ export function MessagesInbox({
                 <Link
                   href={`/p/${active.slug}`}
                   target="_blank"
-                  className="text-xs text-brand-300 hover:text-brand-200"
+                  className="text-xs link"
                 >
                   View page ↗
                 </Link>

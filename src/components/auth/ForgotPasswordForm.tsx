@@ -28,7 +28,7 @@ export function ForgotPasswordForm() {
       </div>
 
       {sent ? (
-        <div className="card p-6 text-center">
+        <div role="status" className="card p-6 text-center">
           <div className="text-3xl">📧</div>
           <p className="mt-3 text-fg">
             If an account exists for <strong>{email}</strong>, a reset link is on its way.
@@ -40,7 +40,7 @@ export function ForgotPasswordForm() {
         <form onSubmit={onSubmit} className="card space-y-4 p-6">
           <div>
             <label htmlFor="fp-email" className="label">Email</label>
-            <input id="fp-email" type="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@email.com" />
+            <input id="fp-email" type="email" autoComplete="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@email.com" />
           </div>
           <button type="submit" disabled={loading} className="btn-primary w-full">
             {loading ? "Sending…" : "Send reset link"}
@@ -50,7 +50,7 @@ export function ForgotPasswordForm() {
 
       <p className="mt-6 text-center text-sm text-subtle">
         Remembered it?{" "}
-        <Link href="/login" className="font-medium text-brand-300 hover:text-brand-200">Log in</Link>
+        <Link href="/login" className="font-medium link">Log in</Link>
       </p>
     </div>
   );
