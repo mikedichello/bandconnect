@@ -17,6 +17,20 @@ option for the real app.
 
 ---
 
+## First-deploy checklist
+
+1. **Database** — create a Postgres database; set `prisma/schema.prisma`
+   `provider = "postgresql"`.
+2. **Env vars** — set the required ones (full table at the end); generate a
+   secret with `openssl rand -base64 32`.
+3. **Schema** — `npx prisma db push` against the database (optionally
+   `npm run db:seed` for demo data).
+4. **Deploy** — Vercel (import repo) or Docker (`docker build` / `docker run`).
+5. **Webhooks/cron (optional)** — add the Stripe webhook and confirm
+   `/api/cron/reminders` is scheduled.
+
+---
+
 ## Option A — Vercel (recommended, easiest)
 
 Vercel is built by the Next.js team and runs this app with zero config.
@@ -109,6 +123,30 @@ RSVP'd show starting within 24h exactly once. On Vercel this is wired up by
 `vercel.json` (hourly). Protect it by setting `CRON_SECRET` — Vercel Cron sends
 it automatically as a Bearer token. On other hosts, call the endpoint on a
 schedule with `Authorization: Bearer $CRON_SECRET` (or `?key=$CRON_SECRET`).
+
+> **Heads-up:** Vercel's **Hobby** plan runs cron jobs at most **once per day**.
+> For truly hourly reminders, use Vercel **Pro**, or point a free external
+> scheduler (e.g. cron-job.org or a GitHub Actions schedule) at
+> `https://YOUR_DOMAIN/api/cron/reminders` with the `Authorization` header.
+
+## All environment variables
+
+| Variable | Required | What it's for |
+| --- | --- | --- |
+| `DATABASE_URL` | ✅ | Postgres connection string |
+| `NEXTAUTH_SECRET` | ✅ | session signing (`openssl rand -base64 32`) |
+| `NEXTAUTH_URL` | ✅ | deployed base URL |
+| `NEXT_PUBLIC_APP_URL` | ✅ | base URL for emails / sitemap / OG |
+| `STRIPE_SECRET_KEY` | billing | Stripe secret key |
+| `STRIPE_WEBHOOK_SECRET` | billing | webhook signing secret |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | billing | Stripe publishable key |
+| `STRIPE_PRICE_ID_PRO_MONTHLY` / `_YEARLY` | billing | Pro plan price IDs |
+| `RESEND_API_KEY` | email | enables real email (else log mode) |
+| `EMAIL_FROM` | email | verified sender address |
+| `CRON_SECRET` | reminders | protects the reminders cron endpoint |
+
+Only the four ✅ rows are required; the rest enable billing, email, and
+reminders respectively, and degrade gracefully when unset.
 
 ## What about a static page on GitHub Pages?
 

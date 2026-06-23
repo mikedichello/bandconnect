@@ -99,12 +99,20 @@ verification · secrets via env only.
 
 ## 7. Build status
 
-Implemented and verified end-to-end: 4-role signup, calendar home (list +
-month, geo radius, family/no-cover), event CRUD with cover photo/video, unified
-profiles with media/availability, follow/friend/RSVP, notifications, messaging,
-browse + availability search, Stripe billing with demo fallback. Production
-build compiles all routes; auth, RSVP/follow, event creation, role
-authorization, and geo filtering were exercised against a running server.
+Implemented and verified end-to-end: 4-role signup + **password reset**,
+calendar home (list + month, geo radius, **date quick-filters**, **near-me**,
+family/no-cover, **Following feed**), event CRUD with cover photo/video +
+**add-to-calendar** + **JSON-LD/sitemap**, unified profiles with
+media/availability, follow/friend/RSVP, **real-time-ish messaging**,
+**share-to-friend**, **saved-search alerts**, in-app notifications + **email
+(Resend) reminders via cron**, browse + availability search, **light/dark
+theme**, an **accessibility** pass, and Stripe billing with a demo fallback.
+
+A full QA pass confirms: production build + lint + types green; every public and
+dashboard route returns correctly (200 / 404 / 307-redirect) across all four
+roles; and auth, validation, ownership, role-gating, and the core write flows
+behave as expected against a running server. See **[ROADMAP.md](ROADMAP.md)** for
+what's shipped vs. ahead.
 
 ## 8. Roadmap
 

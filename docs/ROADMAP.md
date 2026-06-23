@@ -9,6 +9,13 @@ harden the platform.
 
 Effort: **S** ≈ ½–1 day · **M** ≈ 2–4 days · **L** ≈ 1–2 weeks.
 
+> **Status:** ✅ **Phase 1 shipped** (date filters, near-me, add-to-calendar,
+> Event JSON-LD + sitemap, navbar bell + Post-event, onboarding, email
+> reminders, password reset). ✅ **Phase 2 shipped** (Following feed, real-time-ish
+> messaging, share-to-friend, saved-search alerts) — plus a light/dark theme and
+> an accessibility pass. **Remaining in Phase 2:** past-show recaps, profile tabs.
+> Phases 3–4 (marketplace/monetization, hardening) are still ahead.
+
 ---
 
 ## Phase 1 — Close the growth loop (activation + organic discovery)
