@@ -1,0 +1,24 @@
+type,name,town,region,contact_method,contact,owner,status,last_touch,notes
+Venue,Toad's Place,New Haven,New Haven,booking page,verify,,Not started,,Iconic club; books national + local
+Venue,College Street Music Hall,New Haven,New Haven,booking page,verify,,Not started,,Mid-size theater downtown
+Venue,Cafe Nine,New Haven,New Haven,booking page,verify,,Not started,,"""The Musician's Living Room""; original/local"
+Venue,The State House,New Haven,New Haven,booking page,verify,,Not started,,Indie/original room
+Venue,Space Ballroom,Hamden,New Haven,booking page,verify,,Not started,,Premier indie room (Manic Presents)
+Venue,Firehouse 12,New Haven,New Haven,booking page,verify,,Not started,,Jazz/experimental + studio
+Venue,Three Sheets,New Haven,New Haven,booking page,verify,,Not started,,Bar with shows
+Venue,Stella Blues,New Haven,New Haven,booking page,verify,,Not started,,Bar / live music
+Venue,The Webster,Hartford,Hartford,booking page,verify,,Not started,,Art-deco theater + underground
+Venue,Infinity Music Hall (Hartford),Hartford,Hartford,booking page,verify,,Not started,,Intimate hall
+Venue,Arch Street Tavern,Hartford,Hartford,booking page,verify,,Not started,,Local/original bookings
+Venue,Black-eyed Sally's,Hartford,Hartford,booking page,verify,,Not started,,Blues/jazz + BBQ
+Band,,,New Haven,Instagram DM,verify,,Not started,,Founding-cohort artist
+Band,,,New Haven,Instagram DM,verify,,Not started,,Founding-cohort artist
+Press,New Haven Independent,New Haven,New Haven,tip/contact form,verify,,Not started,,Local news; culture coverage
+Press,Daily Nutmeg,New Haven,New Haven,contact form,verify,,Not started,,New Haven culture
+Press,CT Insider,Statewide,Statewide,news tip,verify,,Not started,,Hearst CT events coverage
+Community,r/NewHaven,New Haven,New Haven,Reddit post,https://reddit.com/r/NewHaven,,Not started,,CHECK self-promo rules first
+Community,r/Connecticut,Statewide,Statewide,Reddit post,https://reddit.com/r/Connecticut,,Not started,,CHECK self-promo rules first
+College,Southern CT State University,New Haven,New Haven,student activities,verify,,Not started,,Campus fans + musicians
+College,The Hartt School (U Hartford),West Hartford,Hartford,music dept / activities,verify,,Not started,,Major music program
+Partner,Redscroll Records,Wallingford,New Haven,store contact,verify,,Not started,,Indie record store; scene hub
+Partner,Open mic hosts,Various,Statewide,in person,verify,,Not started,,Highest-density place to find musicians
