@@ -63,7 +63,8 @@ Demo logins: `fan@/venue@/musician@/band@demo.com`, password `password123`.
 
 ## Docs map (`docs/`)
 `PLAN.md` (product/architecture) · `ROADMAP.md` (phases) · `DEPLOYMENT.md` ·
-`UX_AUDIT.md` · `ADA_AUDIT.md` (WCAG 2.1 AA) · `WIREFRAMES.md` ·
+`UX_AUDIT.md` · `ADA_AUDIT.md` (WCAG 2.1 AA) · `MONETIZATION.md` (pricing/levers,
+benchmarked) · `WIREFRAMES.md` ·
 `GTM.md` + `launch/` (go-to-market: target lists, outreach templates, tracker,
 **`trust-and-verification.md`**).
 
@@ -72,7 +73,10 @@ Demo logins: `fan@/venue@/musician@/band@demo.com`, password `password123`.
   launch plan + research kit; annual Pro rate on the billing page; **profile
   verification** (`Profile.verified` + status/method, `POST /api/profile/verify`
   with email-domain auto-verify, admin queue at `/dashboard/admin` gated by
-  `ADMIN_EMAILS`, `VerifiedBadge` on profile/card/event host).
+  `ADMIN_EMAILS`, `VerifiedBadge` on profile/card/event host); **paid event
+  boosts** (`Event.featured`/`featuredUntil`, `POST /api/events/[id]/boost`
+  one-time Stripe Checkout + webhook activation, ★ Featured pinned in the
+  calendar; tune `EVENT_BOOST` in `plans.ts`; benchmarked in `docs/MONETIZATION.md`).
 - **Next (incremental):** hard-gate unverified (hide from booking search /
   block known-name claims); claim an *ownerless* seeded page (needs
   `Profile.userId` optional + handshake); social link-back + SMS OTP. Spec:

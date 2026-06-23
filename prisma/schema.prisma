@@ -171,6 +171,10 @@ model Event {
   lat          Float?
   lng          Float?
 
+  // Paid promotion ("boost") — featured placement in the calendar
+  featured      Boolean   @default(false)
+  featuredUntil DateTime?
+
   rsvps Rsvp[]
 
   createdAt DateTime @default(now())

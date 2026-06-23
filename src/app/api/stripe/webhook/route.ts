@@ -37,6 +37,19 @@ export async function POST(req: Request) {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
+
+        // One-time event "boost" payment → feature the event for N days.
+        if (session.metadata?.kind === "boost" && session.metadata.eventId) {
+          const days = Number(session.metadata.days) || 30;
+          await prisma.event
+            .update({
+              where: { id: session.metadata.eventId },
+              data: { featured: true, featuredUntil: new Date(Date.now() + days * 86_400_000) },
+            })
+            .catch((e) => console.error("Boost activation failed", e));
+          break;
+        }
+
         const userId = session.metadata?.userId;
         const subscriptionId = session.subscription as string | null;
         const customerId = session.customer as string | null;

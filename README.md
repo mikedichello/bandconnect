@@ -185,6 +185,7 @@ enforced server-side.
 ## 📚 Docs
 - **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** — full deploy guide (Vercel, Docker, Postgres, Stripe, email, cron).
 - **[docs/GTM.md](docs/GTM.md)** — go-to-market & launch plan (+ [launch kit](docs/launch/): target lists, outreach templates, tracker).
+- **[docs/MONETIZATION.md](docs/MONETIZATION.md)** — monetization strategy (benchmarked) + paid event boosts.
 - **[docs/PLAN.md](docs/PLAN.md)** — product vision, data model, architecture.
 - **[docs/ROADMAP.md](docs/ROADMAP.md)** — feature roadmap (Phase 1 & 2 shipped).
 - **[docs/UX_AUDIT.md](docs/UX_AUDIT.md)** — UI/UX audit.

@@ -178,6 +178,11 @@ async function main() {
     created.push({ id: ev.id, hostId: e.host.id });
   }
 
+  // --- Featured/boosted demo event (★ shows the paid-boost placement) ---
+  if (created[0]) {
+    await prisma.event.update({ where: { id: created[0].id }, data: { featured: true, featuredUntil: daysFromNow(20, 0) } });
+  }
+
   // --- Follows ---
   const follow = (a: { id: string }, b: { id: string }) => prisma.follow.create({ data: { followerId: a.id, followingId: b.id } }).catch(() => {});
   await Promise.all([

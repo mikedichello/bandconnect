@@ -16,6 +16,7 @@ export interface EventRow {
   familyFriendly: boolean;
   hasCoverCharge: boolean;
   coverType: string;
+  featured?: boolean;
 }
 
 const blank = {
@@ -31,6 +32,7 @@ export function EventsManager({ initial, atLimit, limitLabel }: { initial: Event
   const [form, setForm] = useState({ ...blank });
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [boostMsg, setBoostMsg] = useState<string | null>(null);
 
   const now = Date.now();
   const upcoming = events.filter((e) => new Date(e.startAt).getTime() >= now);
@@ -89,6 +91,17 @@ export function EventsManager({ initial, atLimit, limitLabel }: { initial: Event
     }
   }
 
+  async function boost(id: string) {
+    setBoostMsg(null);
+    const res = await fetch(`/api/events/${id}/boost`, { method: "POST" });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.url) {
+      window.location.href = data.url; // off to Stripe Checkout
+      return;
+    }
+    setBoostMsg(data.error ?? "Could not start the boost.");
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -98,6 +111,10 @@ export function EventsManager({ initial, atLimit, limitLabel }: { initial: Event
         </div>
         <button className="btn-primary" onClick={startCreate} disabled={atLimit}>+ New event</button>
       </div>
+
+      {boostMsg && (
+        <p role="alert" className="rounded-xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-300">{boostMsg}</p>
+      )}
 
       {atLimit && (
         <div className="rounded-xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-300">
@@ -186,13 +203,13 @@ export function EventsManager({ initial, atLimit, limitLabel }: { initial: Event
         </form>
       )}
 
-      <Group title="Upcoming" rows={upcoming} onDelete={remove} empty="No upcoming events yet." />
+      <Group title="Upcoming" rows={upcoming} onDelete={remove} onBoost={boost} empty="No upcoming events yet." />
       {past.length > 0 && <Group title="Past" rows={past} onDelete={remove} dim />}
     </div>
   );
 }
 
-function Group({ title, rows, onDelete, empty, dim }: { title: string; rows: EventRow[]; onDelete: (id: string) => void; empty?: string; dim?: boolean }) {
+function Group({ title, rows, onDelete, onBoost, empty, dim }: { title: string; rows: EventRow[]; onDelete: (id: string) => void; onBoost?: (id: string) => void; empty?: string; dim?: boolean }) {
   return (
     <div>
       <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-subtle">{title}</h2>
@@ -219,7 +236,14 @@ function Group({ title, rows, onDelete, empty, dim }: { title: string; rows: Eve
                   </div>
                 </div>
               </div>
-              <button onClick={() => onDelete(e.id)} className="text-sm text-subtle hover:text-red-600 dark:hover:text-red-300">Delete</button>
+              <div className="flex items-center gap-3">
+                {e.featured ? (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[11px] font-bold text-amber-950">★ Featured</span>
+                ) : onBoost ? (
+                  <button onClick={() => onBoost(e.id)} className="text-sm font-medium text-amber-700 hover:underline dark:text-amber-300">★ Boost</button>
+                ) : null}
+                <button onClick={() => onDelete(e.id)} className="text-sm text-subtle hover:text-red-600 dark:hover:text-red-300">Delete</button>
+              </div>
             </li>
           ))}
         </ul>

@@ -5,7 +5,7 @@ import { EventsManager, type EventRow } from "@/components/dashboard/EventsManag
 
 export const metadata = { title: "My events" };
 
-export default async function EventsPage() {
+export default async function EventsPage({ searchParams }: { searchParams: { boosted?: string } }) {
   const user = await requireUser();
   const profile = user.profile!;
   if (profile.type === "FAN") {
@@ -22,9 +22,11 @@ export default async function EventsPage() {
     orderBy: { startAt: "asc" },
   });
 
+  const now = new Date();
   const rows: EventRow[] = events.map((e) => ({
     id: e.id, title: e.title, startAt: e.startAt.toISOString(), endAt: e.endAt?.toISOString() ?? null,
     city: e.city, locationName: e.locationName, familyFriendly: e.familyFriendly, hasCoverCharge: e.hasCoverCharge, coverType: e.coverType,
+    featured: e.featured && e.featuredUntil != null && e.featuredUntil > now,
   }));
 
   const limit = planFor(user.plan).limits.maxEvents;
@@ -32,5 +34,14 @@ export default async function EventsPage() {
   const atLimit = Number.isFinite(limit) && upcoming >= limit;
   const limitLabel = Number.isFinite(limit) ? `${upcoming} of ${limit} upcoming events used on your plan.` : "Unlimited events on Pro.";
 
-  return <EventsManager initial={rows} atLimit={atLimit} limitLabel={limitLabel} />;
+  return (
+    <>
+      {searchParams.boosted === "1" && (
+        <div role="status" className="mb-4 rounded-xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-300">
+          ★ Your show is boosted — it&apos;s now featured at the top of the calendar.
+        </div>
+      )}
+      <EventsManager initial={rows} atLimit={atLimit} limitLabel={limitLabel} />
+    </>
+  );
 }

@@ -135,6 +135,16 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
       .map(({ e }) => e);
   }
 
+  // Boosted (paid) events float to the top of the list with a Featured tag.
+  const isBoosted = (e: { featured: boolean; featuredUntil: Date | null }) =>
+    e.featured && e.featuredUntil != null && e.featuredUntil > now;
+  filtered = [...filtered].sort((a, b) => {
+    const ab = isBoosted(a);
+    const bb = isBoosted(b);
+    if (ab !== bb) return ab ? -1 : 1;
+    return a.startAt.getTime() - b.startAt.getTime();
+  });
+
   // Viewer's RSVP statuses for the visible events.
   const rsvpMap = new Map<string, "GOING" | "MAYBE">();
   if (me && filtered.length) {
@@ -161,6 +171,7 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
     host: e.host,
     goingCount: e._count.rsvps,
     distanceMi: geo && e.lat != null && e.lng != null ? distanceMiles(geo.lat, geo.lng, e.lat, e.lng) : null,
+    featured: isBoosted(e),
   }));
 
   const qs = new URLSearchParams();

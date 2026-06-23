@@ -74,6 +74,18 @@ export function planFor(planId: string | null | undefined): PlanDefinition {
   return planId === "PRO" ? PLANS.PRO : PLANS.FREE;
 }
 
+/**
+ * One-time "boost" that promotes a single event to the top of the calendar with
+ * a Featured tag. Pay-per-use, available on any plan — transactional revenue on
+ * top of subscriptions (benchmarked against Bandsintown Promote / Eventbrite
+ * Boost; see docs/MONETIZATION.md).
+ */
+export const EVENT_BOOST = {
+  priceUsd: 10,
+  days: 30,
+  label: "Boost this show",
+} as const;
+
 export function isPro(planId: string | null | undefined): boolean {
   return planId === "PRO";
 }

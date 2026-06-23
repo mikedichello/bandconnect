@@ -19,6 +19,7 @@ export interface EventCardData {
   host: { displayName: string; slug: string; type: string };
   goingCount?: number;
   distanceMi?: number | null;
+  featured?: boolean;
 }
 
 export function EventCard({
@@ -49,6 +50,9 @@ export function EventCard({
           />
           {event.coverType === "VIDEO" && (
             <span className="absolute left-2 top-2 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white">▶ Video</span>
+          )}
+          {event.featured && (
+            <span className="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[11px] font-bold text-amber-950 shadow">★ Featured</span>
           )}
           <div className="absolute bottom-2 left-2 flex gap-1.5">
             {event.familyFriendly && <span className="badge-green text-[10px]">👨‍👩‍👧 Family</span>}

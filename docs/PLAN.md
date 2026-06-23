@@ -45,6 +45,11 @@ the single source of truth for pricing *and* server-side gating.
 Stripe Checkout + Billing Portal + signature-verified webhooks keep `plan` in
 sync. No keys → "demo billing" mode (everything works, upgrades disabled).
 
+**Beyond subscriptions:** pay-per-use **event boosts** (promoted calendar
+placement, $10 / 30 days) add transactional revenue without taking a booking
+cut — modeled on Bandsintown Promote / Eventbrite Ads and benchmarked in
+**[MONETIZATION.md](MONETIZATION.md)**.
+
 ## 4. Architecture
 
 A single **Next.js (App Router)** app — server components read via Prisma and
