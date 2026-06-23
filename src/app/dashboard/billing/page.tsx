@@ -85,6 +85,11 @@ export default async function BillingPage({
                 ${p.priceMonthly}
                 <span className="text-sm font-normal text-subtle">/mo</span>
               </div>
+              {id === "PRO" && (
+                <p className="mt-1 text-xs text-emerald-700 dark:text-emerald-300">
+                  or ${p.priceYearly}/yr — 2 months free
+                </p>
+              )}
               <ul className="mt-4 space-y-2 text-sm text-muted">
                 {p.features.map((f) => (
                   <li key={f} className="flex items-start gap-2">
@@ -94,8 +99,9 @@ export default async function BillingPage({
                 ))}
               </ul>
               {id === "PRO" && !pro && (
-                <div className="mt-5">
-                  <UpgradeButton className="btn-primary w-full" />
+                <div className="mt-5 space-y-2">
+                  <UpgradeButton className="btn-primary w-full" label={`Go Pro — $${PLANS.PRO.priceMonthly}/mo`} />
+                  <UpgradeButton interval="yearly" className="btn-ghost w-full" label={`Pay yearly — $${PLANS.PRO.priceYearly} (save $${PLANS.PRO.priceMonthly * 12 - PLANS.PRO.priceYearly})`} />
                 </div>
               )}
             </div>

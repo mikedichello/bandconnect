@@ -27,7 +27,7 @@ export function PricingTable({
           Monthly
         </ToggleBtn>
         <ToggleBtn active={interval === "yearly"} onClick={() => setInterval("yearly")}>
-          Yearly <span className="ml-1 text-xs text-emerald-700 dark:text-emerald-300">save ${yearlySavings}</span>
+          Yearly <span className="ml-1 text-xs text-emerald-700 dark:text-emerald-300">save ${yearlySavings} · 2 mo free</span>
         </ToggleBtn>
       </div>
 
@@ -66,7 +66,7 @@ export function PricingTable({
             <span className="text-base font-normal text-subtle">/mo</span>
           </div>
           {interval === "yearly" && (
-            <p className="mt-1 text-xs text-emerald-700 dark:text-emerald-300">Billed ${pro.priceYearly}/year</p>
+            <p className="mt-1 text-xs text-emerald-700 dark:text-emerald-300">Billed ${pro.priceYearly}/year — 2 months free</p>
           )}
           <ul className="mt-6 flex-1 space-y-3 text-sm text-fg">
             {pro.features.map((f) => (

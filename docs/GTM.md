@@ -22,6 +22,7 @@ Companion docs (in [`docs/launch/`](launch/)):
 - **[distribution-and-communities.md](launch/distribution-and-communities.md)** — calendars, press, subreddits, colleges, partnerships.
 - **[outreach-templates.md](launch/outreach-templates.md)** — copy-paste venue email, band DM, press pitch, Reddit/IG posts.
 - **[outreach-tracker.csv](launch/outreach-tracker.csv)** — a lightweight CRM to run the outreach.
+- **[trust-and-verification.md](launch/trust-and-verification.md)** — how we confirm a band/venue is really them.
 
 ---
 
@@ -152,7 +153,7 @@ order. (These are *new* work — the loops in §5 already exist.)
 
 | # | Feature | Why it moves the needle | Size |
 | --- | --- | --- | --- |
-| 1 | **"Claim your page"** for seeded placeholder venues/bands | Converts our concierge-seeded supply into real accounts — the linchpin of the seeding strategy. | M |
+| 1 | **"Claim your page" + verification** for seeded placeholders ([how](launch/trust-and-verification.md)) | Converts concierge-seeded supply into real, *trusted* accounts — the linchpin of the seeding strategy. | M |
 | 2 | **Per-event OG share images** (auto-generated) | Higher CTR when shows are shared to IG/iMessage/Reddit → more inbound. | S–M |
 | 3 | **Pre-launch email capture** ("notify me when shows are added in my town") | Builds a launch-day audience during Phase 0; feeds saved-search alerts. | S |
 | 4 | **Invite-a-friend / referral link** (fans) | Turns the share loop into measurable, incentivized growth. | S–M |

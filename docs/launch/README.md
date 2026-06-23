@@ -10,6 +10,7 @@ work the lists with the templates and tracker.
 | **[distribution-and-communities.md](distribution-and-communities.md)** | Calendars to get listed on, press to pitch, subreddits/groups, colleges & partnerships (demand + distribution). |
 | **[outreach-templates.md](outreach-templates.md)** | Copy-paste venue email, band DM, press pitch, Reddit/IG posts, weekly digest. |
 | **[outreach-tracker.csv](outreach-tracker.csv)** | Lightweight CRM — track every venue/band/press/community touch and its status. |
+| **[trust-and-verification.md](trust-and-verification.md)** | How to confirm a band/venue is really them (verification ladder, claim flow, Verified badge). |
 
 **The one-paragraph version:** be the best *calendar* of CT shows first (seed
 real events yourself so it's never empty), win **New Haven** before the whole
