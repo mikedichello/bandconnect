@@ -4,6 +4,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getCurrentProfile } from "@/lib/session";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { FollowButton } from "@/components/FollowButton";
 import { FriendButton } from "@/components/FriendButton";
 import { MediaGallery } from "@/components/profile/MediaGallery";
@@ -106,7 +107,10 @@ export default async function ProfilePage({ params }: { params: { slug: string }
               </div>
               <div className="pb-1">
                 <span className="badge text-[11px]">{meta.emoji} {meta.label}</span>
-                <h1 className="mt-1 font-display text-3xl font-bold text-fg">{profile.displayName}</h1>
+                <div className="mt-1 flex items-center gap-2">
+                  <h1 className="font-display text-3xl font-bold text-fg">{profile.displayName}</h1>
+                  {profile.verified && <VerifiedBadge showLabel />}
+                </div>
                 {profile.tagline && <p className="text-muted">{profile.tagline}</p>}
                 {profile.city && <p className="text-sm text-subtle">📍 {profile.city}</p>}
               </div>

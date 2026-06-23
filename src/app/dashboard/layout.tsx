@@ -3,6 +3,7 @@ import { requireUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { Sidebar, type NavItem } from "@/components/dashboard/Sidebar";
 import { isPro } from "@/lib/plans";
+import { isAdmin } from "@/lib/admin";
 import { isArtist, profileTypeMeta } from "@/lib/constants";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -31,6 +32,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     { href: "/dashboard/notifications", label: "Notifications", icon: "notifications", badge: unreadNotifications || undefined },
     { href: "/dashboard/alerts", label: "Alerts", icon: "alerts" },
     { href: "/dashboard/billing", label: "Billing", icon: "billing" },
+    ...(isAdmin(user.email) ? [{ href: "/dashboard/admin", label: "Admin", icon: "admin" } as NavItem] : []),
   ];
 
   return (

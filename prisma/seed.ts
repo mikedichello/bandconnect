@@ -132,6 +132,12 @@ async function main() {
     city: "Hartford", tagline: "Will travel for good music",
   }});
 
+  // --- Verification (mark anchor demo profiles verified; leave others to show both states) ---
+  await prisma.profile.updateMany({
+    where: { id: { in: [space.id, cafenine.id, owls.id, mara.id] } },
+    data: { verified: true, verificationStatus: "verified", verificationMethod: "manual", verifiedAt: new Date() },
+  });
+
   // --- Media (for a couple of profiles) ---
   await prisma.mediaItem.createMany({ data: [
     { profileId: owls.id, kind: "VIDEO", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", caption: "Live at The Space" },

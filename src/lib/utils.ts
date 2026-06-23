@@ -103,3 +103,23 @@ export function toEmbedUrl(url: string): { kind: "iframe" | "video"; src: string
   return { kind: "video", src: url };
 }
 
+/** Host portion of a URL, lowercased, without a leading `www.`. Null when
+ * unparseable. e.g. "https://www.ToadsPlace.com/book" → "toadsplace.com". */
+export function domainFromUrl(url: string | null | undefined): string | null {
+  if (!url) return null;
+  try {
+    const u = new URL(/^[a-z]+:\/\//i.test(url) ? url : `https://${url}`);
+    return u.hostname.replace(/^www\./i, "").toLowerCase() || null;
+  } catch {
+    return null;
+  }
+}
+
+/** Domain of an email, lowercased. e.g. "Booking@ToadsPlace.com" → "toadsplace.com". */
+export function domainFromEmail(email: string | null | undefined): string | null {
+  if (!email) return null;
+  const at = email.lastIndexOf("@");
+  if (at < 0) return null;
+  return email.slice(at + 1).trim().toLowerCase() || null;
+}
+

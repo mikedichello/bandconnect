@@ -13,7 +13,9 @@ Effort: **S** ≈ ½–1 day · **M** ≈ 2–4 days · **L** ≈ 1–2 weeks.
 > Event JSON-LD + sitemap, navbar bell + Post-event, onboarding, email
 > reminders, password reset). ✅ **Phase 2 shipped** (Following feed, real-time-ish
 > messaging, share-to-friend, saved-search alerts) — plus a light/dark theme and
-> a **WCAG 2.1 AA accessibility** pass ([ADA_AUDIT.md](ADA_AUDIT.md)).
+> a **WCAG 2.1 AA accessibility** pass ([ADA_AUDIT.md](ADA_AUDIT.md)) and
+> **profile verification** (Verified badge + self-serve claim/verify with
+> email-domain auto-verify + admin queue — [trust doc](launch/trust-and-verification.md)).
 > **Remaining in Phase 2:** past-show recaps, profile tabs. Phases 3–4
 > (marketplace/monetization, hardening) are still ahead.
 

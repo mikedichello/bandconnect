@@ -44,22 +44,34 @@ A Stripe subscriber has a valid card — a weak extra signal. **Skip government-
 
 ---
 
-## Recommended first slice to build (small, high-leverage)
+## ✅ First slice — shipped
 
-Ties straight into the seeding strategy — *seed unclaimed venue pages → owner
-claims + verifies → trustworthy supply*:
+The self-service verification + admin review flow is built:
 
-1. **Schema:** `Profile.verified` (Boolean) + `verificationStatus`
-   (`none|pending|verified`) + `verificationMethod` + `claimedByUserId`.
-2. **"Claim / verify this page"** action capturing website + socials.
-3. **Auto-verify path:** email-domain match for venues (rung 1).
-4. **Admin review queue** + a "verified" toggle (you, at launch — rung 4).
-5. **Verified badge** on `ProfileCard`, the profile header, and event host.
+- **Schema** (`prisma/schema.prisma`): `Profile.verified` + `verificationStatus`
+  (`none|pending|verified|rejected`) + `verificationMethod` (`domain|manual`) +
+  `verificationInfo` + `verifiedAt`.
+- **Request flow** — `POST /api/profile/verify`
+  ([code](../../src/app/api/profile/verify/route.ts)): a venue/band/musician
+  submits its website + how-to-verify notes from **Dashboard → Edit profile →
+  Verification** (`VerificationCard`). **Auto-verifies (rung 1)** when the
+  account email's domain matches the website domain (`domainFromEmail` ==
+  `domainFromUrl`); otherwise it goes **pending**.
+- **Admin review (rung 4)** — a `/dashboard/admin` queue, visible only to
+  `ADMIN_EMAILS`, with Approve/Reject → `POST /api/admin/verify`.
+- **Verified badge** (`VerifiedBadge`) on the profile header, `ProfileCard`, and
+  event "Hosted by". Demo: The Space Ballroom, Cafe Nine, The Night Owls, and
+  Mara Quinn are seeded verified.
 
-> **One product decision needed before building:** how strict is *unverified*?
-> Recommended default — **let unverified accounts do everything *except* appear
-> in booking search and claim a "known" venue/band name.** That keeps friction
-> low while protecting the booking layer. Adjust to taste.
+**Policy shipped:** unverified accounts stay fully usable — verification only
+*adds* the badge (no hard gating yet), so existing profiles aren't hidden.
 
-Everything past the first slice (SMS OTP, web-of-trust vouching, automated social
-link-back checks) is incremental and can wait until there's real volume.
+## Still ahead (incremental)
+
+- **Hard gating** of unverified accounts (hide from booking search; block claims
+  of a "known" name) — a config follow-up on top of the shipped flow.
+- **Claim an *ownerless* seeded page** — needs `Profile.userId` to become
+  optional + a claim handshake; today verification covers profiles that already
+  have an owner.
+- **Social link-back (rung 2)** automation, **SMS OTP** baseline, and
+  **web-of-trust** vouching (rung 5) — add as volume grows.

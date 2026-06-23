@@ -27,7 +27,7 @@ export default async function VenuesPage({
 
   const cards: ProfileCardData[] = venues.map((v) => ({
     slug: v.slug, displayName: v.displayName, type: v.type, tagline: v.tagline, city: v.city,
-    avatarUrl: v.avatarUrl, genres: v.genres, availableForGigs: v.availableForGigs, featured: v.featured,
+    avatarUrl: v.avatarUrl, genres: v.genres, availableForGigs: v.availableForGigs, featured: v.featured, verified: v.verified,
     rateMin: v.rateMin, rateMax: v.rateMax, rateHidden: v.rateHidden,
   }));
 

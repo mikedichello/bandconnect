@@ -57,7 +57,7 @@ export default async function ArtistsPage({
 
   const cards: ProfileCardData[] = artists.map((a) => ({
     slug: a.slug, displayName: a.displayName, type: a.type, tagline: a.tagline, city: a.city,
-    avatarUrl: a.avatarUrl, genres: a.genres, availableForGigs: a.availableForGigs, featured: a.featured,
+    avatarUrl: a.avatarUrl, genres: a.genres, availableForGigs: a.availableForGigs, featured: a.featured, verified: a.verified,
     rateMin: a.rateMin, rateMax: a.rateMax, rateHidden: a.rateHidden,
   }));
 

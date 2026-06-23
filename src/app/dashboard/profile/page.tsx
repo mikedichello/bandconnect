@@ -4,6 +4,7 @@ import { isPro } from "@/lib/plans";
 import { isArtist } from "@/lib/constants";
 import { ProfileEditor, type ProfileValues } from "@/components/dashboard/ProfileEditor";
 import { MediaManager } from "@/components/dashboard/MediaManager";
+import { VerificationCard } from "@/components/dashboard/VerificationCard";
 
 export const metadata = { title: "Edit profile" };
 
@@ -51,6 +52,7 @@ export default async function EditProfilePage() {
         <h1 className="text-xl font-bold">Edit your profile</h1>
         <p className="text-sm text-subtle">This is your public page at /p/{p.slug}.</p>
       </div>
+      {p.type !== "FAN" && <VerificationCard verified={p.verified} status={p.verificationStatus} />}
       <ProfileEditor isPro={isPro(user.plan)} initial={initial} />
       {(p.type === "VENUE" || isArtist(p.type)) && <MediaManager initial={media} />}
     </div>

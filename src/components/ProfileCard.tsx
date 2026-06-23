@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { initials, parseTags, formatRate } from "@/lib/utils";
 
 export interface ProfileCardData {
@@ -12,6 +13,7 @@ export interface ProfileCardData {
   genres: string | null;
   availableForGigs: boolean;
   featured: boolean;
+  verified: boolean;
   rateMin: number | null;
   rateMax: number | null;
   rateHidden: boolean;
@@ -37,7 +39,10 @@ export function ProfileCard({ data }: { data: ProfileCardData }) {
           />
         </div>
         <div className="min-w-0">
-          <h3 className="truncate text-lg font-semibold text-fg group-hover:text-brand-700 dark:group-hover:text-brand-200">{data.displayName}</h3>
+          <div className="flex items-center gap-1">
+            <h3 className="truncate text-lg font-semibold text-fg group-hover:text-brand-700 dark:group-hover:text-brand-200">{data.displayName}</h3>
+            {data.verified && <VerifiedBadge className="flex-shrink-0" />}
+          </div>
           <p className="truncate text-sm text-subtle">
             {typeLabel}{data.city ? ` · ${data.city}` : ""}
           </p>

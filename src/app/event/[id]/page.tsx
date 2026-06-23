@@ -4,6 +4,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getCurrentProfile } from "@/lib/session";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { RsvpButton } from "@/components/RsvpButton";
 import { FollowButton } from "@/components/FollowButton";
 import { ShareButton } from "@/components/ShareButton";
@@ -182,9 +183,12 @@ export default async function EventPage({ params }: { params: { id: string } }) 
                 {initials(event.host.displayName)}
               </span>
               <div className="min-w-0">
-                <Link href={`/p/${event.host.slug}`} className="block truncate font-semibold text-fg hover:text-brand-700 dark:hover:text-brand-200">
-                  {event.host.displayName}
-                </Link>
+                <div className="flex items-center gap-1">
+                  <Link href={`/p/${event.host.slug}`} className="truncate font-semibold text-fg hover:text-brand-700 dark:hover:text-brand-200">
+                    {event.host.displayName}
+                  </Link>
+                  {event.host.verified && <VerifiedBadge className="flex-shrink-0" />}
+                </div>
                 <p className="text-xs capitalize text-subtle">{event.host.type.toLowerCase()}</p>
               </div>
             </div>

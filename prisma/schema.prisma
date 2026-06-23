@@ -94,6 +94,13 @@ model Profile {
   themeColor String? @default("#7c4dff")
   featured   Boolean @default(false)
 
+  // Trust & verification ("claim your page")
+  verified           Boolean   @default(false)
+  verificationStatus String    @default("none") // "none" | "pending" | "verified" | "rejected"
+  verificationMethod String? // "domain" | "manual"
+  verificationInfo   String? // submitted website/socials/notes for review
+  verifiedAt         DateTime?
+
   media           MediaItem[]
   hostedEvents    Event[]            @relation("HostedEvents")
   venueEvents     Event[]            @relation("VenueEvents")

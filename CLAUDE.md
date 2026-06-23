@@ -69,11 +69,14 @@ Demo logins: `fan@/venue@/musician@/band@demo.com`, password `password123`.
 
 ## Status & next
 - **Shipped:** Roadmap Phase 1 + 2; light/dark theme; WCAG 2.1 AA pass; go-to-market
-  launch plan + research kit; annual Pro rate surfaced on the billing page.
-- **Next build (designed, not yet built):** profile **verification / "claim your
-  page"** — the #1 growth item. Spec: `docs/launch/trust-and-verification.md`
-  (schema `Profile.verified` + status/method, claim+verify API, email-domain
-  auto-verify, admin review, Verified badge on profile/card/event host).
+  launch plan + research kit; annual Pro rate on the billing page; **profile
+  verification** (`Profile.verified` + status/method, `POST /api/profile/verify`
+  with email-domain auto-verify, admin queue at `/dashboard/admin` gated by
+  `ADMIN_EMAILS`, `VerifiedBadge` on profile/card/event host).
+- **Next (incremental):** hard-gate unverified (hide from booking search /
+  block known-name claims); claim an *ownerless* seeded page (needs
+  `Profile.userId` optional + handshake); social link-back + SMS OTP. Spec:
+  `docs/launch/trust-and-verification.md`.
 
 ## Workflow
 - Develop on branch **`claude/tender-wright-04kyoq`**; create it if missing.
