@@ -43,23 +43,27 @@ Vercel is built by the Next.js team and runs this app with zero config.
 
 1. Push this repo to GitHub (already done on your branch).
 2. Go to <https://vercel.com/new>, import the repo.
-3. Add a Postgres database (Vercel Postgres, or **Neon**/**Supabase** free tier).
-   Prisma auto-switches to Postgres from `DATABASE_URL` — no schema edit needed.
+3. Add Postgres via **Storage → Create/Connect → Supabase** (or Vercel Postgres /
+   Neon). The Supabase integration injects the DB env vars automatically
+   (`POSTGRES_PRISMA_URL` pooled + `POSTGRES_URL_NON_POOLING` direct) and Prisma
+   auto-targets them — no schema edit, no manual `DATABASE_URL`. (For a
+   non-integration Postgres, set `DATABASE_URL` to its URL instead.)
 4. Set environment variables (Project → Settings → Environment Variables):
 
    | Variable | Value |
    | --- | --- |
-   | `DATABASE_URL` | your Postgres connection string |
+   | `DATABASE_URL` | auto-set by the Supabase/Postgres integration (or your Postgres URL) |
    | `NEXTAUTH_SECRET` | `openssl rand -base64 32` |
    | `NEXTAUTH_URL` | `https://your-app.vercel.app` |
    | `NEXT_PUBLIC_APP_URL` | `https://your-app.vercel.app` |
    | `STRIPE_*` | (optional) live billing keys + price IDs |
 
-5. Deploy. Then create the tables once:
+5. Deploy. Then create the tables once, locally (migrations use the **direct**
+   connection, which Prisma picks up automatically):
    ```bash
-   # locally, with DATABASE_URL pointed at the prod Postgres
-   npm run db:push     # auto-targets Postgres from DATABASE_URL
-   npm run db:seed     # optional demo data
+   vercel env pull .env     # pulls POSTGRES_* from the project (or paste them)
+   npm run db:push          # creates the tables
+   npm run db:seed          # optional demo data
    ```
 
 That's it — every push to the branch redeploys automatically.
