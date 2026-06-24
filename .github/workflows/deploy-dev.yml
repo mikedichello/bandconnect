@@ -1,0 +1,44 @@
+# Deploy the `dev` branch to Vercel via GitHub Actions (instead of Vercel's
+# native git integration).
+#
+# DORMANT until you opt in: it only runs when the repo VARIABLE
+# `DEPLOY_DEV_ENABLED` is set to "true", so committing it changes nothing until
+# you're ready.
+#
+# To enable (Repo → Settings):
+#   1. Secrets → Actions: add VERCEL_TOKEN (Vercel → Account → Tokens),
+#      VERCEL_ORG_ID and VERCEL_PROJECT_ID (from `vercel link` →
+#      .vercel/project.json, for your DEMO project).
+#   2. Variables → Actions: add DEPLOY_DEV_ENABLED = true.
+#   3. In the Vercel project, turn OFF native git auto-deploy (Settings → Git)
+#      so you don't deploy twice.
+#
+# `vercel build` runs the project's build with the pulled env — so DEMO_SEED=1
+# and NEXT_PUBLIC_DEMO=1 take effect exactly as in a native deploy.
+
+name: Deploy dev to Vercel
+
+on:
+  push:
+    branches: ["dev"]
+
+concurrency:
+  group: deploy-dev
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: vars.DEPLOY_DEV_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm i -g vercel@latest
+      - run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      - run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

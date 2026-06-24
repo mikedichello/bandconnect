@@ -115,6 +115,12 @@ Want a throwaway demo to click around? The **`dev`** branch is wired for it:
 Demo logins (also one-click from the banner): `fan@` / `venue@` / `musician@` /
 `band@demo.com`, password `password123`.
 
+> **Prefer GitHub Actions over Vercel's native deploy?**
+> `.github/workflows/deploy-dev.yml` deploys `dev` via the Vercel CLI. It's
+> dormant until you set the `DEPLOY_DEV_ENABLED` repo *variable* to `true` and add
+> `VERCEL_TOKEN` / `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` *secrets* — then turn off
+> Vercel's native auto-deploy (Settings → Git) so you don't deploy twice.
+
 ---
 
 ## Database: SQLite (dev) → Postgres (prod)
