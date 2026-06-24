@@ -19,8 +19,8 @@ option for the real app.
 
 ## First-deploy checklist
 
-1. **Database** — create a Postgres database; set `prisma/schema.prisma`
-   `provider = "postgresql"`.
+1. **Database** — create a Postgres database. The Prisma provider **auto-switches**
+   to Postgres from your `DATABASE_URL` at build time — no schema edit needed.
 2. **Env vars** — set the required ones (full table at the end); generate a
    secret with `openssl rand -base64 32`.
 3. **Schema** — `npx prisma db push` against the database (optionally
@@ -28,6 +28,12 @@ option for the real app.
 4. **Deploy** — Vercel (import repo) or Docker (`docker build` / `docker run`).
 5. **Webhooks/cron (optional)** — add the Stripe webhook and confirm
    `/api/cron/reminders` is scheduled.
+
+> **CI & auto-deploy:** `.github/workflows/ci.yml` runs build + `tsc` + lint on
+> every push/PR, so only green commits ship. Connect the repo to Vercel once and
+> it redeploys on every push — no deploy secrets needed in GitHub. The Prisma
+> provider auto-switches to Postgres from `DATABASE_URL`
+> (`scripts/set-db-provider.mjs`), so there's no manual schema edit.
 
 ---
 
@@ -37,9 +43,8 @@ Vercel is built by the Next.js team and runs this app with zero config.
 
 1. Push this repo to GitHub (already done on your branch).
 2. Go to <https://vercel.com/new>, import the repo.
-3. Add a Postgres database (Vercel Postgres, or **Neon**/**Supabase** free tier)
-   and switch Prisma to Postgres:
-   - In `prisma/schema.prisma`, set `provider = "postgresql"`.
+3. Add a Postgres database (Vercel Postgres, or **Neon**/**Supabase** free tier).
+   Prisma auto-switches to Postgres from `DATABASE_URL` — no schema edit needed.
 4. Set environment variables (Project → Settings → Environment Variables):
 
    | Variable | Value |
@@ -53,7 +58,7 @@ Vercel is built by the Next.js team and runs this app with zero config.
 5. Deploy. Then create the tables once:
    ```bash
    # locally, with DATABASE_URL pointed at the prod Postgres
-   npx prisma db push
+   npm run db:push     # auto-targets Postgres from DATABASE_URL
    npm run db:seed     # optional demo data
    ```
 
@@ -66,9 +71,7 @@ That's it — every push to the branch redeploys automatically.
 A production `Dockerfile` is included (Next.js standalone + Prisma).
 
 ```bash
-# 1. Switch Prisma to Postgres in prisma/schema.prisma:
-#      provider = "postgresql"
-# 2. Build & run
+# Provider auto-switches to Postgres from DATABASE_URL at build — no schema edit.
 docker build -t bandconnect .
 docker run -p 3000:3000 --env-file .env bandconnect
 ```
@@ -88,9 +91,10 @@ schema (e.g. as a release command on Railway/Render).
 
 The repo ships with SQLite for zero-config local dev. For any real deployment:
 
-1. `prisma/schema.prisma` → `datasource db { provider = "postgresql" … }`
-2. `DATABASE_URL` → your Postgres string
-3. `npx prisma db push` to create the tables
+1. Set `DATABASE_URL` to your Postgres string — the Prisma provider
+   **auto-switches** to `postgresql` at build (`scripts/set-db-provider.mjs`),
+   so no schema edit is needed.
+2. `npm run db:push` to create the tables.
 
 No other code changes are needed — enum-like fields are modeled as `String`
 specifically so the schema is portable.

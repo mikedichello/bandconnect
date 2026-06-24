@@ -1,0 +1,30 @@
+name: CI
+
+# Build + typecheck + lint on every push and PR, so only green commits ship.
+# Vercel handles the actual deploy (connect the repo in the Vercel dashboard);
+# this workflow is the quality gate in front of it.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # CI builds against SQLite — no external database needed. In production the
+      # provider auto-switches to Postgres from the real DATABASE_URL.
+      DATABASE_URL: "file:./ci.db"
+      NEXTAUTH_SECRET: "ci-build-only-not-a-real-secret"
+      NEXT_PUBLIC_APP_URL: "http://localhost:3000"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build      # set-db-provider → prisma generate → next build
+      - run: npx tsc --noEmit
+      - run: npx next lint
