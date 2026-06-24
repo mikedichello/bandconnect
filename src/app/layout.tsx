@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { DemoBanner } from "@/components/DemoBanner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -57,6 +58,7 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col">
         <a href="#main" className="skip-link">Skip to content</a>
         <Providers>
+          <DemoBanner />
           <Navbar />
           <main id="main" className="flex-1">{children}</main>
           <Footer />

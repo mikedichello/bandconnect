@@ -91,6 +91,32 @@ schema (e.g. as a release command on Railway/Render).
 
 ---
 
+## Deploy a seeded demo (the `dev` branch)
+
+Want a throwaway demo to click around? The **`dev`** branch is wired for it:
+
+1. In Vercel, create a **second project** (e.g. `bandconnect-demo`) from this repo
+   with its Production Branch set to **`dev`** (Settings → Git). *(A preview
+   deploy of `dev` on your main project works too.)*
+2. Give it its **own** free Supabase database (Storage → Connect) — keep demo
+   data separate from anything real.
+3. Set two env vars on that project:
+
+   | Variable | Value | Effect |
+   | --- | --- | --- |
+   | `DEMO_SEED` | `1` | the build **wipes + reseeds** the DB with CT sample data every deploy |
+   | `NEXT_PUBLIC_DEMO` | `1` | shows a "Demo site" banner with one-click Fan/Venue/Musician/Band logins |
+
+4. Deploy. It comes up **fully populated** — no manual `db:push` / `db:seed`.
+
+> ⚠️ **`DEMO_SEED=1` deletes all rows on every build.** Only ever set it on a
+> throwaway demo project, never on production.
+
+Demo logins (also one-click from the banner): `fan@` / `venue@` / `musician@` /
+`band@demo.com`, password `password123`.
+
+---
+
 ## Database: SQLite (dev) → Postgres (prod)
 
 The repo ships with SQLite for zero-config local dev. For any real deployment:

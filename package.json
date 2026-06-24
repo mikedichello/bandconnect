@@ -5,7 +5,7 @@
   "description": "A platform connecting local bands and venues — profiles, discovery, calendars, messaging, and subscriptions.",
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/set-db-provider.mjs && prisma generate && next build",
+    "build": "node scripts/set-db-provider.mjs && prisma generate && node scripts/demo-seed.mjs && next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
