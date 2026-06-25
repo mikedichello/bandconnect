@@ -121,6 +121,21 @@ Demo logins (also one-click from the banner): `fan@` / `venue@` / `musician@` /
 > `VERCEL_TOKEN` / `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` *secrets* — then turn off
 > Vercel's native auto-deploy (Settings → Git) so you don't deploy twice.
 
+### See the demo without any host (Codespaces / local)
+
+No Vercel, no Postgres, no keys — the app runs on seeded **SQLite**:
+
+- **GitHub Codespaces (in your browser):** on the `dev` branch, **Code →
+  Codespaces → Create codespace on dev**. The dev-container (`.devcontainer/`)
+  auto-installs, seeds the CT data, and configures auth. When it's ready, run
+  `npm run dev` and open the forwarded **port 3000** (set it to *Public* in the
+  Ports tab to share the URL). Demo logins are one-click from the banner.
+- **Locally:** `npm install && npm run db:push && npm run db:seed && npm run dev`,
+  then open <http://localhost:3000> (`NEXT_PUBLIC_DEMO=1` enables the banner).
+
+This is the quickest way to *see* the app. For an always-on public URL you still
+need a host (Vercel + Supabase, above).
+
 ---
 
 ## Database: SQLite (dev) → Postgres (prod)
