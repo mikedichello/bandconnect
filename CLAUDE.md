@@ -68,6 +68,8 @@ Demo logins: `fan@/venue@/musician@/band@demo.com`, password `password123`.
 
 ## Docs map (`docs/`)
 `PLAN.md` (product/architecture) · `ROADMAP.md` (phases) · `DEPLOYMENT.md` ·
+`ENVIRONMENTS.md` (branch → Vercel preview [dev] → PR → `main` [prod];
+`DB_PUSH_ON_BUILD` schema sync) ·
 `UX_AUDIT.md` · `ADA_AUDIT.md` (WCAG 2.1 AA) · `MONETIZATION.md` (pricing/levers,
 benchmarked) · `WIREFRAMES.md` ·
 `GTM.md` + `launch/` (go-to-market: target lists, outreach templates, tracker,

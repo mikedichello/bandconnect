@@ -213,6 +213,13 @@ Full walkthrough (including Docker and non-Vercel hosts): `docs/DEPLOYMENT.md`.
 BandConnect needs a running Node server — static hosting (GitHub Pages) cannot
 run the SSR pages, API routes, or webhooks.
 
+**Promotion flow** (details + one-time setup: `docs/ENVIRONMENTS.md`): work on
+a feature branch → every push gets a **Vercel Preview deployment** (the dev
+environment: dev database, Stripe test keys, email log mode; schema auto-syncs
+via `DB_PUSH_ON_BUILD=1`) → test on the preview URL → PR to `main` (CI is a
+required check) → merge deploys **Production** (prod database, live keys,
+crons).
+
 ### Local dev
 
 SQLite + no keys: `cp .env.example .env && npm run db:push && npm run db:seed
@@ -262,6 +269,7 @@ graceful-degradation modes cover both.
 | `docs/ROADMAP.md` | Phased feature roadmap with status |
 | `docs/STACK_REVIEW.md` | Stack decision record + dependency upgrade lane |
 | `docs/DEPLOYMENT.md` | Full deployment guide (Vercel, Docker, env matrix) |
+| `docs/ENVIRONMENTS.md` | Dev/prod environments & the branch → preview → main promotion flow |
 | `docs/MONETIZATION.md` | Pricing/levers, benchmarked against comparable platforms |
 | `docs/UX_AUDIT.md` / `docs/ADA_AUDIT.md` | UX findings · WCAG 2.1 AA pass |
 | `docs/GTM.md` + `docs/launch/` | Go-to-market plan, venue target lists, outreach kit, trust & verification spec |
