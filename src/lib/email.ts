@@ -83,11 +83,39 @@ export function sendPasswordResetEmail(to: string, resetUrl: string) {
 export function sendWelcomeEmail(to: string, name: string) {
   return sendEmail({
     to,
-    subject: "Welcome to BandConnect 🎶",
+    subject: "Welcome to BandConnect",
     html: layout(
       `Welcome, ${name}!`,
       `You're all set. Build out your profile, follow venues and artists, and start filling your calendar with Connecticut live music.`,
       { href: `${APP_URL}/dashboard`, label: "Go to your dashboard" },
+    ),
+  });
+}
+
+export interface DigestEvent {
+  id: string;
+  title: string;
+  whenLabel: string;
+  locationLabel: string;
+}
+
+export function sendWeeklyDigestEmail(to: string, name: string, events: DigestEvent[]) {
+  const rows = events
+    .map(
+      (e) => `
+      <a href="${APP_URL}/event/${e.id}" style="display:block;text-decoration:none;padding:12px 14px;margin-top:8px;background:#211c36;border:1px solid rgba(255,255,255,0.08);border-radius:12px">
+        <span style="display:block;font-size:15px;font-weight:600;color:#fff">${e.title}</span>
+        <span style="display:block;margin-top:2px;font-size:13px;color:#c7c7d1">${e.whenLabel} · ${e.locationLabel}</span>
+      </a>`,
+    )
+    .join("");
+  return sendEmail({
+    to,
+    subject: "Your week in Connecticut live music",
+    html: layout(
+      `This week's shows, ${name}`,
+      `Picked from the artists, venues, and searches you follow:${rows}`,
+      { href: APP_URL, label: "Browse the full calendar" },
     ),
   });
 }

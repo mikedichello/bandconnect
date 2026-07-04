@@ -9,7 +9,7 @@ import { FollowButton } from "@/components/FollowButton";
 import { FriendButton } from "@/components/FriendButton";
 import { MediaGallery } from "@/components/profile/MediaGallery";
 import { EventCard, type EventCardData } from "@/components/events/EventCard";
-import { initials, parseTags, formatRate, formatDate } from "@/lib/utils";
+import { initials, parseTags, formatRate, formatDate, spotifyEmbedUrl } from "@/lib/utils";
 import { isArtist, profileTypeMeta, MUSICIAN_STATUS } from "@/lib/constants";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -71,6 +71,7 @@ export default async function ProfilePage({ params }: { params: { slug: string }
       })
     : [];
 
+  const spotifyEmbed = isArtist(profile.type) ? spotifyEmbedUrl(profile.spotify) : null;
   const genres = parseTags(profile.genres);
   const instruments = parseTags(profile.instruments);
   const rate = !profile.rateHidden ? formatRate(profile.rateMin, profile.rateMax) : null;
@@ -148,6 +149,21 @@ export default async function ProfilePage({ params }: { params: { slug: string }
             <section>
               <h2 className="mb-2 text-xl font-bold">{profile.type === "VENUE" ? "About the venue" : "About"}</h2>
               <p className="whitespace-pre-wrap text-muted">{profile.bio}</p>
+            </section>
+          )}
+
+          {spotifyEmbed && (
+            <section>
+              <h2 className="mb-3 text-xl font-bold">Listen</h2>
+              <iframe
+                src={spotifyEmbed}
+                title={`${profile.displayName} on Spotify`}
+                width="100%"
+                height="352"
+                loading="lazy"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                className="rounded-2xl border border-line bg-surface"
+              />
             </section>
           )}
 

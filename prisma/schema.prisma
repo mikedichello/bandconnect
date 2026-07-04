@@ -32,6 +32,10 @@ model User {
   planStatus           String?
   planRenewsAt         DateTime?
 
+  // Set after each weekly digest send (prevents duplicates when the cron
+  // endpoint is hit more than once in a week).
+  digestSentAt DateTime?
+
   profile Profile?
 
   sentMessages     Message[]            @relation("SentMessages")

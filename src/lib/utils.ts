@@ -103,6 +103,15 @@ export function toEmbedUrl(url: string): { kind: "iframe" | "video"; src: string
   return { kind: "video", src: url };
 }
 
+/** Spotify embed URL for an artist/album/track/playlist/show link, or null
+ * when the URL isn't an embeddable open.spotify.com link. */
+export function spotifyEmbedUrl(url: string | null | undefined): string | null {
+  if (!url) return null;
+  const m = url.match(/open\.spotify\.com\/(?:intl-[a-z-]+\/)?(artist|album|track|playlist|show|episode)\/([A-Za-z0-9]+)/i);
+  if (!m) return null;
+  return `https://open.spotify.com/embed/${m[1].toLowerCase()}/${m[2]}`;
+}
+
 /** Host portion of a URL, lowercased, without a leading `www.`. Null when
  * unparseable. e.g. "https://www.ToadsPlace.com/book" → "toadsplace.com". */
 export function domainFromUrl(url: string | null | undefined): string | null {

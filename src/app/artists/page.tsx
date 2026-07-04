@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { ProfileCard, type ProfileCardData } from "@/components/ProfileCard";
 import { GENRES } from "@/lib/constants";
@@ -16,6 +17,10 @@ export default async function ArtistsPage({
   const available = searchParams.available === "1";
   const date = searchParams.date || "";
   const seeking = searchParams.seeking || "";
+
+  // Booking-intent searches (gig availability / open-date filters) only
+  // surface verified artists — see docs/launch/trust-and-verification.md.
+  const bookingIntent = available || Boolean(date);
 
   // Date filter → restrict to profiles with a matching open date.
   let availableOnDateIds: string[] | null = null;
@@ -49,6 +54,7 @@ export default async function ArtistsPage({
         available ? { availableForGigs: true } : {},
         seekingWhere,
         availableOnDateIds ? { id: { in: availableOnDateIds } } : {},
+        bookingIntent ? { verified: true } : {},
       ],
     },
     orderBy: [{ featured: "desc" }, { availableForGigs: "desc" }, { createdAt: "desc" }],
@@ -109,6 +115,13 @@ export default async function ArtistsPage({
           </select>
         </div>
       </form>
+
+      {bookingIntent && (
+        <p className="mb-4 text-sm text-subtle">
+          Booking searches only include verified artists.{" "}
+          <Link href="/dashboard/profile" className="link">Verify your page</Link> to appear here.
+        </p>
+      )}
 
       {cards.length === 0 ? (
         <div className="card p-12 text-center">
