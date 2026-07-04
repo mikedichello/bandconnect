@@ -15,13 +15,15 @@ import { formatDate, formatTime, parseTags, initials, toEmbedUrl } from "@/lib/u
 
 const BASE = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const event = await prisma.event.findUnique({ where: { id: params.id } });
   if (!event) return { title: "Event not found" };
   return { title: event.title, description: event.description?.slice(0, 150) ?? "Live music in Connecticut" };
 }
 
-export default async function EventPage({ params }: { params: { id: string } }) {
+export default async function EventPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const event = await prisma.event.findUnique({
     where: { id: params.id },
     include: {

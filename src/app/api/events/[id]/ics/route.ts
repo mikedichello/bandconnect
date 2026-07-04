@@ -12,7 +12,8 @@ function esc(s: string): string {
 }
 
 /** Download an .ics file for an event so it can be added to any calendar app. */
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
+export async function GET(_req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const event = await prisma.event.findUnique({
     where: { id: params.id },
     include: { host: { select: { displayName: true } } },

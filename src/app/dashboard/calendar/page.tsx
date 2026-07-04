@@ -6,7 +6,8 @@ import { formatDate, formatTime } from "@/lib/utils";
 
 export const metadata = { title: "My calendar" };
 
-export default async function CalendarPage({ searchParams }: { searchParams: { month?: string } }) {
+export default async function CalendarPage(props: { searchParams: Promise<{ month?: string }> }) {
+  const searchParams = await props.searchParams;
   const user = await requireUser();
   const profile = user.profile!;
   const isFan = profile.type === "FAN";

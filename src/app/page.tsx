@@ -58,7 +58,8 @@ function whenWindow(when: string | undefined, now: Date): { start: Date; end?: D
   return { start: now };
 }
 
-export default async function HomePage({ searchParams }: { searchParams: SP }) {
+export default async function HomePage(props: { searchParams: Promise<SP> }) {
+  const searchParams = await props.searchParams;
   const me = await getCurrentProfile();
   const loggedIn = Boolean(me);
   const view = searchParams.view === "calendar" ? "calendar" : "list";

@@ -7,11 +7,12 @@ import { UpgradeButton, ManageBillingButton } from "@/components/dashboard/Billi
 
 export const metadata = { title: "Billing" };
 
-export default async function BillingPage({
-  searchParams,
-}: {
-  searchParams: { status?: string };
-}) {
+export default async function BillingPage(
+  props: {
+    searchParams: Promise<{ status?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const user = await requireUser();
   const pro = isPro(user.plan);
   const billingEnabled = isBillingEnabled();

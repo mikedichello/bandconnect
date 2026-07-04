@@ -13,11 +13,12 @@ function displayFor(u: {
   return { name: "BandConnect user", slug: null, role: u.role };
 }
 
-export default async function MessagesPage({
-  searchParams,
-}: {
-  searchParams: { to?: string };
-}) {
+export default async function MessagesPage(
+  props: {
+    searchParams: Promise<{ to?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const user = await requireUser();
 
   const messages = await prisma.message.findMany({

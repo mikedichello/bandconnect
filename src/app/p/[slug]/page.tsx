@@ -14,13 +14,15 @@ import { EventCard, type EventCardData } from "@/components/events/EventCard";
 import { initials, parseTags, formatRate, formatDate, spotifyEmbedUrl } from "@/lib/utils";
 import { isArtist, profileTypeMeta, MUSICIAN_STATUS } from "@/lib/constants";
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const p = await prisma.profile.findUnique({ where: { slug: params.slug } });
   if (!p) return { title: "Profile not found" };
   return { title: p.displayName, description: p.tagline || p.bio?.slice(0, 150) || `${p.displayName} on BandConnect` };
 }
 
-export default async function ProfilePage({ params }: { params: { slug: string } }) {
+export default async function ProfilePage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const profile = await prisma.profile.findUnique({
     where: { slug: params.slug },
     include: {
@@ -158,7 +160,6 @@ export default async function ProfilePage({ params }: { params: { slug: string }
           </div>
         </div>
       </header>
-
       <div className="container-page grid gap-8 py-8 lg:grid-cols-[1fr_320px]">
         <div className="space-y-8">
           {profile.bio && (

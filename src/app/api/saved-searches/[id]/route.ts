@@ -3,7 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUserId } from "@/lib/session";
 
 /** Delete a saved search you own. */
-export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const userId = await getCurrentUserId();
   if (!userId) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
 

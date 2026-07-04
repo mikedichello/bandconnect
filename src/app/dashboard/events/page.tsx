@@ -6,7 +6,8 @@ import { EventsManager, type EventRow } from "@/components/dashboard/EventsManag
 
 export const metadata = { title: "My events" };
 
-export default async function EventsPage({ searchParams }: { searchParams: { boosted?: string } }) {
+export default async function EventsPage(props: { searchParams: Promise<{ boosted?: string }> }) {
+  const searchParams = await props.searchParams;
   const user = await requireUser();
   const profile = user.profile!;
   if (profile.type === "FAN") {

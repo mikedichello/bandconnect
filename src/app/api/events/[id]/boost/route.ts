@@ -9,7 +9,8 @@ import { EVENT_BOOST } from "@/lib/plans";
  * placement in the calendar for EVENT_BOOST.days. Pay-per-use, any plan. The
  * webhook (checkout.session.completed, kind=boost) flips the event to featured.
  */
-export async function POST(_req: Request, { params }: { params: { id: string } }) {
+export async function POST(_req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const user = await getCurrentUser();
   if (!user || !user.profile) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });

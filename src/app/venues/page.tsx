@@ -6,11 +6,12 @@ import { CT_TOWN_NAMES } from "@/lib/ct-geo";
 export const metadata = { title: "Venues & hosts" };
 export const dynamic = "force-dynamic";
 
-export default async function VenuesPage({
-  searchParams,
-}: {
-  searchParams: { q?: string; city?: string };
-}) {
+export default async function VenuesPage(
+  props: {
+    searchParams: Promise<{ q?: string; city?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const q = searchParams.q?.trim() || "";
   const city = searchParams.city?.trim() || "";
 

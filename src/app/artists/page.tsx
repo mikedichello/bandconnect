@@ -7,11 +7,12 @@ import { GENRES } from "@/lib/constants";
 export const metadata = { title: "Musicians & bands" };
 export const dynamic = "force-dynamic";
 
-export default async function ArtistsPage({
-  searchParams,
-}: {
-  searchParams: { q?: string; type?: string; genre?: string; available?: string; date?: string; seeking?: string };
-}) {
+export default async function ArtistsPage(
+  props: {
+    searchParams: Promise<{ q?: string; type?: string; genre?: string; available?: string; date?: string; seeking?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const q = searchParams.q?.trim() || "";
   const type = searchParams.type === "MUSICIAN" || searchParams.type === "BAND" ? searchParams.type : "";
   const genre = searchParams.genre?.trim() || "";
