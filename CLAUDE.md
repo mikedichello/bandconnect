@@ -9,8 +9,10 @@ Venue, Musician, Band) share one graph (follow / friend / RSVP / message). Free 
 Pro (Stripe) tiers.
 
 ## Stack
-Next.js 14 (App Router) · TypeScript · Prisma (SQLite dev / Postgres prod) ·
-NextAuth (credentials + JWT + bcrypt) · Stripe · Resend · Tailwind · lucide-react · Zod.
+Next.js 15 (App Router, async params/searchParams) · React 19 · TypeScript ·
+Prisma (SQLite dev / Postgres prod) · NextAuth v4 (credentials + JWT + bcrypt;
+uuid pinned ^11 via overrides) · Stripe · Resend · Tailwind 3 · lucide-react · Zod.
+`npm audit` must stay at 0 vulnerabilities (postcss/uuid pinned in `overrides`).
 
 ## Commands
 ```bash
@@ -44,6 +46,9 @@ Demo logins: `fan@/venue@/musician@/band@demo.com`, password `password123`.
   line/field/fg/muted/subtle`, consumed as `rgb(var(--c-x) / <alpha>)` via
   `tailwind.config.ts`. `darkMode: "class"`; **dark is default**, `.light` is the
   alt palette; no-flash script in `layout.tsx`.
+- **No emoji in UI.** lucide-react is the only icon system (decorative icons get
+  `aria-hidden`); this lucide version has no brand marks (no Instagram/Youtube
+  icons — use Camera/Play/Music2/Disc3/Globe with text labels).
 - **Color contrast (WCAG 2.1 AA, both themes) — IMPORTANT:** never use bare
   `text-{brand,emerald,amber,red}-300/200` for text (fails on white in light
   mode). Use the **`.link`** class for links, and **`text-X-700 dark:text-X-300`**
@@ -76,10 +81,18 @@ benchmarked) · `WIREFRAMES.md` ·
   `ADMIN_EMAILS`, `VerifiedBadge` on profile/card/event host); **paid event
   boosts** (`Event.featured`/`featuredUntil`, `POST /api/events/[id]/boost`
   one-time Stripe Checkout + webhook activation, ★ Featured pinned in the
-  calendar; tune `EVENT_BOOST` in `plans.ts`; benchmarked in `docs/MONETIZATION.md`).
-- **Next (incremental):** hard-gate unverified (hide from booking search /
-  block known-name claims); claim an *ownerless* seeded page (needs
-  `Profile.userId` optional + handshake); social link-back + SMS OTP. Spec:
+  calendar; tune `EVENT_BOOST` in `plans.ts`; benchmarked in `docs/MONETIZATION.md`);
+  **booking-search hard-gate** (booking-intent artist searches return verified
+  only); **Spotify embeds** on artist profiles (`spotifyEmbedUrl` in utils);
+  **weekly digest email** (`/api/cron/digest`, Thu 15:00 UTC, idempotent via
+  `User.digestSentAt`); **design refresh** (all emoji → lucide); **Next 15 +
+  React 19** (0 npm audit vulns); **Pro analytics** (`PageView` model,
+  `lib/track.ts` `after()` tracking, `/dashboard/analytics` gated by
+  `plans.limits.analytics`); engineering README.
+- **Next (incremental):** Pro branding removal + custom profile URL/slug
+  (`limits.removeBranding` exists, unimplemented); claim an *ownerless* seeded
+  page (needs `Profile.userId` optional + handshake); social link-back + SMS
+  OTP; embed fallbacks; rate limiting. Full list: README `TODO`. Spec:
   `docs/launch/trust-and-verification.md`.
 
 ## Workflow
