@@ -11,6 +11,7 @@ import { FollowButton } from "@/components/FollowButton";
 import { ShareButton } from "@/components/ShareButton";
 import { ShareToFriend } from "@/components/events/ShareToFriend";
 import { AddToCalendar } from "@/components/events/AddToCalendar";
+import { trackView } from "@/lib/track";
 import { formatDate, formatTime, parseTags, initials, toEmbedUrl } from "@/lib/utils";
 
 const BASE = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
@@ -35,6 +36,8 @@ export default async function EventPage(props: { params: Promise<{ id: string }>
 
   const me = await getCurrentProfile();
   const loggedIn = Boolean(me);
+
+  if (me?.id !== event.hostProfileId) trackView("EVENT", event.id, me?.id ?? null);
 
   const myRsvp = me ? event.rsvps.find((r) => r.profileId === me.id)?.status ?? null : null;
   const going = event.rsvps.filter((r) => r.status === "GOING");

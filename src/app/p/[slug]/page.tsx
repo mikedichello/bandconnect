@@ -11,6 +11,7 @@ import { FollowButton } from "@/components/FollowButton";
 import { FriendButton } from "@/components/FriendButton";
 import { MediaGallery } from "@/components/profile/MediaGallery";
 import { EventCard, type EventCardData } from "@/components/events/EventCard";
+import { trackView } from "@/lib/track";
 import { initials, parseTags, formatRate, formatDate, spotifyEmbedUrl } from "@/lib/utils";
 import { isArtist, profileTypeMeta, MUSICIAN_STATUS } from "@/lib/constants";
 
@@ -39,6 +40,8 @@ export default async function ProfilePage(props: { params: Promise<{ slug: strin
   const isOwner = me?.id === profile.id;
   const accent = profile.themeColor || "#7c4dff";
   const meta = profileTypeMeta(profile.type);
+
+  if (!isOwner) trackView("PROFILE", profile.id, me?.id ?? null);
 
   const following = me
     ? Boolean(await prisma.follow.findUnique({ where: { followerId_followingId: { followerId: me.id, followingId: profile.id } } }))

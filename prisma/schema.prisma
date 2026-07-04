@@ -279,6 +279,21 @@ model AvailabilityDate {
   @@index([profileId])
 }
 
+// --- Analytics (Pro) ----------------------------------------------------------
+
+// One row per profile/event page render by a non-owner. Powers the Pro
+// analytics dashboard; pruned reads stay cheap via the composite index.
+model PageView {
+  id         String  @id @default(cuid())
+  targetType String // "PROFILE" | "EVENT"
+  targetId   String // Profile.id or Event.id
+  viewerId   String? // viewing Profile.id; null for logged-out visitors
+
+  createdAt DateTime @default(now())
+
+  @@index([targetType, targetId, createdAt])
+}
+
 // --- Messaging & notifications ----------------------------------------------
 
 model Message {

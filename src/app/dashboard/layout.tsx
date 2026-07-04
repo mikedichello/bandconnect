@@ -33,6 +33,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     { href: "/dashboard/messages", label: "Messages", icon: "messages", badge: unreadMessages || undefined },
     { href: "/dashboard/notifications", label: "Notifications", icon: "notifications", badge: unreadNotifications || undefined },
     { href: "/dashboard/alerts", label: "Alerts", icon: "alerts" },
+    { href: "/dashboard/analytics", label: "Analytics", icon: "analytics" },
     { href: "/dashboard/billing", label: "Billing", icon: "billing" },
     ...(isAdmin(user.email) ? [{ href: "/dashboard/admin", label: "Admin", icon: "admin" } as NavItem] : []),
   ];
