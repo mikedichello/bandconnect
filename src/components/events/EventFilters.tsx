@@ -111,7 +111,9 @@ export function EventFilters({ resolvedLabel }: { resolvedLabel: string | null }
             </p>
           )}
           {!geoActive && loc.trim() && resolvedLabel && (
-            <p className="mt-1 text-xs text-emerald-700 dark:text-emerald-300">📍 {resolvedLabel}</p>
+            <p className="mt-1 flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-300">
+              <MapPin className="h-3 w-3" aria-hidden="true" /> {resolvedLabel}
+            </p>
           )}
           {!geoActive && loc.trim() && !resolvedLabel && (
             <p className="mt-1 text-xs text-amber-700 dark:text-amber-300">Couldn&apos;t match that CT location.</p>
@@ -139,10 +141,10 @@ export function EventFilters({ resolvedLabel }: { resolvedLabel: string | null }
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <Chip active={family} onClick={() => { setFamily((v) => !v); apply({ family: family ? null : "1" }); }}>
-          👨‍👩‍👧 Family friendly
+          Family friendly
         </Chip>
         <Chip active={noCover} onClick={() => { setNoCover((v) => !v); apply({ noCover: noCover ? null : "1" }); }}>
-          🆓 No cover
+          No cover
         </Chip>
         {(params.toString().replace(/view=\w+&?/, "").length > 0) && (
           <button onClick={reset} className="ml-auto text-xs text-subtle hover:text-fg">

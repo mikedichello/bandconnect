@@ -1,3 +1,4 @@
+import { Star } from "lucide-react";
 import { requireUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { planFor } from "@/lib/plans";
@@ -37,8 +38,9 @@ export default async function EventsPage({ searchParams }: { searchParams: { boo
   return (
     <>
       {searchParams.boosted === "1" && (
-        <div role="status" className="mb-4 rounded-xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-300">
-          ★ Your show is boosted — it&apos;s now featured at the top of the calendar.
+        <div role="status" className="mb-4 flex items-center gap-2 rounded-xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-300">
+          <Star className="h-4 w-4 flex-shrink-0 fill-current" aria-hidden="true" />
+          Your show is boosted — it&apos;s now featured at the top of the calendar.
         </div>
       )}
       <EventsManager initial={rows} atLimit={atLimit} limitLabel={limitLabel} />

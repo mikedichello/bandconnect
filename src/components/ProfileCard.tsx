@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Star } from "lucide-react";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { initials, parseTags, formatRate } from "@/lib/utils";
@@ -28,7 +29,12 @@ export function ProfileCard({ data }: { data: ProfileCardData }) {
 
   return (
     <Link href={`/p/${data.slug}`} className="card group relative overflow-hidden p-5 transition hover:border-line">
-      {data.featured && <span className="absolute right-3 top-3 badge-brand text-[10px]">★ Featured</span>}
+      {data.featured && (
+        <span className="badge-brand absolute right-3 top-3 text-[10px]">
+          <Star className="h-3 w-3 fill-current" aria-hidden="true" />
+          Featured
+        </span>
+      )}
       <div className="flex items-center gap-4">
         <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-2xl bg-brand-500/15">
           <ImageWithFallback

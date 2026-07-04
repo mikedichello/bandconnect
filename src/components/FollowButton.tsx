@@ -55,7 +55,7 @@ export function FollowButton({
       disabled={loading}
       className={`${following ? "btn-ghost" : "btn-primary"} ${cls}`}
     >
-      {following ? "Following ✓" : "Follow"}
+      {following ? "Following" : "Follow"}
     </button>
   );
 }

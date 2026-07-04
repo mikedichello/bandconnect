@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowLeft, Music, CalendarDays, MapPin } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getCurrentProfile } from "@/lib/session";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
@@ -92,7 +93,10 @@ export default async function EventPage({ params }: { params: { id: string } }) 
   return (
     <article className="container-page py-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Link href="/" className="text-sm text-subtle hover:text-fg">← Back to calendar</Link>
+      <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-subtle hover:text-fg">
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        Back to calendar
+      </Link>
 
       <div className="mt-4 grid gap-8 lg:grid-cols-[1fr_320px]">
         <div>
@@ -108,10 +112,10 @@ export default async function EventPage({ params }: { params: { id: string } }) 
                   className="h-full w-full object-cover"
                   fallback={
                     <div
-                      className="grid h-full w-full place-items-center text-5xl"
+                      className="grid h-full w-full place-items-center"
                       style={{ background: `radial-gradient(60% 100% at 30% 0%, ${accent}44, transparent 60%)` }}
                     >
-                      🎵
+                      <Music className="h-10 w-10 text-subtle" aria-hidden="true" />
                     </div>
                   }
                 />
@@ -120,7 +124,7 @@ export default async function EventPage({ params }: { params: { id: string } }) 
           </div>
 
           <div className="mt-5 flex flex-wrap items-center gap-2">
-            {event.familyFriendly && <span className="badge-green">👨‍👩‍👧 Family friendly</span>}
+            {event.familyFriendly && <span className="badge-green">Family friendly</span>}
             <span className={event.hasCoverCharge ? "badge" : "badge-accent"}>
               {event.hasCoverCharge ? "Cover charge" : "Free — no cover"}
             </span>
@@ -131,15 +135,21 @@ export default async function EventPage({ params }: { params: { id: string } }) 
 
           <h1 className="mt-4 font-display text-3xl font-bold text-fg sm:text-4xl">{event.title}</h1>
 
-          <p className="mt-3 text-lg text-fg">
-            🗓️ {formatDate(event.startAt)} · {formatTime(event.startAt)}
-            {event.endAt ? ` – ${formatTime(event.endAt)}` : ""}
+          <p className="mt-3 flex items-center gap-2 text-lg text-fg">
+            <CalendarDays className="h-5 w-5 flex-shrink-0 text-subtle" aria-hidden="true" />
+            <span>
+              {formatDate(event.startAt)} · {formatTime(event.startAt)}
+              {event.endAt ? ` – ${formatTime(event.endAt)}` : ""}
+            </span>
           </p>
           {(event.locationName || event.city) && (
-            <p className="mt-1 text-subtle">
-              📍 {event.locationName ?? ""}{event.locationName && event.city ? " · " : ""}
-              {event.city ? `${event.city}, CT` : ""}
-              {event.address ? ` · ${event.address}` : ""}
+            <p className="mt-1 flex items-center gap-2 text-subtle">
+              <MapPin className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
+              <span>
+                {event.locationName ?? ""}{event.locationName && event.city ? " · " : ""}
+                {event.city ? `${event.city}, CT` : ""}
+                {event.address ? ` · ${event.address}` : ""}
+              </span>
             </p>
           )}
 

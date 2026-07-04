@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Check } from "lucide-react";
 import { GENRES, INSTRUMENTS, MUSICIAN_STATUS, isArtist } from "@/lib/constants";
 
 export interface ProfileValues {
@@ -190,7 +191,7 @@ export function ProfileEditor({ isPro, initial }: { isPro: boolean; initial: Pro
           <input type="color" disabled={!isPro} value={v.themeColor ?? "#7c4dff"} onChange={(e) => set("themeColor", e.target.value)} className="h-11 w-16 cursor-pointer rounded-lg border border-line bg-transparent disabled:opacity-50" />
           <div className="text-sm">
             {isPro ? <span className="text-muted">Theme color: {v.themeColor}</span> : (
-              <span className="text-subtle">Custom theme is a Pro feature. <Link href="/pricing" className="link">Upgrade →</Link></span>
+              <span className="text-subtle">Custom theme is a Pro feature. <Link href="/pricing" className="link">Upgrade</Link></span>
             )}
           </div>
         </div>
@@ -198,7 +199,12 @@ export function ProfileEditor({ isPro, initial }: { isPro: boolean; initial: Pro
 
       <div className="sticky bottom-4 z-10 flex items-center justify-between gap-3 rounded-2xl border border-line bg-surface/90 px-4 py-3 backdrop-blur">
         <div className="text-sm" role="status" aria-live="polite">
-          {status === "saved" && <span className="text-emerald-700 dark:text-emerald-300">✓ Saved</span>}
+          {status === "saved" && (
+            <span className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-300">
+              <Check className="h-4 w-4" aria-hidden="true" />
+              Saved
+            </span>
+          )}
           {status === "error" && <span className="text-red-700 dark:text-red-300">{error}</span>}
           {status === "saving" && <span className="text-subtle">Saving…</span>}
           {status === "idle" && <span className="text-subtle">Make it yours.</span>}

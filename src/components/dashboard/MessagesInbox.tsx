@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Mail, ArrowLeft, ArrowUpRight } from "lucide-react";
 import { cn, initials, timeAgo } from "@/lib/utils";
 
 export interface ConvoMessage {
@@ -115,7 +116,9 @@ export function MessagesInbox({
   if (conversations.length === 0) {
     return (
       <div className="card p-10 text-center">
-        <div className="text-3xl">✉️</div>
+        <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-elevated">
+          <Mail className="h-6 w-6 text-subtle" aria-hidden="true" />
+        </div>
         <h1 className="mt-3 text-lg font-semibold">No messages yet</h1>
         <p className="mx-auto mt-1 max-w-sm text-sm text-subtle">
           Start a conversation from any venue or artist page. Your booking chats
@@ -168,8 +171,8 @@ export function MessagesInbox({
           <>
             <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
               <div className="flex items-center gap-3">
-                <button className="md:hidden text-subtle" onClick={() => setActiveId(null)} aria-label="Back">
-                  ←
+                <button className="md:hidden text-subtle hover:text-fg" onClick={() => setActiveId(null)} aria-label="Back">
+                  <ArrowLeft className="h-5 w-5" aria-hidden="true" />
                 </button>
                 <div>
                   <p className="font-semibold text-fg">{active.name}</p>
@@ -183,9 +186,10 @@ export function MessagesInbox({
                 <Link
                   href={`/p/${active.slug}`}
                   target="_blank"
-                  className="text-xs link"
+                  className="link inline-flex items-center gap-1 text-xs"
                 >
-                  View page ↗
+                  View page
+                  <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </Link>
               )}
             </div>

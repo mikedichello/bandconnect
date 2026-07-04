@@ -42,7 +42,7 @@ export async function POST(req: Request) {
   }
 
   const link = `${APP_URL}/event/${event.id}`;
-  const body = [note?.trim(), `🎟️ ${event.title}`, link].filter(Boolean).join("\n\n");
+  const body = [note?.trim(), event.title, link].filter(Boolean).join("\n\n");
 
   await prisma.message.create({
     data: { senderId: me.userId, recipientId: target.user.id, body },

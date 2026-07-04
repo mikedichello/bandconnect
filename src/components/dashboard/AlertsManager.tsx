@@ -52,7 +52,7 @@ export function AlertsManager({ initial }: { initial: AlertRow[] }) {
                 <div>
                   <p className="font-medium text-fg">{a.label}</p>
                   <p className="text-xs text-subtle">
-                    {[a.city && `📍 ${a.city}`, a.genre && `🎵 ${a.genre}`].filter(Boolean).join(" · ")}
+                    {[a.city, a.genre].filter(Boolean).join(" · ")}
                   </p>
                 </div>
               </div>

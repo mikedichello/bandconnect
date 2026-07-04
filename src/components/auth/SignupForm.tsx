@@ -6,6 +6,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { PROFILE_TYPES, type ProfileType } from "@/lib/constants";
+import { ProfileTypeIcon } from "@/components/ProfileTypeIcon";
 
 export function SignupForm() {
   const router = useRouter();
@@ -73,7 +74,7 @@ export function SignupForm() {
               role === t.id ? "border-brand-400/60 bg-brand-500/15 shadow-glow" : "border-line bg-input hover:border-line",
             )}
           >
-            <div className="text-2xl" aria-hidden="true">{t.emoji}</div>
+            <ProfileTypeIcon icon={t.icon} className="mx-auto h-6 w-6 text-muted" />
             <div className="mt-1 text-sm font-semibold text-fg">{t.label}</div>
           </button>
         ))}

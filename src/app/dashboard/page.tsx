@@ -1,4 +1,8 @@
 import Link from "next/link";
+import {
+  Users, CalendarDays, Mail, Plus, Search, Guitar, Landmark, CalendarCheck,
+  ArrowRight, ArrowUpRight, type LucideIcon,
+} from "lucide-react";
 import { requireUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { isPro, planFor } from "@/lib/plans";
@@ -45,9 +49,9 @@ export default async function DashboardHome() {
     <div className="space-y-6">
       <OnboardingChecklist steps={steps} />
       <div className="grid gap-4 sm:grid-cols-3">
-        <Stat label="Followers" value={followers} href="/dashboard/network" icon="👥" />
-        <Stat label={type === "FAN" ? "Shows RSVP'd" : "Upcoming events"} value={type === "FAN" ? rsvped.length : upcomingHosted.length} href={type === "FAN" ? "/dashboard/calendar" : "/dashboard/events"} icon="🗓️" />
-        <Stat label="Unread messages" value={unreadMessages} href="/dashboard/messages" icon="✉️" />
+        <Stat label="Followers" value={followers} href="/dashboard/network" icon={Users} />
+        <Stat label={type === "FAN" ? "Shows RSVP'd" : "Upcoming events"} value={type === "FAN" ? rsvped.length : upcomingHosted.length} href={type === "FAN" ? "/dashboard/calendar" : "/dashboard/events"} icon={CalendarDays} />
+        <Stat label="Unread messages" value={unreadMessages} href="/dashboard/messages" icon={Mail} />
       </div>
 
       {/* Public page callout */}
@@ -59,7 +63,10 @@ export default async function DashboardHome() {
           </div>
           <div className="flex gap-2">
             <Link href="/dashboard/profile" className="btn-ghost">Edit</Link>
-            <Link href={`/p/${profile.slug}`} target="_blank" className="btn-primary">View ↗</Link>
+            <Link href={`/p/${profile.slug}`} target="_blank" className="btn-primary">
+              View
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </section>
@@ -68,12 +75,12 @@ export default async function DashboardHome() {
       <section>
         <h2 className="mb-3 text-lg font-semibold">Quick actions</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {type !== "FAN" && <Action href="/dashboard/events" icon="➕" title="Post an event" body="Add your next show to the CT calendar." />}
-          {type === "FAN" && <Action href="/" icon="🔎" title="Find shows" body="Browse the Connecticut live-music calendar." />}
-          {type === "VENUE" && <Action href="/artists" icon="🎸" title="Find acts" body="Discover musicians & bands available for gigs." />}
-          {isArtist(type) && <Action href="/venues" icon="🏛️" title="Find venues" body="Browse rooms booking live music." />}
-          {isArtist(type) && <Action href="/dashboard/availability" icon="✅" title="Set availability" body="Mark your open dates for bookings." />}
-          <Action href="/dashboard/messages" icon="✉️" title="Open inbox" body="Reply to your conversations." />
+          {type !== "FAN" && <Action href="/dashboard/events" icon={Plus} title="Post an event" body="Add your next show to the CT calendar." />}
+          {type === "FAN" && <Action href="/" icon={Search} title="Find shows" body="Browse the Connecticut live-music calendar." />}
+          {type === "VENUE" && <Action href="/artists" icon={Guitar} title="Find acts" body="Discover musicians & bands available for gigs." />}
+          {isArtist(type) && <Action href="/venues" icon={Landmark} title="Find venues" body="Browse rooms booking live music." />}
+          {isArtist(type) && <Action href="/dashboard/availability" icon={CalendarCheck} title="Set availability" body="Mark your open dates for bookings." />}
+          <Action href="/dashboard/messages" icon={Mail} title="Open inbox" body="Reply to your conversations." />
         </div>
       </section>
 
@@ -81,13 +88,16 @@ export default async function DashboardHome() {
       <section className="card p-6">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">{type === "FAN" ? "Your upcoming shows" : "Your next events"}</h2>
-          <Link href="/dashboard/calendar" className="text-sm link">View calendar →</Link>
+          <Link href="/dashboard/calendar" className="link inline-flex items-center gap-1 text-sm">
+            View calendar
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
         </div>
         {(type === "FAN" ? rsvped.length : upcomingHosted.length) === 0 ? (
           <p className="mt-4 text-sm text-subtle">
             Nothing upcoming yet.{" "}
             <Link href={type === "FAN" ? "/" : "/dashboard/events"} className="link">
-              {type === "FAN" ? "Find a show →" : "Post an event →"}
+              {type === "FAN" ? "Find a show" : "Post an event"}
             </Link>
           </p>
         ) : (
@@ -120,20 +130,20 @@ export default async function DashboardHome() {
   );
 }
 
-function Stat({ label, value, href, icon }: { label: string; value: number; href: string; icon: string }) {
+function Stat({ label, value, href, icon: Icon }: { label: string; value: number; href: string; icon: LucideIcon }) {
   return (
     <Link href={href} className="card p-5 transition hover:border-line">
-      <div className="text-xl">{icon}</div>
+      <Icon className="h-5 w-5 text-subtle" aria-hidden="true" />
       <div className="mt-3 font-display text-3xl font-bold text-fg">{value}</div>
       <div className="mt-1 text-sm text-subtle">{label}</div>
     </Link>
   );
 }
 
-function Action({ href, icon, title, body }: { href: string; icon: string; title: string; body: string }) {
+function Action({ href, icon: Icon, title, body }: { href: string; icon: LucideIcon; title: string; body: string }) {
   return (
     <Link href={href} className="card p-5 transition hover:border-line">
-      <div className="text-xl">{icon}</div>
+      <Icon className="h-5 w-5 text-subtle" aria-hidden="true" />
       <h3 className="mt-2 font-semibold text-fg">{title}</h3>
       <p className="mt-1 text-sm text-subtle">{body}</p>
     </Link>

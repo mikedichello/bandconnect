@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Mail } from "lucide-react";
 
 export function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
@@ -29,7 +30,9 @@ export function ForgotPasswordForm() {
 
       {sent ? (
         <div role="status" className="card p-6 text-center">
-          <div className="text-3xl">📧</div>
+          <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-elevated">
+            <Mail className="h-6 w-6 text-subtle" aria-hidden="true" />
+          </div>
           <p className="mt-3 text-fg">
             If an account exists for <strong>{email}</strong>, a reset link is on its way.
           </p>

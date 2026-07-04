@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Check, X } from "lucide-react";
+import { Check, X, ArrowRight } from "lucide-react";
 
 export interface ChecklistStep {
   label: string;
@@ -64,7 +64,10 @@ export function OnboardingChecklist({ steps }: { steps: ChecklistStep[] }) {
               <Link href={s.href} className="flex items-center gap-3 text-sm text-fg hover:text-brand-700 dark:hover:text-brand-200">
                 <span className="grid h-5 w-5 place-items-center rounded-full border border-line" aria-hidden="true" />
                 {s.label}
-                <span className="ml-auto text-xs text-brand-700 dark:text-brand-300">Do it →</span>
+                <span className="ml-auto inline-flex items-center gap-1 text-xs text-brand-700 dark:text-brand-300">
+                  Do it
+                  <ArrowRight className="h-3 w-3" aria-hidden="true" />
+                </span>
               </Link>
             )}
           </li>

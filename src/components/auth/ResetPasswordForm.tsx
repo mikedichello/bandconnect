@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { CheckCircle2 } from "lucide-react";
 
 export function ResetPasswordForm() {
   const router = useRouter();
@@ -50,7 +51,9 @@ export function ResetPasswordForm() {
 
       {done ? (
         <div role="status" className="card p-6 text-center">
-          <div className="text-3xl">✅</div>
+          <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-elevated">
+            <CheckCircle2 className="h-6 w-6 text-emerald-700 dark:text-emerald-300" aria-hidden="true" />
+          </div>
           <p className="mt-3 text-fg">Password updated! Taking you to log in…</p>
         </div>
       ) : (

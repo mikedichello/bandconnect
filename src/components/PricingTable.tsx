@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Check } from "lucide-react";
 import { PLANS } from "@/lib/plans";
 import { UpgradeButton } from "@/components/dashboard/BillingClient";
 
@@ -42,7 +43,7 @@ export function PricingTable({
           <ul className="mt-6 flex-1 space-y-3 text-sm text-muted">
             {PLANS.FREE.features.map((f) => (
               <li key={f} className="flex items-start gap-2">
-                <span className="mt-0.5 text-brand-600 dark:text-brand-400">✓</span> {f}
+                <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-600 dark:text-brand-400" aria-hidden="true" /> {f}
               </li>
             ))}
           </ul>
@@ -71,7 +72,7 @@ export function PricingTable({
           <ul className="mt-6 flex-1 space-y-3 text-sm text-fg">
             {pro.features.map((f) => (
               <li key={f} className="flex items-start gap-2">
-                <span className="mt-0.5 text-brand-600 dark:text-brand-400">✓</span> {f}
+                <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-600 dark:text-brand-400" aria-hidden="true" /> {f}
               </li>
             ))}
           </ul>

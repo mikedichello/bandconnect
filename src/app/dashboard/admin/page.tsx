@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { Globe } from "lucide-react";
 import { requireUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { isAdmin } from "@/lib/admin";
@@ -25,7 +26,7 @@ export default async function AdminPage() {
       </div>
 
       {pending.length === 0 ? (
-        <p className="card p-6 text-sm text-subtle">Nothing pending. 🎉</p>
+        <p className="card p-6 text-sm text-subtle">Nothing pending.</p>
       ) : (
         <ul className="space-y-3">
           {pending.map((p) => (
@@ -35,7 +36,12 @@ export default async function AdminPage() {
                   <Link href={`/p/${p.slug}`} target="_blank" className="font-semibold text-fg hover:text-brand-700 dark:hover:text-brand-200">{p.displayName}</Link>
                   <span className="badge text-[10px] capitalize">{p.type.toLowerCase()}</span>
                 </div>
-                {p.websiteUrl && <p className="truncate text-xs text-subtle">🌐 {p.websiteUrl}</p>}
+                {p.websiteUrl && (
+                  <p className="flex items-center gap-1.5 text-xs text-subtle">
+                    <Globe className="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
+                    <span className="truncate">{p.websiteUrl}</span>
+                  </p>
+                )}
                 {p.verificationInfo && <p className="mt-1 whitespace-pre-wrap text-sm text-muted">{p.verificationInfo}</p>}
               </div>
               <AdminVerifyButtons profileId={p.id} />

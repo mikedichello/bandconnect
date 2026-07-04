@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn, formatTime } from "@/lib/utils";
 
 export interface CalendarEvent {
@@ -63,9 +64,15 @@ export function CalendarGrid({
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-3 py-3 sm:px-4">
         <h2 className="font-display text-base font-bold text-fg sm:text-lg">{monthLabel}</h2>
         <div className="flex gap-2">
-          <Link href={buildMonthHref(prev.getFullYear(), prev.getMonth())} className="btn-ghost px-3 py-1.5 text-xs" aria-label="Previous month">← Prev</Link>
+          <Link href={buildMonthHref(prev.getFullYear(), prev.getMonth())} className="btn-ghost gap-1 px-3 py-1.5 text-xs" aria-label="Previous month">
+            <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+            Prev
+          </Link>
           <Link href={buildMonthHref(today.getFullYear(), today.getMonth())} className="btn-ghost px-3 py-1.5 text-xs">Today</Link>
-          <Link href={buildMonthHref(next.getFullYear(), next.getMonth())} className="btn-ghost px-3 py-1.5 text-xs" aria-label="Next month">Next →</Link>
+          <Link href={buildMonthHref(next.getFullYear(), next.getMonth())} className="btn-ghost gap-1 px-3 py-1.5 text-xs" aria-label="Next month">
+            Next
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
         </div>
       </div>
 

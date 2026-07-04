@@ -56,7 +56,7 @@ export default async function CalendarPage({ searchParams }: { searchParams: { m
           <p className="mt-3 text-sm text-subtle">
             Nothing upcoming.{" "}
             <Link href={isFan ? "/" : "/dashboard/events"} className="link">
-              {isFan ? "Find shows →" : "Post an event →"}
+              {isFan ? "Find shows" : "Post an event"}
             </Link>
           </p>
         ) : (

@@ -1,3 +1,4 @@
+import { Landmark } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { ProfileCard, type ProfileCardData } from "@/components/ProfileCard";
 import { CT_TOWN_NAMES } from "@/lib/ct-geo";
@@ -67,7 +68,9 @@ export default async function VenuesPage({
 function EmptyState() {
   return (
     <div className="card p-12 text-center">
-      <div className="text-3xl">🏛️</div>
+      <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-elevated">
+        <Landmark className="h-6 w-6 text-subtle" aria-hidden="true" />
+      </div>
       <h2 className="mt-3 text-lg font-semibold">No venues yet</h2>
       <p className="mt-1 text-sm text-subtle">Check back soon, or list your venue.</p>
     </div>

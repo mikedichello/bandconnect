@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Music, Play, Star } from "lucide-react";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
 import { RsvpButton } from "@/components/RsvpButton";
 import { formatTime, parseTags, initials } from "@/lib/utils";
@@ -43,19 +44,25 @@ export function EventCard({
             alt={event.title}
             className="h-full w-full object-cover"
             fallback={
-              <div className="grid h-full w-full place-items-center bg-gradient-to-br from-brand-500/25 to-accent/15 text-3xl">
-                🎵
+              <div className="grid h-full w-full place-items-center bg-gradient-to-br from-brand-500/25 to-accent/15">
+                <Music className="h-8 w-8 text-subtle" aria-hidden="true" />
               </div>
             }
           />
           {event.coverType === "VIDEO" && (
-            <span className="absolute left-2 top-2 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white">▶ Video</span>
+            <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white">
+              <Play className="h-3 w-3 fill-current" aria-hidden="true" />
+              Video
+            </span>
           )}
           {event.featured && (
-            <span className="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[11px] font-bold text-amber-950 shadow">★ Featured</span>
+            <span className="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[11px] font-bold text-amber-950 shadow">
+              <Star className="h-3 w-3 fill-current" aria-hidden="true" />
+              Featured
+            </span>
           )}
           <div className="absolute bottom-2 left-2 flex gap-1.5">
-            {event.familyFriendly && <span className="badge-green text-[10px]">👨‍👩‍👧 Family</span>}
+            {event.familyFriendly && <span className="badge-green text-[10px]">Family</span>}
             <span className={event.hasCoverCharge ? "badge text-[10px]" : "badge-accent text-[10px]"}>
               {event.hasCoverCharge ? "Cover" : "No cover"}
             </span>

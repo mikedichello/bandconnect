@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { MapPin, Mail, Check, Globe, Camera, Play, Music2, Disc3, type LucideIcon } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getCurrentProfile } from "@/lib/session";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
+import { ProfileTypeIcon } from "@/components/ProfileTypeIcon";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { FollowButton } from "@/components/FollowButton";
 import { FriendButton } from "@/components/FriendButton";
@@ -107,13 +109,21 @@ export default async function ProfilePage({ params }: { params: { slug: string }
                 />
               </div>
               <div className="pb-1">
-                <span className="badge text-[11px]">{meta.emoji} {meta.label}</span>
+                <span className="badge text-[11px]">
+                  <ProfileTypeIcon icon={meta.icon} className="h-3 w-3" />
+                  {meta.label}
+                </span>
                 <div className="mt-1 flex items-center gap-2">
                   <h1 className="font-display text-3xl font-bold text-fg">{profile.displayName}</h1>
                   {profile.verified && <VerifiedBadge showLabel />}
                 </div>
                 {profile.tagline && <p className="text-muted">{profile.tagline}</p>}
-                {profile.city && <p className="text-sm text-subtle">📍 {profile.city}</p>}
+                {profile.city && (
+                  <p className="flex items-center gap-1.5 text-sm text-subtle">
+                    <MapPin className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
+                    {profile.city}
+                  </p>
+                )}
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-2 pb-1">
@@ -126,9 +136,15 @@ export default async function ProfilePage({ params }: { params: { slug: string }
                     <FriendButton targetProfileId={profile.id} initialState={friendState} loggedIn={loggedIn} loginHref={loginHref} />
                   )}
                   {loggedIn ? (
-                    <Link href={`/dashboard/messages?to=${profile.user.id}`} className="btn-primary px-4 py-2 text-sm">✉️ Message</Link>
+                    <Link href={`/dashboard/messages?to=${profile.user.id}`} className="btn-primary px-4 py-2 text-sm">
+                      <Mail className="h-4 w-4" aria-hidden="true" />
+                      Message
+                    </Link>
                   ) : (
-                    <Link href={loginHref} className="btn-primary px-4 py-2 text-sm">✉️ Message</Link>
+                    <Link href={loginHref} className="btn-primary px-4 py-2 text-sm">
+                      <Mail className="h-4 w-4" aria-hidden="true" />
+                      Message
+                    </Link>
                   )}
                 </>
               )}
@@ -224,7 +240,14 @@ export default async function ProfilePage({ params }: { params: { slug: string }
             <div className="card p-5">
               <h3 className="text-sm font-semibold uppercase tracking-wide text-subtle">Availability</h3>
               <p className="mt-2 text-sm">
-                {profile.availableForGigs ? <span className="text-emerald-700 dark:text-emerald-300">✓ Available for gigs</span> : <span className="text-subtle">Not currently booking</span>}
+                {profile.availableForGigs ? (
+                  <span className="inline-flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300">
+                    <Check className="h-4 w-4" aria-hidden="true" />
+                    Available for gigs
+                  </span>
+                ) : (
+                  <span className="text-subtle">Not currently booking</span>
+                )}
               </p>
               {rate && <p className="mt-1 text-sm text-muted">Rate: {rate}</p>}
               {profile.type === "MUSICIAN" && (
@@ -235,7 +258,7 @@ export default async function ProfilePage({ params }: { params: { slug: string }
                 </ul>
               )}
               {profile.type === "BAND" && profile.needsMusicians && (
-                <p className="mt-3 text-sm text-brand-700 dark:text-brand-200">🎯 Looking for musicians to join</p>
+                <p className="mt-3 text-sm text-brand-700 dark:text-brand-200">Looking for musicians to join</p>
               )}
               {profile.availability.length > 0 && (
                 <>
@@ -260,11 +283,11 @@ export default async function ProfilePage({ params }: { params: { slug: string }
               <Row label="Followers" value={String(profile._count.followers)} />
             </dl>
             <div className="mt-4 flex flex-wrap gap-2">
-              {profile.websiteUrl && <SocialLink href={profile.websiteUrl} label="🌐 Website" />}
-              {profile.instagram && <SocialLink href={profile.instagram.startsWith("http") ? profile.instagram : `https://instagram.com/${profile.instagram.replace(/^@/, "")}`} label="📷 Instagram" />}
-              {profile.spotify && <SocialLink href={profile.spotify} label="🎧 Spotify" />}
-              {profile.youtube && <SocialLink href={profile.youtube} label="▶️ YouTube" />}
-              {profile.bandcamp && <SocialLink href={profile.bandcamp} label="💿 Bandcamp" />}
+              {profile.websiteUrl && <SocialLink href={profile.websiteUrl} icon={Globe} label="Website" />}
+              {profile.instagram && <SocialLink href={profile.instagram.startsWith("http") ? profile.instagram : `https://instagram.com/${profile.instagram.replace(/^@/, "")}`} icon={Camera} label="Instagram" />}
+              {profile.spotify && <SocialLink href={profile.spotify} icon={Music2} label="Spotify" />}
+              {profile.youtube && <SocialLink href={profile.youtube} icon={Play} label="YouTube" />}
+              {profile.bandcamp && <SocialLink href={profile.bandcamp} icon={Disc3} label="Bandcamp" />}
             </div>
           </div>
         </aside>
@@ -282,8 +305,11 @@ function Row({ label, value }: { label: string; value: string }) {
   );
 }
 
-function SocialLink({ href, label }: { href: string; label: string }) {
+function SocialLink({ href, icon: Icon, label }: { href: string; icon: LucideIcon; label: string }) {
   return (
-    <a href={href} target="_blank" rel="noreferrer" className="badge hover:border-line hover:text-fg">{label}</a>
+    <a href={href} target="_blank" rel="noreferrer" className="badge hover:border-line hover:text-fg">
+      <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+      {label}
+    </a>
   );
 }

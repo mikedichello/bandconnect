@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Play, Image as ImageIcon } from "lucide-react";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
 
 export interface MediaRow {
@@ -80,9 +81,9 @@ export function MediaManager({ initial }: { initial: MediaRow[] }) {
             <div key={m.id} className="relative overflow-hidden rounded-xl border border-line">
               <div className="aspect-video w-full bg-input">
                 {m.kind === "VIDEO" ? (
-                  <div className="grid h-full w-full place-items-center text-2xl">▶️</div>
+                  <div className="grid h-full w-full place-items-center"><Play className="h-6 w-6 text-subtle" aria-hidden="true" /></div>
                 ) : (
-                  <ImageWithFallback src={m.url} alt={m.caption ?? ""} className="h-full w-full object-cover" fallback={<div className="grid h-full w-full place-items-center text-xl">🖼️</div>} />
+                  <ImageWithFallback src={m.url} alt={m.caption ?? ""} className="h-full w-full object-cover" fallback={<div className="grid h-full w-full place-items-center"><ImageIcon className="h-6 w-6 text-subtle" aria-hidden="true" /></div>} />
                 )}
               </div>
               <button onClick={() => remove(m.id)} className="absolute right-2 top-2 rounded-full bg-black/70 px-2 py-1 text-xs text-white hover:bg-red-500/80">Remove</button>

@@ -1,3 +1,4 @@
+import { Image as ImageIcon } from "lucide-react";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
 import { toEmbedUrl } from "@/lib/utils";
 
@@ -22,7 +23,7 @@ export function MediaGallery({ items }: { items: MediaEntry[] }) {
                 src={m.url}
                 alt={m.caption ?? "Media"}
                 className="h-full w-full object-cover"
-                fallback={<div className="grid h-full w-full place-items-center text-2xl">🖼️</div>}
+                fallback={<div className="grid h-full w-full place-items-center"><ImageIcon className="h-6 w-6 text-subtle" aria-hidden="true" /></div>}
               />
             </div>
             {m.caption && <figcaption className="px-3 py-2 text-xs text-subtle">{m.caption}</figcaption>}

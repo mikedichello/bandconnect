@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Star, Check } from "lucide-react";
 import { requireUser } from "@/lib/session";
 import { PLANS, isPro, isBillingEnabled } from "@/lib/plans";
 import { formatDate } from "@/lib/utils";
@@ -25,7 +26,7 @@ export default async function BillingPage({
 
       {searchParams.status === "success" && (
         <div className="rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-200">
-          🎉 You&apos;re on Pro! It may take a few seconds to reflect everywhere — refresh if needed.
+          You&apos;re on Pro! It may take a few seconds to reflect everywhere — refresh if needed.
         </div>
       )}
 
@@ -44,7 +45,11 @@ export default async function BillingPage({
             <p className="text-sm text-subtle">Current plan</p>
             <div className="mt-1 flex items-center gap-3">
               <h2 className="text-2xl font-bold">{plan.name}</h2>
-              {pro ? <span className="badge-brand">★ Pro</span> : <span className="badge">Free</span>}
+              {pro ? (
+                <span className="badge-brand"><Star className="h-3 w-3 fill-current" aria-hidden="true" />Pro</span>
+              ) : (
+                <span className="badge">Free</span>
+              )}
             </div>
             <p className="mt-1 text-sm text-subtle">{plan.tagline}</p>
             {pro && user.planRenewsAt && (
@@ -93,7 +98,7 @@ export default async function BillingPage({
               <ul className="mt-4 space-y-2 text-sm text-muted">
                 {p.features.map((f) => (
                   <li key={f} className="flex items-start gap-2">
-                    <span className="mt-0.5 text-brand-600 dark:text-brand-400">✓</span>
+                    <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-600 dark:text-brand-400" aria-hidden="true" />
                     <span>{f}</span>
                   </li>
                 ))}

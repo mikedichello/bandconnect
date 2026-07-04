@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Music, HeartHandshake, CalendarDays } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getCurrentProfile } from "@/lib/session";
 import { resolveCtLocation, distanceMiles } from "@/lib/ct-geo";
@@ -207,7 +208,10 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
         <div className="container-page py-10 sm:py-12">
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
             <div>
-              <span className="badge-brand mb-3">🎶 Connecticut live music</span>
+              <span className="badge-brand mb-3">
+                <Music className="h-3.5 w-3.5" aria-hidden="true" />
+                Connecticut live music
+              </span>
               <h1 className="font-display text-3xl font-bold text-fg sm:text-4xl">
                 {followingMode ? "From who you follow" : "What's happening tonight in CT"}
               </h1>
@@ -283,7 +287,9 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
         ) : cards.length === 0 ? (
           followingMode ? (
             <div className="card p-12 text-center">
-              <div className="text-3xl">🫶</div>
+              <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-elevated">
+                <HeartHandshake className="h-6 w-6 text-subtle" aria-hidden="true" />
+              </div>
               <h2 className="mt-3 text-lg font-semibold">Your feed is quiet</h2>
               <p className="mx-auto mt-1 max-w-sm text-sm text-subtle">
                 {followIds.length === 0
@@ -297,7 +303,9 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
             </div>
           ) : (
             <div className="card p-12 text-center">
-              <div className="text-3xl">📅</div>
+              <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-elevated">
+                <CalendarDays className="h-6 w-6 text-subtle" aria-hidden="true" />
+              </div>
               <h2 className="mt-3 text-lg font-semibold">No events match your filters</h2>
               <p className="mt-1 text-sm text-subtle">Try widening your radius or clearing filters.</p>
             </div>

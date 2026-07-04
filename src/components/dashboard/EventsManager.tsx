@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Star, Play, Plus } from "lucide-react";
 import { GENRES } from "@/lib/constants";
 import { formatDate, formatTime } from "@/lib/utils";
 
@@ -109,7 +110,10 @@ export function EventsManager({ initial, atLimit, limitLabel }: { initial: Event
           <h1 className="text-xl font-bold">My events</h1>
           <p className="text-sm text-subtle">{limitLabel}</p>
         </div>
-        <button className="btn-primary" onClick={startCreate} disabled={atLimit}>+ New event</button>
+        <button className="btn-primary" onClick={startCreate} disabled={atLimit}>
+          <Plus className="h-4 w-4" aria-hidden="true" />
+          New event
+        </button>
       </div>
 
       {boostMsg && (
@@ -178,10 +182,10 @@ export function EventsManager({ initial, atLimit, limitLabel }: { initial: Event
           </div>
           <div className="flex flex-wrap gap-6">
             <label className="flex items-center gap-2 text-sm text-fg">
-              <input type="checkbox" className="h-5 w-5 accent-brand-500" checked={form.familyFriendly} onChange={(e) => field("familyFriendly", e.target.checked)} /> 👨‍👩‍👧 Family friendly
+              <input type="checkbox" className="h-5 w-5 accent-brand-500" checked={form.familyFriendly} onChange={(e) => field("familyFriendly", e.target.checked)} /> Family friendly
             </label>
             <label className="flex items-center gap-2 text-sm text-fg">
-              <input type="checkbox" className="h-5 w-5 accent-brand-500" checked={form.hasCoverCharge} onChange={(e) => field("hasCoverCharge", e.target.checked)} /> 💵 Has a cover charge
+              <input type="checkbox" className="h-5 w-5 accent-brand-500" checked={form.hasCoverCharge} onChange={(e) => field("hasCoverCharge", e.target.checked)} /> Has a cover charge
             </label>
           </div>
           <div>
@@ -230,7 +234,12 @@ function Group({ title, rows, onDelete, onBoost, empty, dim }: { title: string; 
                     {formatDate(e.startAt)} · {formatTime(e.startAt)}{e.locationName ? ` · ${e.locationName}` : ""}{e.city ? ` · ${e.city}` : ""}
                   </p>
                   <div className="mt-1 flex gap-1.5">
-                    {e.coverType === "VIDEO" && <span className="badge text-[10px]">▶ Video</span>}
+                    {e.coverType === "VIDEO" && (
+                      <span className="badge text-[10px]">
+                        <Play className="h-2.5 w-2.5 fill-current" aria-hidden="true" />
+                        Video
+                      </span>
+                    )}
                     {e.familyFriendly && <span className="badge-green text-[10px]">Family</span>}
                     <span className={e.hasCoverCharge ? "badge text-[10px]" : "badge-accent text-[10px]"}>{e.hasCoverCharge ? "Cover" : "Free"}</span>
                   </div>
@@ -238,9 +247,15 @@ function Group({ title, rows, onDelete, onBoost, empty, dim }: { title: string; 
               </div>
               <div className="flex items-center gap-3">
                 {e.featured ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[11px] font-bold text-amber-950">★ Featured</span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[11px] font-bold text-amber-950">
+                    <Star className="h-3 w-3 fill-current" aria-hidden="true" />
+                    Featured
+                  </span>
                 ) : onBoost ? (
-                  <button onClick={() => onBoost(e.id)} className="text-sm font-medium text-amber-700 hover:underline dark:text-amber-300">★ Boost</button>
+                  <button onClick={() => onBoost(e.id)} className="inline-flex items-center gap-1 text-sm font-medium text-amber-700 hover:underline dark:text-amber-300">
+                    <Star className="h-3.5 w-3.5" aria-hidden="true" />
+                    Boost
+                  </button>
                 ) : null}
                 <button onClick={() => onDelete(e.id)} className="text-sm text-subtle hover:text-red-600 dark:hover:text-red-300">Delete</button>
               </div>

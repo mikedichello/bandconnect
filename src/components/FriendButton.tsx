@@ -41,7 +41,7 @@ export function FriendButton({
   }
 
   if (state === "accepted")
-    return <button onClick={() => call("remove")} disabled={loading} className="btn-ghost px-4 py-2 text-sm">Friends ✓</button>;
+    return <button onClick={() => call("remove")} disabled={loading} className="btn-ghost px-4 py-2 text-sm">Friends</button>;
   if (state === "pending_out")
     return <button onClick={() => call("remove")} disabled={loading} className="btn-ghost px-4 py-2 text-sm">Request sent</button>;
   if (state === "pending_in")

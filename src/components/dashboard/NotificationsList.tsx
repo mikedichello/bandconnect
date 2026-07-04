@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import {
+  UserPlus, Users, UserCheck, Mail, Ticket, Share2, Bell, type LucideIcon,
+} from "lucide-react";
 import { cn, timeAgo } from "@/lib/utils";
 
 export interface NotifRow {
@@ -15,9 +18,9 @@ export interface NotifRow {
   createdAt: string;
 }
 
-const ICONS: Record<string, string> = {
-  FOLLOW: "👤", FRIEND_REQUEST: "🤝", FRIEND_ACCEPT: "✅", MESSAGE: "✉️",
-  RSVP: "🎟️", SHARE: "🔗", EVENT_REMINDER: "🔔",
+const ICONS: Record<string, LucideIcon> = {
+  FOLLOW: UserPlus, FRIEND_REQUEST: Users, FRIEND_ACCEPT: UserCheck, MESSAGE: Mail,
+  RSVP: Ticket, SHARE: Share2, EVENT_REMINDER: Bell,
 };
 
 export function NotificationsList({ initial }: { initial: NotifRow[] }) {
@@ -50,15 +53,20 @@ export function NotificationsList({ initial }: { initial: NotifRow[] }) {
 
       {items.length === 0 ? (
         <div className="card p-10 text-center">
-          <div className="text-3xl">🔔</div>
+          <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-elevated">
+            <Bell className="h-6 w-6 text-subtle" aria-hidden="true" />
+          </div>
           <p className="mt-3 text-subtle">No notifications yet.</p>
         </div>
       ) : (
         <ul className="space-y-2">
           {items.map((n) => {
+            const Icon = ICONS[n.type] ?? Bell;
             const inner = (
               <div className="flex items-start gap-3">
-                <span className="text-lg">{ICONS[n.type] ?? "🔔"}</span>
+                <span className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-full bg-elevated text-muted">
+                  <Icon className="h-4 w-4" aria-hidden="true" />
+                </span>
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium text-fg">{n.title}</p>
                   {n.body && <p className="truncate text-sm text-subtle">{n.body}</p>}
