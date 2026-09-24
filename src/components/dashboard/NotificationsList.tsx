@@ -1,5 +1,6 @@
 "use client";
 
+import { Bell, CircleCheck, Handshake, Link2, Mail, Ticket, UserPlus, type LucideIcon } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -15,9 +16,9 @@ export interface NotifRow {
   createdAt: string;
 }
 
-const ICONS: Record<string, string> = {
-  FOLLOW: "👤", FRIEND_REQUEST: "🤝", FRIEND_ACCEPT: "✅", MESSAGE: "✉️",
-  RSVP: "🎟️", SHARE: "🔗", EVENT_REMINDER: "🔔",
+const ICONS: Record<string, LucideIcon> = {
+  FOLLOW: UserPlus, FRIEND_REQUEST: Handshake, FRIEND_ACCEPT: CircleCheck, MESSAGE: Mail,
+  RSVP: Ticket, SHARE: Link2, EVENT_REMINDER: Bell,
 };
 
 export function NotificationsList({ initial }: { initial: NotifRow[] }) {
@@ -50,7 +51,7 @@ export function NotificationsList({ initial }: { initial: NotifRow[] }) {
 
       {items.length === 0 ? (
         <div className="card p-10 text-center">
-          <div className="text-3xl">🔔</div>
+          <Bell className="mx-auto h-8 w-8 text-brand-600 dark:text-brand-300" aria-hidden="true" />
           <p className="mt-3 text-subtle">No notifications yet.</p>
         </div>
       ) : (
@@ -58,7 +59,7 @@ export function NotificationsList({ initial }: { initial: NotifRow[] }) {
           {items.map((n) => {
             const inner = (
               <div className="flex items-start gap-3">
-                <span className="text-lg">{ICONS[n.type] ?? "🔔"}</span>
+                <NotifIcon type={n.type} />
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium text-fg">{n.title}</p>
                   {n.body && <p className="truncate text-sm text-subtle">{n.body}</p>}
@@ -89,5 +90,14 @@ export function NotificationsList({ initial }: { initial: NotifRow[] }) {
         </ul>
       )}
     </div>
+  );
+}
+
+function NotifIcon({ type }: { type: string }) {
+  const Icon = ICONS[type] ?? Bell;
+  return (
+    <span className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full bg-brand-500/15 text-brand-700 dark:text-brand-300">
+      <Icon className="h-4 w-4" aria-hidden="true" />
+    </span>
   );
 }

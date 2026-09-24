@@ -1,5 +1,6 @@
 "use client";
 
+import { Check } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -55,7 +56,7 @@ export function FollowButton({
       disabled={loading}
       className={`${following ? "btn-ghost" : "btn-primary"} ${cls}`}
     >
-      {following ? "Following ✓" : "Follow"}
+      {following ? <><Check className="h-4 w-4" aria-hidden="true" /> Following</> : "Follow"}
     </button>
   );
 }

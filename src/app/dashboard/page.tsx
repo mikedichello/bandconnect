@@ -1,9 +1,11 @@
+import { Building2, CalendarCheck, CalendarDays, Guitar, Mail, Plus, Search, Users, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { isPro, planFor } from "@/lib/plans";
 import { isArtist } from "@/lib/constants";
 import { formatDate, formatTime } from "@/lib/utils";
+import { InsightsCard } from "@/components/dashboard/InsightsCard";
 import { OnboardingChecklist, type ChecklistStep } from "@/components/dashboard/OnboardingChecklist";
 
 export const metadata = { title: "Dashboard" };
@@ -45,10 +47,12 @@ export default async function DashboardHome() {
     <div className="space-y-6">
       <OnboardingChecklist steps={steps} />
       <div className="grid gap-4 sm:grid-cols-3">
-        <Stat label="Followers" value={followers} href="/dashboard/network" icon="👥" />
-        <Stat label={type === "FAN" ? "Shows RSVP'd" : "Upcoming events"} value={type === "FAN" ? rsvped.length : upcomingHosted.length} href={type === "FAN" ? "/dashboard/calendar" : "/dashboard/events"} icon="🗓️" />
-        <Stat label="Unread messages" value={unreadMessages} href="/dashboard/messages" icon="✉️" />
+        <Stat label="Followers" value={followers} href="/dashboard/network" icon={Users} />
+        <Stat label={type === "FAN" ? "Shows RSVP'd" : "Upcoming events"} value={type === "FAN" ? rsvped.length : upcomingHosted.length} href={type === "FAN" ? "/dashboard/calendar" : "/dashboard/events"} icon={CalendarDays} />
+        <Stat label="Unread messages" value={unreadMessages} href="/dashboard/messages" icon={Mail} />
       </div>
+
+      {type !== "FAN" && <InsightsCard profileId={profile.id} pro={isPro(user.plan)} />}
 
       {/* Public page callout */}
       <section className="card p-6">
@@ -68,12 +72,12 @@ export default async function DashboardHome() {
       <section>
         <h2 className="mb-3 text-lg font-semibold">Quick actions</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {type !== "FAN" && <Action href="/dashboard/events" icon="➕" title="Post an event" body="Add your next show to the CT calendar." />}
-          {type === "FAN" && <Action href="/" icon="🔎" title="Find shows" body="Browse the Connecticut live-music calendar." />}
-          {type === "VENUE" && <Action href="/artists" icon="🎸" title="Find acts" body="Discover musicians & bands available for gigs." />}
-          {isArtist(type) && <Action href="/venues" icon="🏛️" title="Find venues" body="Browse rooms booking live music." />}
-          {isArtist(type) && <Action href="/dashboard/availability" icon="✅" title="Set availability" body="Mark your open dates for bookings." />}
-          <Action href="/dashboard/messages" icon="✉️" title="Open inbox" body="Reply to your conversations." />
+          {type !== "FAN" && <Action href="/dashboard/events" icon={Plus} title="Post an event" body="Add your next show to the CT calendar." />}
+          {type === "FAN" && <Action href="/" icon={Search} title="Find shows" body="Browse the Connecticut live-music calendar." />}
+          {type === "VENUE" && <Action href="/artists" icon={Guitar} title="Find acts" body="Discover musicians & bands available for gigs." />}
+          {isArtist(type) && <Action href="/venues" icon={Building2} title="Find venues" body="Browse rooms booking live music." />}
+          {isArtist(type) && <Action href="/dashboard/availability" icon={CalendarCheck} title="Set availability" body="Mark your open dates for bookings." />}
+          <Action href="/dashboard/messages" icon={Mail} title="Open inbox" body="Reply to your conversations." />
         </div>
       </section>
 
@@ -110,7 +114,7 @@ export default async function DashboardHome() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-lg font-semibold">Go Pro</h2>
-              <p className="mt-1 max-w-md text-sm text-muted">Unlimited events, featured placement, custom branding & more for ${planFor("PRO").priceMonthly}/mo.</p>
+              <p className="mt-1 max-w-md text-sm text-muted">Unlimited events, featured placement, audience insights & a custom theme for ${planFor("PRO").priceMonthly}/mo.</p>
             </div>
             <Link href="/pricing" className="btn-primary whitespace-nowrap">See Pro</Link>
           </div>
@@ -120,20 +124,20 @@ export default async function DashboardHome() {
   );
 }
 
-function Stat({ label, value, href, icon }: { label: string; value: number; href: string; icon: string }) {
+function Stat({ label, value, href, icon: Icon }: { label: string; value: number; href: string; icon: LucideIcon }) {
   return (
-    <Link href={href} className="card p-5 transition hover:border-line">
-      <div className="text-xl">{icon}</div>
+    <Link href={href} className="card p-5 transition hover:-translate-y-0.5 hover:border-brand-400/50">
+      <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-500/15 text-brand-700 dark:text-brand-300"><Icon className="h-5 w-5" aria-hidden="true" /></span>
       <div className="mt-3 font-display text-3xl font-bold text-fg">{value}</div>
       <div className="mt-1 text-sm text-subtle">{label}</div>
     </Link>
   );
 }
 
-function Action({ href, icon, title, body }: { href: string; icon: string; title: string; body: string }) {
+function Action({ href, icon: Icon, title, body }: { href: string; icon: LucideIcon; title: string; body: string }) {
   return (
-    <Link href={href} className="card p-5 transition hover:border-line">
-      <div className="text-xl">{icon}</div>
+    <Link href={href} className="card p-5 transition hover:-translate-y-0.5 hover:border-brand-400/50">
+      <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-500/15 text-brand-700 dark:text-brand-300"><Icon className="h-5 w-5" aria-hidden="true" /></span>
       <h3 className="mt-2 font-semibold text-fg">{title}</h3>
       <p className="mt-1 text-sm text-subtle">{body}</p>
     </Link>

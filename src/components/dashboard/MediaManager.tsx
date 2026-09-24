@@ -1,5 +1,6 @@
 "use client";
 
+import { ImageOff } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
@@ -82,7 +83,7 @@ export function MediaManager({ initial }: { initial: MediaRow[] }) {
                 {m.kind === "VIDEO" ? (
                   <div className="grid h-full w-full place-items-center text-2xl">▶️</div>
                 ) : (
-                  <ImageWithFallback src={m.url} alt={m.caption ?? ""} className="h-full w-full object-cover" fallback={<div className="grid h-full w-full place-items-center text-xl">🖼️</div>} />
+                  <ImageWithFallback src={m.url} alt={m.caption ?? ""} className="h-full w-full object-cover" fallback={<div className="grid h-full w-full place-items-center text-subtle"><ImageOff className="h-5 w-5" aria-hidden="true" /></div>} />
                 )}
               </div>
               <button onClick={() => remove(m.id)} className="absolute right-2 top-2 rounded-full bg-black/70 px-2 py-1 text-xs text-white hover:bg-red-500/80">Remove</button>

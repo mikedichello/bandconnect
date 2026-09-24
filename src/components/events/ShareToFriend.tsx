@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Send } from "lucide-react";
+import { Check, Send } from "lucide-react";
 import { initials } from "@/lib/utils";
 
 export interface FriendOption {
@@ -48,7 +48,7 @@ export function ShareToFriend({ eventId, friends }: { eventId: string; friends: 
   return (
     <div className="rounded-xl border border-line bg-elevated p-3">
       {state === "sent" ? (
-        <p role="status" className="text-sm text-emerald-700 dark:text-emerald-400">✓ Shared! Your friend got a message.</p>
+        <p role="status" className="text-sm text-emerald-700 dark:text-emerald-400"><Check className="mr-1 inline h-4 w-4" aria-hidden="true" />Shared! Your friend got a message.</p>
       ) : (
         <>
           <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-subtle">Send to a friend</p>

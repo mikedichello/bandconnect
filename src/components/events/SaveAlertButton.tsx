@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { BellPlus } from "lucide-react";
+import { BellPlus, Check } from "lucide-react";
 
 /**
  * Saves the current calendar location/genre filter as an alert. Only rendered
@@ -34,7 +34,7 @@ export function SaveAlertButton({ city, genre }: { city: string; genre: string }
   if (state === "saved") {
     return (
       <span role="status" className="text-xs text-emerald-700 dark:text-emerald-400">
-        ✓ Alert saved ·{" "}
+        <Check className="mr-1 inline h-3.5 w-3.5" aria-hidden="true" />Alert saved ·{" "}
         <Link href="/dashboard/alerts" className="underline link">manage</Link>
       </span>
     );

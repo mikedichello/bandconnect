@@ -1,7 +1,8 @@
+import { Star } from "lucide-react";
 import Link from "next/link";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
-import { initials, parseTags, formatRate } from "@/lib/utils";
+import { initials, parseTags, formatRate, formatMiles } from "@/lib/utils";
 
 export interface ProfileCardData {
   slug: string;
@@ -18,6 +19,7 @@ export interface ProfileCardData {
   rateMax: number | null;
   rateHidden: boolean;
   followerCount?: number;
+  distanceMi?: number | null;
 }
 
 export function ProfileCard({ data }: { data: ProfileCardData }) {
@@ -27,8 +29,7 @@ export function ProfileCard({ data }: { data: ProfileCardData }) {
     data.type === "VENUE" ? "Venue" : data.type === "MUSICIAN" ? "Musician" : data.type === "BAND" ? "Band" : "Fan";
 
   return (
-    <Link href={`/p/${data.slug}`} className="card group relative overflow-hidden p-5 transition hover:border-line">
-      {data.featured && <span className="absolute right-3 top-3 badge-brand text-[10px]">★ Featured</span>}
+    <Link href={`/p/${data.slug}`} className="card group relative overflow-hidden p-5 transition duration-200 hover:-translate-y-0.5 hover:border-brand-400/50 hover:shadow-glow">
       <div className="flex items-center gap-4">
         <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-2xl bg-brand-500/15">
           <ImageWithFallback
@@ -44,7 +45,7 @@ export function ProfileCard({ data }: { data: ProfileCardData }) {
             {data.verified && <VerifiedBadge className="flex-shrink-0" />}
           </div>
           <p className="truncate text-sm text-subtle">
-            {typeLabel}{data.city ? ` · ${data.city}` : ""}
+            {typeLabel}{data.city ? ` · ${data.city}` : ""}{data.distanceMi != null ? ` · ${formatMiles(data.distanceMi)}` : ""}
           </p>
         </div>
       </div>
@@ -52,6 +53,7 @@ export function ProfileCard({ data }: { data: ProfileCardData }) {
       {data.tagline && <p className="mt-3 line-clamp-2 text-sm text-muted">{data.tagline}</p>}
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
+        {data.featured && <span className="badge-brand text-[11px]"><Star className="h-3 w-3 fill-current" aria-hidden="true" /> Featured</span>}
         {data.availableForGigs && <span className="badge-green text-[11px]">Available for gigs</span>}
         {rate && <span className="badge text-[11px]">{rate}</span>}
         {tags.map((t) => (

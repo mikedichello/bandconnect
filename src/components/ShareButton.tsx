@@ -1,5 +1,6 @@
 "use client";
 
+import { Check, Share2 } from "lucide-react";
 import { useState } from "react";
 
 /** Copies the current page URL to the clipboard (with a graceful fallback). */
@@ -27,7 +28,7 @@ export function ShareButton({ title }: { title: string }) {
 
   return (
     <button onClick={share} className="btn-ghost w-full text-sm">
-      {copied ? "✓ Link copied" : "🔗 Share"}
+      {copied ? <><Check className="h-4 w-4" aria-hidden="true" /> Link copied</> : <><Share2 className="h-4 w-4" aria-hidden="true" /> Share</>}
     </button>
   );
 }

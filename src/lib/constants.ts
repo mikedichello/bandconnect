@@ -5,13 +5,12 @@ export type ProfileType = "FAN" | "VENUE" | "MUSICIAN" | "BAND";
 export const PROFILE_TYPES: {
   id: ProfileType;
   label: string;
-  emoji: string;
   blurb: string;
 }[] = [
-  { id: "FAN", label: "Fan", emoji: "🎟️", blurb: "Follow artists & venues, RSVP to shows, and keep your own gig calendar." },
-  { id: "VENUE", label: "Venue / Host", emoji: "🏛️", blurb: "Promote your room, post events, and find acts to book." },
-  { id: "MUSICIAN", label: "Musician", emoji: "🎸", blurb: "Showcase yourself, list availability & rates, and find gigs or bandmates." },
-  { id: "BAND", label: "Band", emoji: "🥁", blurb: "Promote your band, post shows, find venues, and recruit musicians." },
+  { id: "FAN", label: "Fan", blurb: "Follow artists & venues, RSVP to shows, and keep your own gig calendar." },
+  { id: "VENUE", label: "Venue / Host", blurb: "Promote your room, post events, and find acts to book." },
+  { id: "MUSICIAN", label: "Musician", blurb: "Showcase yourself, list availability & rates, and find gigs or bandmates." },
+  { id: "BAND", label: "Band", blurb: "Promote your band, post shows, find venues, and recruit musicians." },
 ];
 
 export function profileTypeMeta(type: string) {

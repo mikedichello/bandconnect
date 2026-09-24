@@ -1,3 +1,5 @@
+import { ProfileTypeIcon } from "@/components/icons/ProfileTypeIcon";
+import { Star } from "lucide-react";
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
@@ -39,11 +41,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
     <div className="container-page py-8">
       <div className="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         <div>
-          <p className="text-sm text-subtle">{meta.emoji} {meta.label} dashboard</p>
+          <p className="text-sm text-subtle"><ProfileTypeIcon type={meta.id} className="mr-1 inline h-4 w-4" />{meta.label} dashboard</p>
           <h1 className="text-2xl font-bold">{profile.displayName}</h1>
         </div>
         <div className="flex items-center gap-2">
-          <span className={isPro(user.plan) ? "badge-brand" : "badge"}>{isPro(user.plan) ? "★ Pro" : "Free plan"}</span>
+          <span className={isPro(user.plan) ? "badge-brand" : "badge"}>{isPro(user.plan) ? <><Star className="h-3 w-3 fill-current" aria-hidden="true" /> Pro</> : "Free plan"}</span>
           {!isPro(user.plan) && <Link href="/pricing" className="btn-primary px-4 py-2 text-xs">Upgrade</Link>}
         </div>
       </div>

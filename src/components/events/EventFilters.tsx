@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useState } from "react";
-import { MapPin, LocateFixed } from "lucide-react";
+import { CircleDollarSign, LocateFixed, MapPin, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { GENRES } from "@/lib/constants";
 import { RADIUS_OPTIONS } from "@/lib/constants";
@@ -111,7 +111,7 @@ export function EventFilters({ resolvedLabel }: { resolvedLabel: string | null }
             </p>
           )}
           {!geoActive && loc.trim() && resolvedLabel && (
-            <p className="mt-1 text-xs text-emerald-700 dark:text-emerald-300">📍 {resolvedLabel}</p>
+            <p className="mt-1 text-xs text-emerald-700 dark:text-emerald-300 flex items-center gap-1"><MapPin className="h-3 w-3" aria-hidden="true" /> {resolvedLabel}</p>
           )}
           {!geoActive && loc.trim() && !resolvedLabel && (
             <p className="mt-1 text-xs text-amber-700 dark:text-amber-300">Couldn&apos;t match that CT location.</p>
@@ -139,10 +139,10 @@ export function EventFilters({ resolvedLabel }: { resolvedLabel: string | null }
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <Chip active={family} onClick={() => { setFamily((v) => !v); apply({ family: family ? null : "1" }); }}>
-          👨‍👩‍👧 Family friendly
+          <Users className="h-4 w-4" aria-hidden="true" /> Family friendly
         </Chip>
         <Chip active={noCover} onClick={() => { setNoCover((v) => !v); apply({ noCover: noCover ? null : "1" }); }}>
-          🆓 No cover
+          <CircleDollarSign className="h-4 w-4" aria-hidden="true" /> No cover
         </Chip>
         {(params.toString().replace(/view=\w+&?/, "").length > 0) && (
           <button onClick={reset} className="ml-auto text-xs text-subtle hover:text-fg">
@@ -160,7 +160,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "rounded-full border px-3 py-1.5 text-sm transition",
+        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition",
         active ? "border-brand-400/60 bg-brand-500/20 text-fg" : "border-line bg-input text-muted hover:border-line",
       )}
     >

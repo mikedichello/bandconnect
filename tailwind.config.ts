@@ -15,6 +15,8 @@ const config: Config = {
         elevated: "rgb(var(--c-elevated) / <alpha-value>)",
         line: "rgb(var(--c-line) / <alpha-value>)",
         field: "rgb(var(--c-field) / <alpha-value>)",
+        // Form-control/chip fill (same as `.input`). Was referenced as `bg-input` before it existed.
+        input: "rgb(var(--c-app) / <alpha-value>)",
         fg: "rgb(var(--c-fg) / <alpha-value>)",
         muted: "rgb(var(--c-muted) / <alpha-value>)",
         subtle: "rgb(var(--c-subtle) / <alpha-value>)",

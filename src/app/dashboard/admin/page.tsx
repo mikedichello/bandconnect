@@ -1,3 +1,4 @@
+import { Globe, PartyPopper } from "lucide-react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { requireUser } from "@/lib/session";
@@ -25,7 +26,7 @@ export default async function AdminPage() {
       </div>
 
       {pending.length === 0 ? (
-        <p className="card p-6 text-sm text-subtle">Nothing pending. 🎉</p>
+        <p className="card p-6 text-sm text-subtle"><PartyPopper className="mr-1 inline h-4 w-4" aria-hidden="true" />Nothing pending.</p>
       ) : (
         <ul className="space-y-3">
           {pending.map((p) => (
@@ -35,7 +36,7 @@ export default async function AdminPage() {
                   <Link href={`/p/${p.slug}`} target="_blank" className="font-semibold text-fg hover:text-brand-700 dark:hover:text-brand-200">{p.displayName}</Link>
                   <span className="badge text-[10px] capitalize">{p.type.toLowerCase()}</span>
                 </div>
-                {p.websiteUrl && <p className="truncate text-xs text-subtle">🌐 {p.websiteUrl}</p>}
+                {p.websiteUrl && <p className="truncate text-xs text-subtle"><Globe className="mr-1 inline h-3 w-3" aria-hidden="true" />{p.websiteUrl}</p>}
                 {p.verificationInfo && <p className="mt-1 whitespace-pre-wrap text-sm text-muted">{p.verificationInfo}</p>}
               </div>
               <AdminVerifyButtons profileId={p.id} />

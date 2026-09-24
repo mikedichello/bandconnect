@@ -1,8 +1,10 @@
+import { ArrowLeft, CalendarDays, MapPin, Navigation, Users } from "lucide-react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getCurrentProfile } from "@/lib/session";
+import { EventArt } from "@/components/events/EventArt";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { RsvpButton } from "@/components/RsvpButton";
@@ -53,7 +55,6 @@ export default async function EventPage({ params }: { params: { id: string } }) 
   const friends = friendRows.map((f) => (f.requesterId === me!.id ? f.addressee : f.requester));
 
   const tags = parseTags(event.genres);
-  const accent = event.host.themeColor || "#7c4dff";
 
   // schema.org MusicEvent for Google event rich results.
   const jsonLd = {
@@ -92,7 +93,7 @@ export default async function EventPage({ params }: { params: { id: string } }) 
   return (
     <article className="container-page py-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Link href="/" className="text-sm text-subtle hover:text-fg">← Back to calendar</Link>
+      <Link href="/" className="inline-flex items-center gap-1 text-sm text-subtle hover:text-fg"><ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back to calendar</Link>
 
       <div className="mt-4 grid gap-8 lg:grid-cols-[1fr_320px]">
         <div>
@@ -106,21 +107,14 @@ export default async function EventPage({ params }: { params: { id: string } }) 
                   src={event.coverUrl}
                   alt={event.title}
                   className="h-full w-full object-cover"
-                  fallback={
-                    <div
-                      className="grid h-full w-full place-items-center text-5xl"
-                      style={{ background: `radial-gradient(60% 100% at 30% 0%, ${accent}44, transparent 60%)` }}
-                    >
-                      🎵
-                    </div>
-                  }
+                  fallback={<EventArt genres={event.genres} seed={event.id} size="lg" />}
                 />
               </div>
             )}
           </div>
 
           <div className="mt-5 flex flex-wrap items-center gap-2">
-            {event.familyFriendly && <span className="badge-green">👨‍👩‍👧 Family friendly</span>}
+            {event.familyFriendly && <span className="badge-green"><Users className="h-3.5 w-3.5" aria-hidden="true" /> Family friendly</span>}
             <span className={event.hasCoverCharge ? "badge" : "badge-accent"}>
               {event.hasCoverCharge ? "Cover charge" : "Free — no cover"}
             </span>
@@ -131,15 +125,25 @@ export default async function EventPage({ params }: { params: { id: string } }) 
 
           <h1 className="mt-4 font-display text-3xl font-bold text-fg sm:text-4xl">{event.title}</h1>
 
-          <p className="mt-3 text-lg text-fg">
-            🗓️ {formatDate(event.startAt)} · {formatTime(event.startAt)}
+          <p className="mt-3 flex items-center gap-2 text-lg text-fg">
+            <CalendarDays className="h-5 w-5 flex-shrink-0 text-brand-600 dark:text-brand-300" aria-hidden="true" />
+            {formatDate(event.startAt)} · {formatTime(event.startAt)}
             {event.endAt ? ` – ${formatTime(event.endAt)}` : ""}
           </p>
           {(event.locationName || event.city) && (
-            <p className="mt-1 text-subtle">
-              📍 {event.locationName ?? ""}{event.locationName && event.city ? " · " : ""}
+            <p className="mt-1 flex flex-wrap items-center gap-x-2 text-subtle">
+              <MapPin className="h-5 w-5 flex-shrink-0 text-brand-600 dark:text-brand-300" aria-hidden="true" />
+              {event.locationName ?? ""}{event.locationName && event.city ? " · " : ""}
               {event.city ? `${event.city}, CT` : ""}
               {event.address ? ` · ${event.address}` : ""}
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent([event.locationName, event.address, event.city, "CT"].filter(Boolean).join(", "))}`}
+                target="_blank"
+                rel="noreferrer"
+                className="link inline-flex items-center gap-1 text-sm font-medium"
+              >
+                <Navigation className="h-3.5 w-3.5" aria-hidden="true" /> Directions
+              </a>
             </p>
           )}
 
@@ -155,7 +159,8 @@ export default async function EventPage({ params }: { params: { id: string } }) 
         <aside className="space-y-5">
           <div className="card p-5">
             <p className="text-sm text-subtle">Are you going?</p>
-            <div className="mt-3">
+            {/* On mobile the RSVP control lives in the sticky bar below instead. */}
+            <div className="mt-3 hidden lg:block">
               <RsvpButton
                 eventId={event.id}
                 initialStatus={myRsvp as "GOING" | "MAYBE" | null}
@@ -225,6 +230,25 @@ export default async function EventPage({ params }: { params: { id: string } }) 
           )}
         </aside>
       </div>
+
+      {/* Mobile sticky action bar (Eventbrite-style): date + RSVP always in reach. */}
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-app/90 backdrop-blur-lg lg:hidden">
+        <div className="container-page flex items-center justify-between gap-3 py-3">
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-wide text-brand-700 dark:text-brand-300">
+              {formatDate(event.startAt).replace(/, \d{4}$/, "")} · {formatTime(event.startAt)}
+            </p>
+            <p className="truncate text-sm text-subtle">{going.length} going · {event.hasCoverCharge ? "Cover at door" : "No cover"}</p>
+          </div>
+          <RsvpButton
+            eventId={event.id}
+            initialStatus={myRsvp as "GOING" | "MAYBE" | null}
+            loggedIn={loggedIn}
+            loginHref={`/login?callbackUrl=/event/${event.id}`}
+          />
+        </div>
+      </div>
+      <div className="h-16 lg:hidden" aria-hidden="true" />
     </article>
   );
 }

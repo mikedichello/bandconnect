@@ -37,6 +37,7 @@ Demo logins: `fan@/venue@/musician@/band@demo.com`, password `password123`.
 ## Conventions & gotchas (read before editing)
 - **DB portability:** enum-like fields are `String` (not enums); booleans are
   `Boolean` (never `Bool`). SQLite dev ↔ Postgres prod via one `provider` change.
+- **Icons:** lucide-react only — no emoji or hand-rolled `<svg>` as UI icons.
 - **Server→Client boundary:** you CANNOT pass functions (e.g. Lucide icon
   components) from a Server Component to a Client Component. Pass a **string key**
   and map it to the component inside the client (see `dashboard/Sidebar.tsx`).
@@ -63,7 +64,7 @@ Demo logins: `fan@/venue@/musician@/band@demo.com`, password `password123`.
 
 ## Docs map (`docs/`)
 `PLAN.md` (product/architecture) · `ROADMAP.md` (phases) · `DEPLOYMENT.md` ·
-`UX_AUDIT.md` · `ADA_AUDIT.md` (WCAG 2.1 AA) · `MONETIZATION.md` (pricing/levers,
+`UX_AUDIT.md` · `UX_REVIEW_2026-09.md` (roles, Pro value, competitors) · `ADA_AUDIT.md` (WCAG 2.1 AA) · `MONETIZATION.md` (pricing/levers,
 benchmarked) · `WIREFRAMES.md` ·
 `GTM.md` + `launch/` (go-to-market: target lists, outreach templates, tracker,
 **`trust-and-verification.md`**).
@@ -76,8 +77,12 @@ benchmarked) · `WIREFRAMES.md` ·
   `ADMIN_EMAILS`, `VerifiedBadge` on profile/card/event host); **paid event
   boosts** (`Event.featured`/`featuredUntil`, `POST /api/events/[id]/boost`
   one-time Stripe Checkout + webhook activation, ★ Featured pinned in the
-  calendar; tune `EVENT_BOOST` in `plans.ts`; benchmarked in `docs/MONETIZATION.md`).
-- **Next (incremental):** hard-gate unverified (hide from booking search /
+  calendar; tune `EVENT_BOOST` in `plans.ts`; benchmarked in `docs/MONETIZATION.md`);
+  **UX review pass**: lucide-only icons (no emoji/hand SVGs in UI), genre `EventArt`,
+  radius search on `/artists` + `/venues` (`lib/discovery.ts`, Pro ⇒ featured),
+  Pro `InsightsCard`, genre row + mobile sticky RSVP.
+- **Next:** multi-role accounts + band/venue team members (`docs/UX_REVIEW_2026-09.md` §3);
+  request-to-book + EPK; hard-gate unverified (hide from booking search /
   block known-name claims); claim an *ownerless* seeded page (needs
   `Profile.userId` optional + handshake); social link-back + SMS OTP. Spec:
   `docs/launch/trust-and-verification.md`.

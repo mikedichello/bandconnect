@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Bell } from "lucide-react";
+import { Bell, MapPin, Music } from "lucide-react";
 
 export interface AlertRow {
   id: string;
@@ -52,7 +52,7 @@ export function AlertsManager({ initial }: { initial: AlertRow[] }) {
                 <div>
                   <p className="font-medium text-fg">{a.label}</p>
                   <p className="text-xs text-subtle">
-                    {[a.city && `📍 ${a.city}`, a.genre && `🎵 ${a.genre}`].filter(Boolean).join(" · ")}
+                    <span className="inline-flex flex-wrap items-center gap-3">{a.city && <span className="inline-flex items-center gap-1"><MapPin className="h-3.5 w-3.5" aria-hidden="true" />{a.city}</span>}{a.genre && <span className="inline-flex items-center gap-1"><Music className="h-3.5 w-3.5" aria-hidden="true" />{a.genre}</span>}</span>
                   </p>
                 </div>
               </div>

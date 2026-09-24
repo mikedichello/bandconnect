@@ -123,3 +123,8 @@ export function domainFromEmail(email: string | null | undefined): string | null
   return email.slice(at + 1).trim().toLowerCase() || null;
 }
 
+
+/** Distance label for cards: "<1 mi", "4 mi". */
+export function formatMiles(mi: number): string {
+  return mi < 1 ? "<1 mi" : `${mi.toFixed(0)} mi`;
+}

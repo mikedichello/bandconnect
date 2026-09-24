@@ -1,6 +1,9 @@
+import { Guitar } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { ProfileCard, type ProfileCardData } from "@/components/ProfileCard";
 import { GENRES } from "@/lib/constants";
+import { LocationFields } from "@/components/LocationFields";
+import { rankProfiles } from "@/lib/discovery";
 
 export const metadata = { title: "Musicians & bands" };
 export const dynamic = "force-dynamic";
@@ -8,7 +11,7 @@ export const dynamic = "force-dynamic";
 export default async function ArtistsPage({
   searchParams,
 }: {
-  searchParams: { q?: string; type?: string; genre?: string; available?: string; date?: string; seeking?: string };
+  searchParams: { q?: string; type?: string; genre?: string; available?: string; date?: string; seeking?: string; loc?: string; radius?: string };
 }) {
   const q = searchParams.q?.trim() || "";
   const type = searchParams.type === "MUSICIAN" || searchParams.type === "BAND" ? searchParams.type : "";
@@ -16,6 +19,8 @@ export default async function ArtistsPage({
   const available = searchParams.available === "1";
   const date = searchParams.date || "";
   const seeking = searchParams.seeking || "";
+  const loc = searchParams.loc?.trim() || "";
+  const radius = Number(searchParams.radius) || 25;
 
   // Date filter → restrict to profiles with a matching open date.
   let availableOnDateIds: string[] | null = null;
@@ -52,13 +57,15 @@ export default async function ArtistsPage({
       ],
     },
     orderBy: [{ featured: "desc" }, { availableForGigs: "desc" }, { createdAt: "desc" }],
-    take: 60,
+    include: { user: { select: { plan: true } } },
+    take: 200,
   });
+  const { geo, ranked } = rankProfiles(artists, loc, radius);
 
-  const cards: ProfileCardData[] = artists.map((a) => ({
+  const cards: ProfileCardData[] = ranked.slice(0, 60).map(({ p: a, featured, distanceMi }) => ({
     slug: a.slug, displayName: a.displayName, type: a.type, tagline: a.tagline, city: a.city,
-    avatarUrl: a.avatarUrl, genres: a.genres, availableForGigs: a.availableForGigs, featured: a.featured, verified: a.verified,
-    rateMin: a.rateMin, rateMax: a.rateMax, rateHidden: a.rateHidden,
+    avatarUrl: a.avatarUrl, genres: a.genres, availableForGigs: a.availableForGigs, featured, verified: a.verified,
+    rateMin: a.rateMin, rateMax: a.rateMax, rateHidden: a.rateHidden, distanceMi,
   }));
 
   return (
@@ -68,7 +75,7 @@ export default async function ArtistsPage({
         <p className="mt-2 text-subtle">Find acts for your room, bandmates to play with, or a band to join.</p>
       </header>
 
-      <form method="get" className="card mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-6 lg:items-end">
+      <form method="get" className="card mb-6 grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-4 lg:items-start">
         <div className="lg:col-span-2">
           <label htmlFor="ar-q" className="label">Search</label>
           <input id="ar-q" name="q" defaultValue={q} className="input" placeholder="Name, genre, instrument" />
@@ -88,14 +95,12 @@ export default async function ArtistsPage({
             {GENRES.map((g) => <option key={g} value={g}>{g}</option>)}
           </select>
         </div>
+        <LocationFields idPrefix="ar" loc={loc} radius={radius} resolvedLabel={geo?.label ?? null} />
         <div>
           <label htmlFor="ar-date" className="label">Open on</label>
           <input id="ar-date" type="date" name="date" defaultValue={date} className="input" />
         </div>
-        <div className="flex items-center gap-2">
-          <button className="btn-primary w-full">Search</button>
-        </div>
-        <div className="lg:col-span-6 flex flex-wrap items-center gap-4 pt-1">
+        <div className="flex flex-wrap items-center gap-4 pt-1 sm:col-span-2 lg:col-span-4">
           <label className="flex items-center gap-2 text-sm text-muted">
             <input type="checkbox" name="available" value="1" defaultChecked={available} className="h-4 w-4 accent-brand-500" />
             Available for gigs
@@ -107,12 +112,17 @@ export default async function ArtistsPage({
             <option value="FILL_IN">Open for fill-ins</option>
             <option value="NEED_MUSICIANS">Bands needing musicians</option>
           </select>
+          <button className="btn-primary ml-auto">Search</button>
         </div>
       </form>
 
+      <p className="mb-4 text-sm text-subtle">
+        {cards.length} {cards.length === 1 ? "act" : "acts"}{geo ? ` within ${radius} mi of ${geo.label}` : " across Connecticut"}
+      </p>
+
       {cards.length === 0 ? (
         <div className="card p-12 text-center">
-          <div className="text-3xl">🎸</div>
+          <Guitar className="mx-auto h-8 w-8 text-brand-600 dark:text-brand-300" aria-hidden="true" />
           <h2 className="mt-3 text-lg font-semibold">No artists match</h2>
           <p className="mt-1 text-sm text-subtle">Try clearing a filter or widening your search.</p>
         </div>

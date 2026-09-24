@@ -1,3 +1,4 @@
+import { Zap } from "lucide-react";
 import Link from "next/link";
 
 export function Footer() {
@@ -7,9 +8,7 @@ export function Footer() {
         <div className="md:col-span-2">
           <div className="flex items-center gap-2">
             <span className="grid h-7 w-7 place-items-center rounded-lg bg-brand-500 text-white">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-              </svg>
+              <Zap className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
             </span>
             <span className="font-display text-base font-bold text-fg">
               Band<span className="text-brand-600 dark:text-brand-400">Connect</span>
