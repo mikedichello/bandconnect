@@ -36,7 +36,7 @@ The branch model is described in [`BRANCHING.md`](BRANCHING.md).
 | --- | --- | --- |
 | **S0: Stabilize & reconcile** | One green `main` containing PR #1 + the council work, seeded demo live with no prod risk, tests started, multi-role spec signed off | CI green on `main`, 0 divergent branches, `v0.3.0` tagged, funnel baseline recorded |
 | **S1: Foundations & fixes** | Prod-safe data layer (Postgres + migrations), route + E2E + a11y tests gating PRs, High bugs fixed, multi-role schema migrated | 0 open Sev-1/2, suites required on PR → `dev`, backfill verified |
-| **S2: One login, many hats** | Users switch between profiles; bands and venues invite members; hero search | 0 P0 auth bugs; ≥30% of beta bands have ≥2 members; hero search in ≥35% of home sessions |
+| **S2: One login, many hats** | Users switch between profiles; bands invite members with granular rights; hero search | 0 P0 auth bugs; ≥30% of beta bands have ≥2 members; hero search in ≥35% of home sessions |
 | **S3: Claim & discover** | Seeded pages get claimed; lineups, trending and followed-artist alerts; booking API | ≥40% of contacted venues claimed; weekly RSVPs +20% vs S0 |
 | **S4: Get booked** | EPK, request-to-book, venue inbox, boost credit, Pro copy refresh | ≥50 requests sent, ≥20% replied, artist Free→Pro ≥3% |
 
@@ -82,7 +82,7 @@ The branch model is described in [`BRANCHING.md`](BRANCHING.md).
 | S2-01 | #25 | Active profile in JWT + entitlements | Dev | P0 |
 | S2-02 | #26 | Refactor session call sites + role checks | Dev | P0 |
 | S2-03 | #27 | "Acting as" switcher + create another profile | Dev · PO accepts | P0 |
-| S2-04 | #28 | Members tab + invites + band members | Dev · PO accepts | P0 |
+| S2-04 | #28 | Band Members tab: invites + granular rights | Dev · PO accepts | P0 |
 | S2-05 | #29 | Stripe hardening (idempotency, `payment_status`) | Dev | P1 |
 | S2-06 | #30 | PageView hardening + rollup | Dev | P1 |
 | S2-07 | #31 | Hero search above the fold | Dev · PO accepts | P1 |
@@ -107,7 +107,7 @@ The branch model is described in [`BRANCHING.md`](BRANCHING.md).
 | --- | --- | --- | --- | --- |
 | S4-01 | #41 | EPK page | Dev · PO accepts | P1 |
 | S4-02 | #42 | Request-to-book UI + artist pipeline | Dev | P1 |
-| S4-03 | #43 | Venue booking inbox | Dev | P1 |
+| S4-03 | #43 | Venue booking inbox (owner) | Dev | P1 |
 | S4-04 | #44 | Pro monthly boost credit | Dev | P1 |
 | S4-05 | #45 | Pricing + contextual upsells refresh | **PO** + Dev | P1 |
 | S4-06 | #46 | `loading.tsx` / error boundaries | Dev | P2 |
@@ -123,11 +123,23 @@ S2-07 (hero search) has no dependencies, so a second dev can pick it up at any t
 - Bulk import
 - The parked list in [po.md §4](planning/2026-09/po.md), e.g. Fan Plus, ticketing, OAuth/uploads before the Hartford expansion
 
-## Open decisions (Product Owner, needed by S0-10)
+## Product decisions (decided 2026-09-24, inputs to S0-10)
 
-1. Does one Pro subscription cover every profile a user owns? Dev recommends **yes** for v1.
-2. Who receives a message sent to a band? The proposal is profile-addressed, fanned out to ADMIN+ members.
-3. What can a MEMBER do? The proposal is post and edit events only; no billing, boost, delete or settings.
+1. **Billing covers everything a user owns.** One Pro subscription applies to every profile the paying user
+   owns. Entitlements come from the profile's billing owner (`ownerUserId`).
+2. **Messages to a band are profile-addressed.** They fan out to the band's admins, plus any member who has
+   been granted messaging rights.
+3. **Only bands have members; venues don't.**
+   - A venue is single-owner: its owner account manages it, and there are no venue co-workers.
+   - Band roles are `OWNER` / `ADMIN` / `MEMBER`.
+   - A band admin grants each member individual rights: **post events**, **edit events**, **message as the band**.
+   - Members get no rights by default. Billing, boosts, delete, settings and member management stay
+     OWNER/ADMIN only.
+   - One login can still own several profiles (e.g. a venue *and* a band) and switch between them with the
+     "Acting as" switcher.
+
+Superseded in the role inputs: [po.md](planning/2026-09/po.md) and [dev.md](planning/2026-09/dev.md) mention
+venue members, a shared venue inbox and venue assignees. Those are out of scope under decision 3.
 
 ## Definition of Done (every ticket)
 
