@@ -11,17 +11,17 @@ hotfix/*  ──PR──▶ main   then back-merge main → dev
 | --- | --- | --- | --- |
 | `main` | Production. **Default branch.** Always releasable. | Vercel **Production** (prod DB, live Stripe, Resend, crons) | Release PR from `dev` only (or `hotfix/*`) |
 | `dev` | Staging / integration. Everything for the next release lands here first. | Vercel **Preview** for `dev` (dev DB, Stripe test keys, email log mode; seeded demo via `DEMO_SEED`) | Squash-merge feature PRs after CI + review |
-| `feat/<ticket>-<slug>` · `fix/…` · `chore/…` | One ticket each, branched from `dev` | Per-branch Preview URL | — |
+| `feat/<key>-<slug>` (key = `S1-04` etc.) · `fix/…` · `chore/…` | One ticket each, branched from `dev` | Per-branch Preview URL | — |
 | `hotfix/<slug>` | Urgent prod fix, branched from `main` | Preview | PR → `main`, then merge `main` back into `dev` |
 
 ## Day to day
 
 ```bash
 git checkout dev && git pull origin dev
-git checkout -b feat/BC-12-multi-role-accounts   # ticket id in the name
+git checkout -b feat/S2-03-profile-switcher   # ticket id in the name
 # …commit…
-git push -u origin feat/BC-12-multi-role-accounts
-# open PR → base: dev   (title: "BC-12: Multi-role accounts")
+git push -u origin feat/S2-03-profile-switcher
+# open PR → base: dev   (title: "S2-03: Acting-as profile switcher")
 ```
 
 - **PR → `dev`**: CI green (build · tsc · lint, + tests once they land), 1 review,

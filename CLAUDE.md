@@ -63,6 +63,7 @@ Demo logins: `fan@/venue@/musician@/band@demo.com`, password `password123`.
 
 ## Docs map (`docs/`)
 `PLAN.md` (product/architecture) · `ROADMAP.md` (phases) · `DEPLOYMENT.md` ·
+`SPRINTS.md` (sprint plan, ticket map → GitHub issues, DoD, release checklist) · `BRANCHING.md` ·
 `UX_AUDIT.md` · `ADA_AUDIT.md` (WCAG 2.1 AA) · `MONETIZATION.md` (pricing/levers,
 benchmarked) · `WIREFRAMES.md` ·
 `GTM.md` + `launch/` (go-to-market: target lists, outreach templates, tracker,
@@ -84,7 +85,7 @@ benchmarked) · `WIREFRAMES.md` ·
 
 ## Workflow
 - **Branch model: feature → `dev` → `main`** (`docs/BRANCHING.md`). `main` = prod
-  (default branch), `dev` = staging. Branch `feat/BC-<n>-<slug>` from `dev` and PR
+  (default branch), `dev` = staging. Branch `feat/<key>-<slug>` (e.g. `feat/S1-04-postgres`) from `dev` and PR
   back into `dev`; only `dev` (release PR) or `hotfix/*` may target `main`
   (enforced by `promotion-guard`). Sprint plan + tickets: `docs/SPRINTS.md`.
 - **Commit/push only when work is complete & verified.** Push with
