@@ -1,5 +1,6 @@
 "use client";
 
+import { Mail } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -115,7 +116,7 @@ export function MessagesInbox({
   if (conversations.length === 0) {
     return (
       <div className="card p-10 text-center">
-        <div className="text-3xl">✉️</div>
+        <Mail className="mx-auto h-8 w-8 text-brand-600 dark:text-brand-300" aria-hidden="true" />
         <h1 className="mt-3 text-lg font-semibold">No messages yet</h1>
         <p className="mx-auto mt-1 max-w-sm text-sm text-subtle">
           Start a conversation from any venue or artist page. Your booking chats

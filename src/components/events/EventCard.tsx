@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { Play, Star, Users } from "lucide-react";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
+import { EventArt } from "@/components/events/EventArt";
 import { RsvpButton } from "@/components/RsvpButton";
-import { formatTime, parseTags, initials } from "@/lib/utils";
+import { formatTime, parseTags, initials, formatMiles } from "@/lib/utils";
 
 export interface EventCardData {
   id: string;
@@ -35,27 +37,23 @@ export function EventCard({
   const tags = parseTags(event.genres).slice(0, 3);
 
   return (
-    <div className="card overflow-hidden transition hover:border-line">
+    <div className="card group overflow-hidden transition duration-200 hover:-translate-y-0.5 hover:border-brand-400/50 hover:shadow-glow">
       <Link href={`/event/${event.id}`} className="block">
         <div className="relative aspect-[16/9] w-full overflow-hidden bg-brand-500/10">
           <ImageWithFallback
             src={thumb}
             alt={event.title}
-            className="h-full w-full object-cover"
-            fallback={
-              <div className="grid h-full w-full place-items-center bg-gradient-to-br from-brand-500/25 to-accent/15 text-3xl">
-                🎵
-              </div>
-            }
+            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+            fallback={<EventArt genres={event.genres} seed={event.id} />}
           />
           {event.coverType === "VIDEO" && (
-            <span className="absolute left-2 top-2 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white">▶ Video</span>
+            <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white"><Play className="h-3 w-3 fill-current" aria-hidden="true" /> Video</span>
           )}
           {event.featured && (
-            <span className="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[11px] font-bold text-amber-950 shadow">★ Featured</span>
+            <span className="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[11px] font-bold text-amber-950 shadow"><Star className="h-3 w-3 fill-current" aria-hidden="true" /> Featured</span>
           )}
           <div className="absolute bottom-2 left-2 flex gap-1.5">
-            {event.familyFriendly && <span className="badge-green text-[10px]">👨‍👩‍👧 Family</span>}
+            {event.familyFriendly && <span className="badge-green gap-1 text-[10px]"><Users className="h-3 w-3" aria-hidden="true" /> Family</span>}
             <span className={event.hasCoverCharge ? "badge text-[10px]" : "badge-accent text-[10px]"}>
               {event.hasCoverCharge ? "Cover" : "No cover"}
             </span>
@@ -70,12 +68,12 @@ export function EventCard({
               {event.startAt.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })} · {formatTime(event.startAt)}
             </p>
             <Link href={`/event/${event.id}`}>
-              <h3 className="mt-0.5 truncate text-lg font-bold text-fg hover:text-brand-700 dark:hover:text-brand-200">{event.title}</h3>
+              <h3 className="mt-0.5 line-clamp-2 text-lg leading-snug font-bold text-fg hover:text-brand-700 dark:hover:text-brand-200">{event.title}</h3>
             </Link>
             <p className="truncate text-sm text-subtle">
               {event.locationName ?? "Venue TBA"}
               {event.city ? ` · ${event.city}, CT` : ""}
-              {event.distanceMi != null ? ` · ${event.distanceMi.toFixed(0)} mi` : ""}
+              {event.distanceMi != null ? ` · ${formatMiles(event.distanceMi)}` : ""}
             </p>
           </div>
         </div>

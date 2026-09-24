@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, Check } from "lucide-react";
 
 /**
  * Self-service verification request for the signed-in venue/band/musician.
@@ -49,7 +49,7 @@ export function VerificationCard({ status, verified }: { status: string; verifie
 
       {isVerified ? (
         <p role="status" className="mt-2 text-sm text-emerald-700 dark:text-emerald-300">
-          ✓ Your page is verified — the badge now shows on your profile, cards, and events.
+          <Check className="mr-1 inline h-4 w-4" aria-hidden="true" />Your page is verified — the badge now shows on your profile, cards, and events.
         </p>
       ) : effectiveStatus === "pending" ? (
         <p role="status" className="mt-2 text-sm text-amber-700 dark:text-amber-300">

@@ -1,5 +1,6 @@
 "use client";
 
+import { MailCheck } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -29,7 +30,7 @@ export function ForgotPasswordForm() {
 
       {sent ? (
         <div role="status" className="card p-6 text-center">
-          <div className="text-3xl">📧</div>
+          <MailCheck className="mx-auto h-8 w-8 text-brand-600 dark:text-brand-300" aria-hidden="true" />
           <p className="mt-3 text-fg">
             If an account exists for <strong>{email}</strong>, a reset link is on its way.
           </p>

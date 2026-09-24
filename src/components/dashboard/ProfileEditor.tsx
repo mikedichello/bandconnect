@@ -1,5 +1,6 @@
 "use client";
 
+import { Check } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -198,7 +199,7 @@ export function ProfileEditor({ isPro, initial }: { isPro: boolean; initial: Pro
 
       <div className="sticky bottom-4 z-10 flex items-center justify-between gap-3 rounded-2xl border border-line bg-surface/90 px-4 py-3 backdrop-blur">
         <div className="text-sm" role="status" aria-live="polite">
-          {status === "saved" && <span className="text-emerald-700 dark:text-emerald-300">✓ Saved</span>}
+          {status === "saved" && <span className="text-emerald-700 dark:text-emerald-300 inline-flex items-center gap-1"><Check className="h-4 w-4" aria-hidden="true" /> Saved</span>}
           {status === "error" && <span className="text-red-700 dark:text-red-300">{error}</span>}
           {status === "saving" && <span className="text-subtle">Saving…</span>}
           {status === "idle" && <span className="text-subtle">Make it yours.</span>}

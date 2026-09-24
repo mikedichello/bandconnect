@@ -8,7 +8,6 @@ export interface PlanLimits {
   customTheme: boolean; // custom profile colors / branding
   featuredPlacement: boolean; // boosted in discovery
   analytics: boolean;
-  removeBranding: boolean;
 }
 
 export interface PlanDefinition {
@@ -33,7 +32,8 @@ export const PLANS: Record<PlanId, PlanDefinition> = {
       "Listed in venue & artist discovery",
       "Post up to 3 upcoming events",
       "Follow, RSVP & message anyone",
-      "Personal show calendar & notifications",
+      "Personal show calendar, alerts & reminders",
+      "Fans: everything is free, always",
     ],
     limits: {
       maxEvents: 3,
@@ -41,7 +41,6 @@ export const PLANS: Record<PlanId, PlanDefinition> = {
       customTheme: false,
       featuredPlacement: false,
       analytics: false,
-      removeBranding: false,
     },
   },
   PRO: {
@@ -53,11 +52,9 @@ export const PLANS: Record<PlanId, PlanDefinition> = {
     features: [
       "Everything in Starter",
       "Unlimited events",
-      "Featured placement in discovery & calendar",
-      "Custom profile theme color & branding",
-      "Profile & event analytics",
-      "Priority in search results",
-      "Remove BandConnect branding",
+      "Featured badge + top ranking in venue & artist search",
+      "Audience insights: follower growth, RSVP demand & where fans live",
+      "Custom profile theme color",
     ],
     limits: {
       maxEvents: Infinity,
@@ -65,7 +62,6 @@ export const PLANS: Record<PlanId, PlanDefinition> = {
       customTheme: true,
       featuredPlacement: true,
       analytics: true,
-      removeBranding: true,
     },
   },
 };

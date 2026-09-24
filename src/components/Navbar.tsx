@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { Bell, Plus } from "lucide-react";
+import { Bell, Menu, Plus, X, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -48,7 +48,7 @@ export function Navbar() {
       <nav className="container-page flex h-16 items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-2">
           <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-500 text-white shadow-glow">
-            <BoltIcon />
+            <Zap className="h-4 w-4 fill-current" aria-hidden="true" />
           </span>
           <span className="font-display text-lg font-bold text-fg">
             Band<span className="text-brand-600 dark:text-brand-400">Connect</span>
@@ -125,7 +125,7 @@ export function Navbar() {
             aria-expanded={open}
             aria-controls="mobile-menu"
           >
-            <MenuIcon />
+            {open ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
           </button>
         </div>
       </nav>
@@ -182,20 +182,3 @@ export function Navbar() {
   );
 }
 
-function BoltIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="currentColor" stroke="none" />
-    </svg>
-  );
-}
-
-function MenuIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <line x1="4" y1="7" x2="20" y2="7" />
-      <line x1="4" y1="12" x2="20" y2="12" />
-      <line x1="4" y1="17" x2="20" y2="17" />
-    </svg>
-  );
-}

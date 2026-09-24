@@ -1,5 +1,6 @@
 "use client";
 
+import { CircleCheck } from "lucide-react";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -50,7 +51,7 @@ export function ResetPasswordForm() {
 
       {done ? (
         <div role="status" className="card p-6 text-center">
-          <div className="text-3xl">✅</div>
+          <CircleCheck className="mx-auto h-8 w-8 text-brand-600 dark:text-brand-300" aria-hidden="true" />
           <p className="mt-3 text-fg">Password updated! Taking you to log in…</p>
         </div>
       ) : (

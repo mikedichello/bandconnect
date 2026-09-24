@@ -1,5 +1,6 @@
 "use client";
 
+import { Banknote, Rocket, Star, Users } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -178,10 +179,10 @@ export function EventsManager({ initial, atLimit, limitLabel }: { initial: Event
           </div>
           <div className="flex flex-wrap gap-6">
             <label className="flex items-center gap-2 text-sm text-fg">
-              <input type="checkbox" className="h-5 w-5 accent-brand-500" checked={form.familyFriendly} onChange={(e) => field("familyFriendly", e.target.checked)} /> 👨‍👩‍👧 Family friendly
+              <input type="checkbox" className="h-5 w-5 accent-brand-500" checked={form.familyFriendly} onChange={(e) => field("familyFriendly", e.target.checked)} /> <Users className="h-4 w-4" aria-hidden="true" /> Family friendly
             </label>
             <label className="flex items-center gap-2 text-sm text-fg">
-              <input type="checkbox" className="h-5 w-5 accent-brand-500" checked={form.hasCoverCharge} onChange={(e) => field("hasCoverCharge", e.target.checked)} /> 💵 Has a cover charge
+              <input type="checkbox" className="h-5 w-5 accent-brand-500" checked={form.hasCoverCharge} onChange={(e) => field("hasCoverCharge", e.target.checked)} /> <Banknote className="h-4 w-4" aria-hidden="true" /> Has a cover charge
             </label>
           </div>
           <div>
@@ -238,9 +239,9 @@ function Group({ title, rows, onDelete, onBoost, empty, dim }: { title: string; 
               </div>
               <div className="flex items-center gap-3">
                 {e.featured ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[11px] font-bold text-amber-950">★ Featured</span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[11px] font-bold text-amber-950"><Star className="h-3 w-3 fill-current" aria-hidden="true" /> Featured</span>
                 ) : onBoost ? (
-                  <button onClick={() => onBoost(e.id)} className="text-sm font-medium text-amber-700 hover:underline dark:text-amber-300">★ Boost</button>
+                  <button onClick={() => onBoost(e.id)} className="text-sm font-medium text-amber-700 hover:underline dark:text-amber-300 inline-flex items-center gap-1"><Rocket className="h-3.5 w-3.5" aria-hidden="true" /> Boost</button>
                 ) : null}
                 <button onClick={() => onDelete(e.id)} className="text-sm text-subtle hover:text-red-600 dark:hover:text-red-300">Delete</button>
               </div>

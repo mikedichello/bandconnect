@@ -1,3 +1,4 @@
+import { CalendarX2, HeartHandshake, Radio } from "lucide-react";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getCurrentProfile } from "@/lib/session";
@@ -5,6 +6,7 @@ import { resolveCtLocation, distanceMiles } from "@/lib/ct-geo";
 import { EventFilters } from "@/components/events/EventFilters";
 import { EventCard, type EventCardData } from "@/components/events/EventCard";
 import { CalendarGrid } from "@/components/events/CalendarGrid";
+import { eventArt } from "@/components/events/EventArt";
 import { SaveAlertButton } from "@/components/events/SaveAlertButton";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +25,16 @@ type SP = {
   lng?: string;
   feed?: string;
 };
+
+const HEADLINES: Record<string, string> = {
+  "": "Live music across Connecticut",
+  tonight: "Live music tonight in CT",
+  weekend: "This weekend in CT",
+  week: "This week in CT",
+};
+
+// Eventbrite-style "browse by category" row. Values must exist in GENRES.
+const GENRE_SHORTCUTS = ["Rock", "Punk", "Indie", "Jazz", "Funk", "Folk", "Electronic", "Hip-Hop", "Singer-Songwriter"];
 
 const WHEN_OPTIONS = [
   { key: "", label: "Upcoming" },
@@ -192,6 +204,12 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
     if (k) p.set("when", k);
     return `/?${p.toString()}`;
   };
+  const genreHref = (g: string) => {
+    const p = new URLSearchParams(filterQs);
+    p.delete("genre");
+    if (g) p.set("genre", g);
+    return `/?${p.toString()}`;
+  };
   const feedHref = (f: string) => {
     const p = new URLSearchParams(filterQs);
     p.delete("feed");
@@ -207,9 +225,9 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
         <div className="container-page py-10 sm:py-12">
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
             <div>
-              <span className="badge-brand mb-3">🎶 Connecticut live music</span>
+              <span className="badge-brand mb-3"><Radio className="h-3.5 w-3.5" aria-hidden="true" /> Connecticut live music</span>
               <h1 className="font-display text-3xl font-bold text-fg sm:text-4xl">
-                {followingMode ? "From who you follow" : "What's happening tonight in CT"}
+                {followingMode ? "From who you follow" : HEADLINES[when] ?? HEADLINES[""]}
               </h1>
               <p className="mt-2 max-w-xl text-muted">
                 {followingMode
@@ -234,7 +252,34 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
           </div>
         )}
 
-        <EventFilters resolvedLabel={geo?.label ?? null} />
+        <EventFilters key={filterQs} resolvedLabel={geo?.label ?? null} />
+
+        {/* Browse by genre */}
+        <nav aria-label="Browse by genre" className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+          <ul className="flex gap-2 pb-1">
+            {GENRE_SHORTCUTS.map((g) => {
+              const { from, to, icon: Icon } = eventArt(g, g);
+              const active = genre === g;
+              return (
+                <li key={g} className="flex-shrink-0">
+                  <Link
+                    href={genreHref(active ? "" : g)}
+                    aria-current={active ? "true" : undefined}
+                    className={cn(
+                      "flex items-center gap-2 rounded-xl border py-1.5 pl-1.5 pr-3 text-sm font-medium transition",
+                      active ? "border-brand-400/60 bg-brand-500/20 text-fg" : "border-line bg-surface text-muted hover:border-brand-400/40 hover:text-fg",
+                    )}
+                  >
+                    <span className="grid h-7 w-7 place-items-center rounded-lg text-white" style={{ background: `linear-gradient(135deg, ${from}, ${to})` }}>
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                    {g}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
 
         {/* Date quick-filters (list view) */}
         {view === "list" && (
@@ -283,7 +328,7 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
         ) : cards.length === 0 ? (
           followingMode ? (
             <div className="card p-12 text-center">
-              <div className="text-3xl">🫶</div>
+              <HeartHandshake className="mx-auto h-8 w-8 text-brand-600 dark:text-brand-300" aria-hidden="true" />
               <h2 className="mt-3 text-lg font-semibold">Your feed is quiet</h2>
               <p className="mx-auto mt-1 max-w-sm text-sm text-subtle">
                 {followIds.length === 0
@@ -297,7 +342,7 @@ export default async function HomePage({ searchParams }: { searchParams: SP }) {
             </div>
           ) : (
             <div className="card p-12 text-center">
-              <div className="text-3xl">📅</div>
+              <CalendarX2 className="mx-auto h-8 w-8 text-brand-600 dark:text-brand-300" aria-hidden="true" />
               <h2 className="mt-3 text-lg font-semibold">No events match your filters</h2>
               <p className="mt-1 text-sm text-subtle">Try widening your radius or clearing filters.</p>
             </div>

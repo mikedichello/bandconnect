@@ -1,5 +1,6 @@
 "use client";
 
+import { ProfileTypeIcon } from "@/components/icons/ProfileTypeIcon";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -73,7 +74,7 @@ export function SignupForm() {
               role === t.id ? "border-brand-400/60 bg-brand-500/15 shadow-glow" : "border-line bg-input hover:border-line",
             )}
           >
-            <div className="text-2xl" aria-hidden="true">{t.emoji}</div>
+            <ProfileTypeIcon type={t.id} className="mx-auto h-6 w-6 text-brand-600 dark:text-brand-300" />
             <div className="mt-1 text-sm font-semibold text-fg">{t.label}</div>
           </button>
         ))}

@@ -1,5 +1,6 @@
 "use client";
 
+import { Check } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -41,7 +42,7 @@ export function FriendButton({
   }
 
   if (state === "accepted")
-    return <button onClick={() => call("remove")} disabled={loading} className="btn-ghost px-4 py-2 text-sm">Friends ✓</button>;
+    return <button onClick={() => call("remove")} disabled={loading} className="btn-ghost px-4 py-2 text-sm"><Check className="h-4 w-4" aria-hidden="true" /> Friends</button>;
   if (state === "pending_out")
     return <button onClick={() => call("remove")} disabled={loading} className="btn-ghost px-4 py-2 text-sm">Request sent</button>;
   if (state === "pending_in")
