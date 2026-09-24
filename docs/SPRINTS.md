@@ -135,8 +135,14 @@ S2-07 (hero search) has no dependencies, so a second dev can pick it up at any t
    - A band admin grants each member individual rights: **post events**, **edit events**, **message as the band**.
    - Members get no rights by default. Billing, boosts, delete, settings and member management stay
      OWNER/ADMIN only.
-   - One login can still own several profiles (e.g. a venue *and* a band) and switch between them with the
-     "Acting as" switcher.
+4. **Band membership is many-to-many.**
+   - A band has many members, and a musician can be in many bands. There's no limit on either side.
+   - Role and rights are **per band**: the same person can be ADMIN of one band and a post-only MEMBER of another.
+   - Leaving one band doesn't affect the others.
+   - Each membership can link the member's musician profile. The musician page then shows "Plays in: Band A · Band B · …",
+     and the band page links each member.
+   - One login can own or belong to any mix of profiles (a venue, a musician, several bands) and switch between
+     them with the "Acting as" switcher.
 
 Superseded in the role inputs: [po.md](planning/2026-09/po.md) and [dev.md](planning/2026-09/dev.md) mention
 venue members, a shared venue inbox and venue assignees. Those are out of scope under decision 3.
