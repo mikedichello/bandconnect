@@ -20,7 +20,8 @@ npm run lint           # next lint
 npx tsc --noEmit       # typecheck
 npm run db:push        # sync schema → DB
 npm run db:seed        # load CT demo data (tsx prisma/seed.ts)
-npm run db:reset       # wipe + reseed (dev only)
+npm run db:reset       # wipe + reseed (dev only; guarded by scripts/db-guard.mjs)
+npm run test:scripts   # db-guard unit tests (node:test)
 ```
 Always run `build` + `tsc --noEmit` + `lint` before committing code changes.
 Demo logins: `fan@/venue@/musician@/band@demo.com`, password `password123`.
@@ -52,6 +53,9 @@ Demo logins: `fan@/venue@/musician@/band@demo.com`, password `password123`.
 - **Forms:** every input needs an associated label (`htmlFor`/`id`, or wrap the
   control in `<label>`); errors get `role="alert"`, success/async status gets
   `role="status"`; identity fields get `autocomplete`.
+- **Destructive DB commands** (`db:seed`, `db:reset`, demo-seed build step) go
+  through `scripts/db-guard.mjs`: local DBs OK; remote only if host === `DEMO_DB_HOST`
+  and DB empty/demo-marked. Never weaken or bypass it.
 - **Graceful degradation:** no Stripe keys → demo billing mode; no
   `RESEND_API_KEY` → email log mode; no `CRON_SECRET` → open reminders endpoint.
   Don't break these fallbacks.

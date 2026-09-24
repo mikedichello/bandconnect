@@ -25,6 +25,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - run: npm run test:scripts   # db-guard (seed safety) unit tests
       - run: npm run build      # set-db-provider → prisma generate → next build
       - run: npx tsc --noEmit
       - run: npx next lint

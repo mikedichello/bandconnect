@@ -100,17 +100,27 @@ Want a throwaway demo to click around? The **`dev`** branch is wired for it:
    deploy of `dev` on your main project works too.)*
 2. Give it its **own** free Supabase database (Storage → Connect) — keep demo
    data separate from anything real.
-3. Set two env vars on that project:
+3. Set three env vars on that project:
 
    | Variable | Value | Effect |
    | --- | --- | --- |
    | `DEMO_SEED` | `1` | the build **wipes + reseeds** the DB with CT sample data every deploy |
+   | `DEMO_DB_HOST` | the demo DB's hostname, e.g. `db.abcd1234.supabase.co` | **required** safety pin: the seed only runs if the build's database host equals this *and* the DB is empty or already demo-seeded |
    | `NEXT_PUBLIC_DEMO` | `1` | shows a "Demo site" banner with one-click Fan/Venue/Musician/Band logins |
 
 4. Deploy. It comes up **fully populated** — no manual `db:push` / `db:seed`.
 
 > ⚠️ **`DEMO_SEED=1` deletes all rows on every build.** Only ever set it on a
 > throwaway demo project, never on production.
+>
+> **Guard (`scripts/db-guard.mjs`):** every destructive command (this build
+> step, `npm run db:seed`, `npm run db:reset`) first logs the target DB host
+> (password redacted) and **refuses** unless the DB is local (SQLite file or
+> Postgres on localhost) or the remote host matches `DEMO_DB_HOST` **and** the DB
+> is empty or carries the demo marker (`fan@demo.com`). Any inspection error
+> also refuses. A refusal during `npm run build` **fails the deploy** — so a
+> `DEMO_SEED` mistakenly set on production can't wipe it; the previous
+> deployment stays live.
 
 Demo logins (also one-click from the banner): `fan@` / `venue@` / `musician@` /
 `band@demo.com`, password `password123`.
