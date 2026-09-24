@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 /**
  * Sends a one-time reminder for each RSVP'd show starting within the next 24h.
- * Intended to be hit on a schedule (e.g. Vercel Cron hourly). Protected by
+ * Intended to be hit on a schedule (Vercel Cron daily at 14:00 UTC = 9–10am ET — Hobby plan limit). Protected by
  * CRON_SECRET when that env var is set; open otherwise so dev/demo works.
  *
  * Idempotent: each RSVP is reminded at most once (tracked via reminderSentAt).

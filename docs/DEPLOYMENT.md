@@ -128,14 +128,33 @@ the server console instead of sent, so every flow still works.
 
 **Event reminders** are sent by `/api/cron/reminders`, which reminds each
 RSVP'd show starting within 24h exactly once. On Vercel this is wired up by
-`vercel.json` (hourly). Protect it by setting `CRON_SECRET` — Vercel Cron sends
+`vercel.json` **daily at 14:00 UTC** (9–10am ET, so the morning of an evening
+show). Protect it by setting `CRON_SECRET` — Vercel Cron sends
 it automatically as a Bearer token. On other hosts, call the endpoint on a
 schedule with `Authorization: Bearer $CRON_SECRET` (or `?key=$CRON_SECRET`).
 
-> **Heads-up:** Vercel's **Hobby** plan runs cron jobs at most **once per day**.
-> For truly hourly reminders, use Vercel **Pro**, or point a free external
+> **Why daily:** Vercel's **Hobby** plan rejects any cron that runs more than
+> once per day (deploys fail with "Hobby accounts are limited to daily cron
+> jobs"). Trade-off: a show posted after the morning run that starts before the
+> next one gets no reminder. For hourly reminders, move to Vercel **Pro** and set
+> the schedule back to `0 * * * *`, or point a free external
 > scheduler (e.g. cron-job.org or a GitHub Actions schedule) at
 > `https://YOUR_DOMAIN/api/cron/reminders` with the `Authorization` header.
+
+## Troubleshooting: "Application error: a server-side exception has occurred"
+
+Open **`/api/health`** on the deployment. It reports (booleans/codes only, no
+secrets) whether the DB is reachable and has tables, and which config is set:
+
+| `/api/health` says | Cause | Fix |
+| --- | --- | --- |
+| `database.status: "missing_tables"` | Tables were never created in this DB | Set **`DB_PUSH_ON_BUILD=1`** (Production scope) in Vercel → Redeploy. The build runs a **non-destructive** `prisma db push` (a destructive schema change fails the build instead of dropping data). Or run `npm run db:push` locally against the prod DB. |
+| `database.status: "not_configured"` / `config.database_url: false` | No DB URL in this environment | Connect the Supabase/Postgres integration or set `DATABASE_URL` |
+| `database.status: "unreachable"` | DB host down / wrong credentials | Check the DB URL and that the DB is running |
+| `config.NEXTAUTH_SECRET: false` | NextAuth can't read sessions in production | Set `NEXTAUTH_SECRET` (`openssl rand -base64 32`) → Redeploy |
+
+Vercel → Deployments → the deployment → **Logs** also shows the real error;
+search for the "Digest" number from the error page.
 
 ## All environment variables
 
