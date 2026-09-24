@@ -1,0 +1,23 @@
+name: Promotion guard
+
+# Enforces feature → dev → main. Only `dev` (a release) or `hotfix/*` may be
+# merged into `main`. See docs/BRANCHING.md.
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check source branch
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if [ "$HEAD_REF" = "dev" ] || [[ "$HEAD_REF" == hotfix/* ]]; then
+            echo "OK: $HEAD_REF → main"
+          else
+            echo "::error::PRs into main must come from 'dev' or 'hotfix/*' (got '$HEAD_REF'). Target 'dev' instead."
+            exit 1
+          fi
