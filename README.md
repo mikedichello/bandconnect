@@ -48,7 +48,7 @@ share, new event from who you follow).
 - **Saved searches** — "tell me when a show is booked in my town / genre"; new
   matching events notify you.
 - **Email** (Resend): welcome, **password reset**, and **pre-show reminders**
-  for RSVP'd events (hourly cron). Runs in **log mode** without a key.
+  for RSVP'd events (daily cron, 14:00 UTC). Runs in **log mode** without a key.
 
 ### Discovery & search
 Browse **/venues** and **/artists**. Artists are searchable by genre,
