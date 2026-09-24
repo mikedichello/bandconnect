@@ -83,7 +83,10 @@ benchmarked) · `WIREFRAMES.md` ·
   `docs/launch/trust-and-verification.md`.
 
 ## Workflow
-- Develop on branch **`claude/tender-wright-04kyoq`**; create it if missing.
+- **Branch model: feature → `dev` → `main`** (`docs/BRANCHING.md`). `main` = prod
+  (default branch), `dev` = staging. Branch `feat/BC-<n>-<slug>` from `dev` and PR
+  back into `dev`; only `dev` (release PR) or `hotfix/*` may target `main`
+  (enforced by `promotion-guard`). Sprint plan + tickets: `docs/SPRINTS.md`.
 - **Commit/push only when work is complete & verified.** Push with
   `git push -u origin <branch>` (retry 4× w/ backoff on network errors).
 - **Do NOT open a PR unless explicitly asked.** Repo scope: `mikedichello/bandconnect`.
