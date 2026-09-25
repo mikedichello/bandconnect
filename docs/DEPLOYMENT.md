@@ -141,6 +141,20 @@ schedule with `Authorization: Bearer $CRON_SECRET` (or `?key=$CRON_SECRET`).
 > scheduler (e.g. cron-job.org or a GitHub Actions schedule) at
 > `https://YOUR_DOMAIN/api/cron/reminders` with the `Authorization` header.
 
+## Troubleshooting: build fails with `[deploy-env] … missing required config`
+
+On Vercel the build refuses to ship without a Postgres URL and `NEXTAUTH_SECRET`
+(`scripts/check-deploy-env.mjs`). Before this check, the same setup produced a
+green deploy that returned 500 on every page. While the build is red, Vercel keeps
+serving the last good deployment. Fix: connect the database (Storage → Supabase →
+Connect Project; if the Supabase project is **Paused**, restore it in the
+Supabase dashboard first, since free projects pause after a week idle), add
+`NEXTAUTH_SECRET`, then redeploy.
+
+Also confirm **Settings → Environments → Production → Branch Tracking** is
+`main`. If the production branch is left on an old feature branch, merges to
+`main` only ever build Previews.
+
 ## Troubleshooting: "Application error: a server-side exception has occurred"
 
 Open **`/api/health`** on the deployment. It reports (booleans/codes only, no
